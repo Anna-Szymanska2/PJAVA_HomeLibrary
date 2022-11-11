@@ -6,6 +6,7 @@ public class Book {
     String genre;
     String series ;
     int seriesVolume;
+    double rating;
 
 
     public Book(String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
@@ -16,8 +17,8 @@ public class Book {
         this.genre = genre;
         this.series = series;
         this.seriesVolume = seriesVolume;
+        this.rating = 7;
     }
-
 
     // just for testing
     public void description(){
