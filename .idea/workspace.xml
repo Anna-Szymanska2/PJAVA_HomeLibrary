@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ee299e5-2255-417f-8523-bc84fada658c" name="Changes" comment="Testing">
+    <list default="true" id="4ee299e5-2255-417f-8523-bc84fada658c" name="Changes" comment="Adding Book class and possibility to read file with books">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,13 +37,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Dorota/Documents/kod/PJAVA_HomeLibrary"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -61,12 +59,12 @@
       <option name="project" value="LOCAL" />
       <updated>1667990675025</updated>
     </task>
-    <task id="LOCAL-00002" summary="Testing">
-      <created>1668195087927</created>
+    <task id="LOCAL-00002" summary="Adding Book class and possibility to read file with books">
+      <created>1668000123476</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1668195087927</updated>
+      <updated>1668000123476</updated>
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
@@ -84,7 +82,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Init" />
-    <MESSAGE value="Testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing" />
+    <MESSAGE value="Adding Book class and possibility to read file with books" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding Book class and possibility to read file with books" />
   </component>
 </project>

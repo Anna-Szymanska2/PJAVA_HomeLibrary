@@ -57,6 +57,8 @@ public class FileLoader {
             if(counter == 11){ //scanning next line
                 counter = 1;
                 Book nextBook = new Book(title, author, pages, publishYear, genre, series, seriesVolume);
+                seriesVolume = 0;
+                series = null;
                 books.add(nextBook);
             }
 
