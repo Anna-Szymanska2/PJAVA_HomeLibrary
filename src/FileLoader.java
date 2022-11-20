@@ -8,7 +8,7 @@ public class FileLoader {
         test();
     }
     public static ArrayList<Book> returnBooksFromFile() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("C:\\Users\\Dorota\\Documents\\Cukierki\\Studia\\3 rok\\Pijawa\\Książki.csv"));
+        Scanner sc = new Scanner(new File("C:\\Studia\\V semestr\\PIJAVA\\projekt\\Książki.csv"));
         sc.useDelimiter(";");   //sets the delimiter pattern
         sc.nextLine();
         int counter = 1;
@@ -69,9 +69,13 @@ public class FileLoader {
 
     public static void test() throws FileNotFoundException {
         ArrayList<Book> books = returnBooksFromFile();
-        for(Book book: books){
+        /*for(Book book: books){
             book.description();
             System.out.println();
-        }
+        }*/
+
+        User user = new User("Ania", "Haslo");
+        Book book = user.selectBook(books);
+        book.description();
     }
 }
