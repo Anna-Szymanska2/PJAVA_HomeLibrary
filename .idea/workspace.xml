@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ee299e5-2255-417f-8523-bc84fada658c" name="Changes" comment="Class skeletons (creepy :3)">
+    <list default="true" id="484c8e65-4188-4274-8f40-96d5dd0473a3" name="Changes" comment="Adding reminders, saving program data and possibility of choosing books and adding them to various lists">
+      <change afterPath="$PROJECT_DIR$/src/Reminder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SaveRestoreData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Administrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Library.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,17 +42,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dorota/Documents/kod/PJAVA_HomeLibrary&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Studia/V semestr/PIJAVA/projekt/PJAVA_HomeLibrary/src"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Studia\V semestr\PIJAVA\projekt\PJAVA_HomeLibrary\src" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4ee299e5-2255-417f-8523-bc84fada658c" name="Changes" comment="" />
+      <changelist id="484c8e65-4188-4274-8f40-96d5dd0473a3" name="Changes" comment="Adding Book class and possibility to read file with books" />
       <created>1667988992728</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -61,22 +70,32 @@
       <option name="project" value="LOCAL" />
       <updated>1667990675025</updated>
     </task>
-    <task id="LOCAL-00002" summary="Testing">
-      <created>1668195087927</created>
+    <task id="LOCAL-00002" summary="Adding Book class and possibility to read file with books">
+      <created>1668000123476</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1668195087927</updated>
+      <updated>1668000123476</updated>
     </task>
-    <task id="LOCAL-00003" summary="Class skeletons (creepy :3)">
-      <created>1668201047501</created>
+    <task id="LOCAL-00003" summary="Adding reminders, saving program data and possibility of choosing books and adding them to various lists">
+      <created>1668943744137</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1668201047501</updated>
+      <updated>1668943744137</updated>
     </task>
     <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -91,17 +110,28 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Init" />
-    <MESSAGE value="Testing" />
-    <MESSAGE value="Class skeletons (creepy :3)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Class skeletons (creepy :3)" />
+    <MESSAGE value="Adding Book class and possibility to read file with books" />
+    <MESSAGE value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.util.NoSuchElementException" package="java.util" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/FileLoader.java</url>
+          <line>11</line>
           <option name="timeStamp" value="1" />
-        </breakpoint>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/FileLoader.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/FileLoader.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

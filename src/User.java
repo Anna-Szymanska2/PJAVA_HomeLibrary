@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-
+import java.io.FileNotFoundException;
+import java.io.Serializable;
+import java.util.Scanner;
 public class User {
     private String name;
     private String password;
@@ -12,6 +14,34 @@ public class User {
         this.password = password;
         library.namesAndPasswords.put(name,password);
         library.users.add(this);
+    }
+    Book selectBook(ArrayList<Book> books){
+        for(int i = 0; i < books.size(); i++){
+            System.out.print((i+1) + ". ");
+            books.get(i).description();
+        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj numer książki, którą chcesz wybrać: ");
+        int chosenNumber = scanner.nextInt();
+        scanner.nextLine();
+
+        return books.get(chosenNumber - 1);
+    }
+
+    public void chooseAndAddToRead(ArrayList<Book> books){
+        Book readBook = selectBook(books);
+        if(!booksRead.contains(readBook))
+            addRead(readBook);
+        else
+            System.out.println("Już dodałeś tę książkę do przeczytanych");
+    }
+
+    public void chooseAndAddToBeRead(ArrayList<Book> books){
+        Book bookToRead = selectBook(books);
+        if(!booksToRead.contains(bookToRead))
+            addToRead(bookToRead);
+        else
+            System.out.println("Już dodałeś tę książkę do listy książek do czytania");
     }
 
     public void setName(String name) {
@@ -79,4 +109,12 @@ public class User {
         }
         System.out.println();
     }
+    public void displayBooksToRead(){
+        System.out.println("Twoje książki do przeczytania: ");
+        for(Book bookToRead: booksToRead){
+            bookToRead.description();
+        }
+        System.out.println();
+    }
+
 }

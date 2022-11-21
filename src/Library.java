@@ -3,9 +3,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Library {
+public class Library implements Serializable {
     ArrayList<Book> books;
+    ArrayList<Book> borrowedBooks = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
     HashMap<String,String> namesAndPasswords = new HashMap<>();
     public Library(ArrayList<Book> books){
@@ -15,10 +18,19 @@ public class Library {
     public void addBook(Book book){
         this.books.add(book);
     }
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
 
     public void removeBook(Book book){
         this.books.remove(book);
     }
+
+    public void addBorrowedBook(Book borrowedBook){borrowedBooks.add(borrowedBook);}
+
+    public void removeBorrowedBook(Book borrowedBook){this.books.remove(borrowedBook);}
+
+
 
     public void filtration(String title, String author, int pages, int pages2, int publishYear, int publishYear2, String genre, String series, int volumes,int volumes2, int rating, int rating2) {
         ArrayList<Book> booksToFilter = this.books;
