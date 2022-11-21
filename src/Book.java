@@ -25,10 +25,14 @@ public class Book {
 
     public void calculateRating(){
         double ratingsSum = 7;
-        for (Integer i : ratings.values()) {
-             ratingsSum += i;
+        if(ratings!=null) {
+            for (Integer i : ratings.values()) {
+                ratingsSum += i;
+            }
+            this.rating = ratingsSum / (ratings.size() + 1);
         }
-        this.rating = ratingsSum/(ratings.size()+1);
+        else
+            this.rating = ratingsSum;
     }
     // just for testing
     public void description(){
