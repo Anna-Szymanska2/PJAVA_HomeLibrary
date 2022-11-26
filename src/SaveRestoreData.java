@@ -21,7 +21,7 @@ public class SaveRestoreData {
         Administrator admin;
         FileInputStream fileIn;
         try {
-            fileIn = new FileInputStream("C:\\Studia\\V semestr\\PIJAVA\\projekt\\PJAVA_HomeLibrary\\admin.ser");
+            fileIn = new FileInputStream("C:\\Users\\Dorota\\Documents\\Cukierki\\Studia\\3 rok\\Pijawa\\admin.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             admin = (Administrator) in.readObject();
             in.close(); fileIn.close();
