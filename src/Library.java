@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,7 +38,13 @@ public class Library implements Serializable {
 
     public void removeBorrowedBook(Book borrowedBook){this.books.remove(borrowedBook);}
 
-
+    public ArrayList<Book> reassignBooksToFilter(ArrayList<Book> booksToFilter,ArrayList<Book> booksAfterFiltration){
+        while(booksToFilter.size()>booksAfterFiltration.size()){
+            booksToFilter.remove(booksToFilter.size()-1);
+        }
+        Collections.copy(booksToFilter,booksAfterFiltration);
+        return booksToFilter;
+    }
 
     public void filtration(String title, String author, int pages, int pages2, int publishYear, int publishYear2, String genre, String series, int volumes,int volumes2, int rating, int rating2) {
         ArrayList<Book> booksToFilter = this.books;
@@ -50,19 +53,13 @@ public class Library implements Serializable {
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> book.title.equals(title))
                     .collect(Collectors.toList());
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(!author.equals("0")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> book.author.equals(author))
                     .collect(Collectors.toList());
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(pages2 != 0 || pages !=0){
             for(Book bookAfter : booksToFilter){
@@ -73,10 +70,7 @@ public class Library implements Serializable {
                      booksAfterFiltration.remove(bookAfter);
                 }
             }
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
 
         if(publishYear != 0 || publishYear2 !=0){
@@ -88,59 +82,47 @@ public class Library implements Serializable {
                     booksAfterFiltration.remove(bookAfter);
                 }
             }
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(!genre.equals("0")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> book.genre.equals(genre))
                     .collect(Collectors.toList());
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(!series.equals("0")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> Objects.equals(book.series, series))
                     .collect(Collectors.toList());
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(volumes2 != 0 || volumes != 0){
-            ArrayList<String> namesOfFittingSeries = new ArrayList<>();
+            HashSet<String> namesOfFittingSeries = new HashSet<>();
+            HashSet<String> namesOfUnFittingSeries = new HashSet<>();
+            ArrayList<Book> booksAfterFiltration2 = new ArrayList<>();
             if(volumes == 0){
-                booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
+                booksAfterFiltration2 = (ArrayList<Book>) booksToFilter.stream()
                         .filter(book -> book.series == null)
                         .collect(Collectors.toList());
                 volumes = 1;
-                while(booksToFilter.size()>booksAfterFiltration.size()){
-                    booksToFilter.remove(booksToFilter.size()-1);
-                }
-                Collections.copy(booksToFilter,booksAfterFiltration);
             }
             for(Book bookAfter: booksToFilter){
                 if(bookAfter.series != null) {
-                    if (bookAfter.seriesVolume < volumes2) {
-                        namesOfFittingSeries.add(bookAfter.series);
-                        if (bookAfter.seriesVolume > volumes) {
+                    if (bookAfter.seriesVolume > volumes2)
+                        namesOfUnFittingSeries.add(bookAfter.series);
+                    if(!namesOfUnFittingSeries.contains(bookAfter.series)) {
+                        if (bookAfter.seriesVolume > volumes)
                             namesOfFittingSeries.add(bookAfter.series);
-                        }
                     }
                 }
             }
+            namesOfFittingSeries.removeIf(next -> namesOfUnFittingSeries.contains(next));
             System.out.println(namesOfFittingSeries);
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> namesOfFittingSeries.contains(book.series))
                     .collect(Collectors.toList());
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            booksAfterFiltration.addAll(booksAfterFiltration2);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(rating != 0 || rating2 !=0){
             for(Book bookAfter: booksToFilter){
@@ -151,10 +133,7 @@ public class Library implements Serializable {
                     booksAfterFiltration.remove(bookAfter);
                 }
             }
-            while(booksToFilter.size()>booksAfterFiltration.size()){
-                booksToFilter.remove(booksToFilter.size()-1);
-            }
-            Collections.copy(booksToFilter,booksAfterFiltration);
+            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         System.out.println("Twoje wybrane książki: ");
         for(Book bookAfter: booksToFilter){
