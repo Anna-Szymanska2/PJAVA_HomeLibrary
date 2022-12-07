@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="484c8e65-4188-4274-8f40-96d5dd0473a3" name="Changes" comment="Adding reminders, saving program data and possibility of choosing books and adding them to various lists">
-      <change afterPath="$PROJECT_DIR$/src/Reminder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SaveRestoreData.java" afterDir="false" />
+    <list default="true" id="484c8e65-4188-4274-8f40-96d5dd0473a3" name="Changes" comment="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')">
+      <change afterPath="$PROJECT_DIR$/src/Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/UserView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Administrator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Library.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,11 +48,12 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Studia/V semestr/PIJAVA/projekt/PJAVA_HomeLibrary/src"
+    "last_opened_file_path": "C:/Studia/V semestr/PIJAVA/projekt/PJAVA_HomeLibrary"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Studia\V semestr\PIJAVA\projekt\PJAVA_HomeLibrary" />
       <recent name="C:\Studia\V semestr\PIJAVA\projekt\PJAVA_HomeLibrary\src" />
     </key>
   </component>
@@ -84,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668943744137</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')">
+      <created>1669069660656</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1669069660656</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -112,7 +122,8 @@
     <MESSAGE value="Init" />
     <MESSAGE value="Adding Book class and possibility to read file with books" />
     <MESSAGE value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists" />
+    <MESSAGE value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

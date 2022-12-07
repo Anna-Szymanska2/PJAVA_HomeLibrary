@@ -11,6 +11,17 @@ public class Library implements Serializable {
     ArrayList<Book> borrowedBooks = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
     HashMap<String,String> namesAndPasswords = new HashMap<>();
+
+    private User currentlyLoggedUser = null;
+
+    public User getCurrentlyLoggedUser() {
+        return currentlyLoggedUser;
+    }
+
+    public void setCurrentlyLoggedUser(User currentlyLoggedUser) {
+        this.currentlyLoggedUser = currentlyLoggedUser;
+    }
+
     public Library(ArrayList<Book> books){
         this.books = books;
     }

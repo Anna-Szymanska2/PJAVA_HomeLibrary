@@ -70,4 +70,15 @@ public class Book {
             System.out.println("Książka jest chwilowo pożyczona, data zwrotu: " + dateFormat.format(returningDate.getTime()));
         }
     }
+
+    @Override
+    public String toString(){
+        String decription = "";
+        if(series != null){
+            decription = series + " " + "tom " + seriesVolume;
+        }
+        decription = decription +  " " + title + " " + author + " " + publishYear + " " + pages + " " + genre;
+
+        return decription;
+    }
 }

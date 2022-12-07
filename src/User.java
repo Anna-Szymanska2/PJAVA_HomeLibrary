@@ -9,11 +9,13 @@ public class User {
     ArrayList<Book> booksToRead = new ArrayList<>();;
     ArrayList<Book> booksRated = new ArrayList<>();
 
-    public User(String name, String password, Library library){
+
+    //tutaj trzeba poprawic, nie mozna dawac biblioteki w konstruktorze bo bedzie to robic problemy
+    public User(String name, String password){
         this.name = name;
         this.password = password;
-        library.namesAndPasswords.put(name,password);
-        library.users.add(this);
+        //library.namesAndPasswords.put(name,password);
+        //library.users.add(this);
     }
     Book selectBook(ArrayList<Book> books){
         for(int i = 0; i < books.size(); i++){
@@ -54,6 +56,18 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public ArrayList<Book> getBooksRead() {
+        return booksRead;
+    }
+
+    public ArrayList<Book> getBooksToRead() {
+        return booksToRead;
+    }
+
+    public ArrayList<Book> getBooksRated() {
+        return booksRated;
     }
 
     public void setPassword(String password) {
