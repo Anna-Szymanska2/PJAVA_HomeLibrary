@@ -1,15 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class UserView extends JFrame {
-    private JButton logoutButton = new JButton("Wyloguj");
+public class UserView extends View {
+    protected JButton logoutButton = new JButton("Wyloguj");
     private JButton userButton = new JButton("Witaj użytkowniku");
     private JButton findBookButton = new JButton("Znajdź książkę");
     private JButton readBooksButton = new JButton("Przeczytane");
     private JButton toReadBooksButton = new JButton("Do przeczytania");
     private JButton markedBooksButton = new JButton("Ocenione");
     private JButton borrowedBooksButton = new JButton("Pożyczone");
-    private JPanel buttonsPanel = new JPanel(new GridLayout(7, 1));
+    protected JPanel buttonsPanel = new JPanel(new GridLayout(7, 1));
     JPanel mainPanel = new JPanel();
 
     public JPanel getMainPanel() {
@@ -53,11 +53,9 @@ public class UserView extends JFrame {
     }
 
     public void initView(){
-        setVisible(true);
+        //setVisible(true);
         setSize(500, 600);
         setLocationRelativeTo(null);
-        setTitle("Domowa biblioteka");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         buttonsPanel.add(userButton);
         buttonsPanel.add(findBookButton);
@@ -73,6 +71,14 @@ public class UserView extends JFrame {
 
 
     }
+
+    public void userButtonView(String labelText){
+        getMainPanel().removeAll();
+        getMainPanel().add(new JLabel(labelText));
+        setVisible(true);
+        repaint();
+    }
+
 
 
     public static void main (String []arg){
