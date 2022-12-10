@@ -9,7 +9,8 @@ public class UserView extends View {
     private JButton toReadBooksButton = new JButton("Do przeczytania");
     private JButton markedBooksButton = new JButton("Ocenione");
     private JButton borrowedBooksButton = new JButton("Pożyczone");
-    protected JPanel buttonsPanel = new JPanel(new GridLayout(7, 1));
+    private JButton recommendBookButton = new JButton("Poleć książkę");
+    protected JPanel buttonsPanel = new JPanel(new GridLayout(8, 1));
     JPanel mainPanel = new JPanel();
 
     public JPanel getMainPanel() {
@@ -54,7 +55,7 @@ public class UserView extends View {
 
     public void initView(){
         //setVisible(true);
-        setSize(500, 600);
+        setSize(700, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         buttonsPanel.add(userButton);
@@ -63,6 +64,7 @@ public class UserView extends View {
         buttonsPanel.add(toReadBooksButton);
         buttonsPanel.add(markedBooksButton);
         buttonsPanel.add(borrowedBooksButton);
+        buttonsPanel.add(recommendBookButton);
         buttonsPanel.add(logoutButton);
         buttonsPanel.setPreferredSize(new Dimension(150,100));
         add(buttonsPanel,BorderLayout.WEST);

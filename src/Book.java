@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 public class Book {
+    private final String description;
     String title ;
     String author;
     int pages;
@@ -17,7 +18,8 @@ public class Book {
     private Calendar returningDate = null;
 
 
-    public Book(String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
+    public Book(String description, String title, String author,  int pages, int publishYear, String genre, String series, int seriesVolume){
+        this.description = description;
         this.title = title;
         this.author = author;
         this.pages = pages;
@@ -71,7 +73,7 @@ public class Book {
         }
     }
 
-    @Override
+    /*@Override
     public String toString(){
         String decription = "";
         if(series != null){
@@ -80,5 +82,9 @@ public class Book {
         decription = decription +  " " + title + " " + author + " " + publishYear + " " + pages + " " + genre;
 
         return decription;
+    }*/
+    @Override
+    public String toString(){
+        return description;
     }
 }

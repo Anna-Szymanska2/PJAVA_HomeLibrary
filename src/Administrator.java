@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class Administrator extends User{
     ArrayList<Reminder> reminders = new ArrayList<>();
 
-    public void addBook(Library library,String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
-        Book book = new Book(title,author,pages,publishYear,genre,series,seriesVolume);
+    public void addBook(Library library,String description, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
+        Book book = new Book(description, title,author,pages,publishYear,genre,series,seriesVolume);
         library.addBook(book);
     }
 

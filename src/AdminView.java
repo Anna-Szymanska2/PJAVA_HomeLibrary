@@ -6,6 +6,17 @@ public class AdminView extends UserView{
     private JButton addBookButton = new JButton("Dodaj książkę");
     private JButton deleteAccountButton = new JButton("Usuń konto");
 
+    public JButton getReminderButton() {
+        return reminderButton;
+    }
+
+    public JButton getAddBookButton() {
+        return addBookButton;
+    }
+
+    public JButton getDeleteAccountButton() {
+        return deleteAccountButton;
+    }
 
     @Override
     public void initView(){
@@ -15,12 +26,13 @@ public class AdminView extends UserView{
         buttonsPanel.add(deleteAccountButton);
         buttonsPanel.remove(logoutButton);
         buttonsPanel.add(logoutButton);
-        buttonsPanel.setLayout(new GridLayout(10,1));
+        buttonsPanel.setLayout(new GridLayout(11,1));
     }
 
     public static void main (String []arg){
         AdminView view = new AdminView();
         view.initView();
+        view.setVisible(true);
     }
 
 
