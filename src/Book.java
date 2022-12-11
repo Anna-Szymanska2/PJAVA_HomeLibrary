@@ -30,6 +30,42 @@ public class Book {
         this.calculateRating();
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public int getPublishYear() {
+        return publishYear;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public int getSeriesVolume() {
+        return seriesVolume;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
     public void calculateRating(){
         double ratingsSum = 7;
         if(ratings!=null) {
@@ -71,6 +107,28 @@ public class Book {
             DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
             System.out.println("Książka jest chwilowo pożyczona, data zwrotu: " + dateFormat.format(returningDate.getTime()));
         }
+    }
+
+    public String returnLongDescription(){
+        String longDescription = "";
+        if(series != null){
+            longDescription = "<html>seria - " + series + "<br/>";
+            longDescription = longDescription + "tom - " + seriesVolume +"<br/>";
+            longDescription = longDescription + "tytuł - " + title +"<br/>";
+        }
+        else
+            longDescription = longDescription + "<html>tytuł - " + title +"<br/>";
+
+        longDescription = longDescription + "autor - " + author +"<br/>";
+        longDescription = longDescription + "rok wydania - " + publishYear +"<br/>";
+        longDescription = longDescription + "liczba stron - " + pages +"<br/>";
+        longDescription = longDescription + "gatunek - " + genre+"<br/>";
+
+        if(returningDate != null){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+            longDescription = longDescription + "Książka jest chwilowo pożyczona, data zwrotu: " + dateFormat.format(returningDate.getTime())+"</html>";
+        }
+    return longDescription;
     }
 
     /*@Override

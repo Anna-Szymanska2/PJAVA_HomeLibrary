@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -41,11 +39,27 @@ public class Controller {
         view.getToReadBooksButton().addActionListener((e) -> {
             toReadBooksButtonAction();
         });
+        view.getReadBooksButton().addActionListener((e) -> {
+            ReadBooksButtonAction();
+        });
         view.getLogoutButton().addActionListener((e) -> {
             logoutButtonAction();
         });
-
+        view.getFindBookButton().addActionListener((e) -> {
+            findBookButtonAction();
+        });
+        view.getRatedBooksButton().addActionListener((e) -> {
+            ratedBooksButtonAction();
+        });
+        view.getAddToReadButton().addActionListener((e) -> {
+            addToReadButtonAction();
+        });
+        view.getAddReadButton().addActionListener((e) -> {
+            addReadButtonAction();
+        });
     }
+
+
     public void bindUserButtons(){
         bindButtons(userView);
     }
@@ -58,8 +72,37 @@ public class Controller {
     }
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> {
-           loginButtonAction();
+            loginButtonAction();
         });
+    }
+    public void addToReadButtonAction(){
+        UserView view = (UserView) currentView;
+        if(library.getCurrentlyLoggedUser().getBooksToRead().contains(view.getLastSelectedBook()))
+            view.addingDeletingBookMessage("Książka znajduje się już na twojej liście do przeczytania", "");
+        else{
+            library.getCurrentlyLoggedUser().getBooksToRead().add(view.getLastSelectedBook());
+            view.addingDeletingBookMessage("Książka została dodana", "");
+        }
+    }
+
+    public void addReadButtonAction(){
+        UserView view = (UserView) currentView;
+        if(library.getCurrentlyLoggedUser().getBooksRead().contains(view.getLastSelectedBook()))
+            view.addingDeletingBookMessage("Książka znajduje się już na twojej liście przeczytanych", "");
+        else{
+            library.getCurrentlyLoggedUser().getBooksRead().add(view.getLastSelectedBook());
+            view.addingDeletingBookMessage("Książka została dodana", "");
+        }
+    }
+
+    public void findBookButtonAction(){
+        UserView view = (UserView) currentView;
+        ArrayList<Book> books = library.getBooks();
+        JButton button1 = view.getAddToReadButton();
+        JButton button2 = view.getAddReadButton();
+        JButton button3 = view.getAddRateButton();
+        view.selectBookView(books, button1, button2, button3);
+
     }
 
     public void loginButtonAction(){
@@ -81,10 +124,10 @@ public class Controller {
     }
 
     public void userButtonAction() {
-       UserView view = (UserView) currentView;
-       String userName = library.getCurrentlyLoggedUser().getName();
-       String labelText = "Hello " + userName + "!";
-       view.userButtonView(labelText);
+        UserView view = (UserView) currentView;
+        String userName = library.getCurrentlyLoggedUser().getName();
+        String labelText = "Hello " + userName + "!";
+        view.userButtonView(labelText);
 
     }
 
@@ -102,26 +145,29 @@ public class Controller {
         view.repaint();
     }*/
     public void toReadBooksButtonAction(){
-        //ArrayList<Book> booksToRead = library.getCurrentlyLoggedUser().getBooksToRead();
-        ArrayList<Book> booksToRead = library.getBooks();
-        JList<Book> list = new JList<Book>();
-        DefaultListModel <Book> model = new DefaultListModel<>();
-        list.setModel(model);
-        model.addAll(booksToRead);
-        list.setVisibleRowCount(30);
-        list.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-
-            }
-        });
-        JScrollPane scroll = new JScrollPane(list);
         UserView view = (UserView) currentView;
-        view.getMainPanel().removeAll();
-        //view.getMainPanel().add(list);
-        view.getMainPanel().add(scroll);
-        view.setVisible(true);
-        view.repaint();
+        ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksToRead();
+        JButton button1 = view.getDeleteToReadButton();
+        JButton button2 = view.getAddReadButton();
+        JButton button3 = view.getAddRateButton();
+        view.selectBookView(books, button1, button2, button3);
+    }
+    public void ReadBooksButtonAction(){
+        UserView view = (UserView) currentView;
+        ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRead();
+        JButton button2 = view.getDeleteReadButton();
+        JButton button1 = view.getAddToReadButton();
+        JButton button3 = view.getAddRateButton();
+        view.selectBookView(books, button1, button2, button3);
+    }
+
+    public void ratedBooksButtonAction(){
+        UserView view = (UserView) currentView;
+        ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRated();
+        JButton button1 = view.getAddToReadButton();
+        JButton button2 = view.getAddReadButton();
+        JButton button3 = view.getDeleteRateButton();
+        view.selectBookView(books, button1, button2, button3);
     }
 
 
@@ -135,17 +181,17 @@ public class Controller {
         LoginView view2 = new LoginView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         Library library = new Library(books);
-        User user = new User("ania", "haslo123");
-        Administrator admin = new Administrator("Dorota", "admin1");
+        User user = new User("ania", "haslo123", library);
+        Administrator admin = new Administrator("Dorota", "admin1", library);
         //user.chooseAndAddToBeRead(library.getBooks());
-        /*admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());*/
+        admin.chooseAndAddToBeRead(library.getBooks());
+        admin.chooseAndAddToBeRead(library.getBooks());
 
         library.setCurrentlyLoggedUser(admin);
         Controller controller = new Controller(library, view, view1, view2);

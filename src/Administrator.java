@@ -81,7 +81,7 @@ public class Administrator extends User{
         return user.getPassword();
     }
 
-    public Administrator(String name, String password) {
-        super(name, password);
+    public Administrator(String name, String password, Library library) {
+        super(name, password, library);
     }
 }
