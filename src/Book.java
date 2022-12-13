@@ -13,6 +13,7 @@ public class Book {
     String series ;
     int seriesVolume;
     double rating;
+    private String borrowerName;
     HashMap<String,Integer> ratings;
     private boolean isBorrowed = false;
     private Calendar returningDate = null;
@@ -28,6 +29,14 @@ public class Book {
         this.series = series;
         this.seriesVolume = seriesVolume;
         this.calculateRating();
+    }
+
+    public String getBorrowerName() {
+        return borrowerName;
+    }
+
+    public void setBorrowerName(String borrowerName) {
+        this.borrowerName = borrowerName;
     }
 
     public String getDescription() {
@@ -112,17 +121,17 @@ public class Book {
     public String returnLongDescription(){
         String longDescription = "";
         if(series != null){
-            longDescription = "<html>seria - " + series + "<br/>";
-            longDescription = longDescription + "tom - " + seriesVolume +"<br/>";
-            longDescription = longDescription + "tytuł - " + title +"<br/>";
+            longDescription = "<html>Seria - " + series + "<br/>";
+            longDescription = longDescription + "Tom - " + seriesVolume +"<br/>";
+            longDescription = longDescription + "Tytuł - " + title +"<br/>";
         }
         else
-            longDescription = longDescription + "<html>tytuł - " + title +"<br/>";
+            longDescription = longDescription + "<html>Tytuł - " + title +"<br/>";
 
-        longDescription = longDescription + "autor - " + author +"<br/>";
-        longDescription = longDescription + "rok wydania - " + publishYear +"<br/>";
-        longDescription = longDescription + "liczba stron - " + pages +"<br/>";
-        longDescription = longDescription + "gatunek - " + genre+"<br/>";
+        longDescription = longDescription + "Autor - " + author +"<br/>";
+        longDescription = longDescription + "Rok wydania - " + publishYear +"<br/>";
+        longDescription = longDescription + "Liczba stron - " + pages +"<br/>";
+        longDescription = longDescription + "Gatunek - " + genre+"<br/>";
 
         if(returningDate != null){
             DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");

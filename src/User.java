@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
 import java.util.Scanner;
 public class User {
     private String name;
@@ -8,7 +6,7 @@ public class User {
     private ArrayList<Book> booksRead = new ArrayList<>();;
     private ArrayList<Book> booksToRead = new ArrayList<>();;
     private ArrayList<Book> booksRated = new ArrayList<>();
-
+    private ArrayList<Book> borrowedBooks = new ArrayList<>();
 
 
     //tutaj trzeba poprawic, nie mozna dawac biblioteki w konstruktorze bo bedzie to robic problemy
@@ -18,6 +16,15 @@ public class User {
         library.namesAndPasswords.put(name,password);
         library.users.add(this);
     }
+
+    public ArrayList<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void addToBorrowed(Book book) {
+        borrowedBooks.add(book);
+    }
+
     Book selectBook(ArrayList<Book> books){
         for(int i = 0; i < books.size(); i++){
             System.out.print((i+1) + ". ");
@@ -131,5 +138,11 @@ public class User {
         }
         System.out.println();
     }
+
+    @Override
+    public String toString(){
+        return name;
+    }
+
 
 }

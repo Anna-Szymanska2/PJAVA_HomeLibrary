@@ -14,7 +14,7 @@ public class Reminder implements Serializable{
     transient TimerTask task;
     DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
 
-    public Reminder(String borrowerName, Book borrowedBook, int time){
+    public Reminder(String borrowerName, Book borrowedBook, String time){
         this.borrowedBook = borrowedBook;
         this.borrowerName = borrowerName;
         borrowingDate = Calendar.getInstance();
@@ -69,19 +69,19 @@ public class Reminder implements Serializable{
 
     }
 
-    public void postponeReminder(int time){
+    public void postponeReminder(String time){
         cancelReminderTimer();
         addTimeToReturningDate(time);
         setReminder();
         borrowedBook.setReturningDate(returningDate);
     }
 
-    public void addTimeToReturningDate(int time){
+    public void addTimeToReturningDate(String time){
         switch(time){
-            case 1 -> returningDate.add(Calendar.DAY_OF_YEAR, 7);
-            case 2 -> returningDate.add(Calendar.DAY_OF_YEAR, 14);
-            case 3 -> returningDate.add(Calendar.MONTH, 1);
-            case 4 -> returningDate.add(Calendar.MONTH, 2);
+            case "tydzień" -> returningDate.add(Calendar.DAY_OF_YEAR, 7);
+            case "2 tygodnie" -> returningDate.add(Calendar.DAY_OF_YEAR, 14);
+            case "miesiąc" -> returningDate.add(Calendar.MONTH, 1);
+            case "2 miesiące" -> returningDate.add(Calendar.MONTH, 2);
         }
 
     }

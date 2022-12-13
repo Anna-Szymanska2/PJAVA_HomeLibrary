@@ -1,11 +1,9 @@
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class UserView extends View {
-    private Book lastSelectedBook;
+    protected Book lastSelectedBook;
     protected JButton logoutButton = new JButton("Wyloguj");
     private JButton userButton = new JButton("Witaj użytkowniku");
     private JButton findBookButton = new JButton("Znajdź książkę");
@@ -21,7 +19,8 @@ public class UserView extends View {
     private JButton deleteRateButton = new JButton("Usuń ocenę");
     private JButton addRateButton = new JButton("Oceń");
     protected JPanel buttonsPanel = new JPanel(new GridLayout(8, 1));
-    JPanel mainPanel = new JPanel();
+    protected JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    protected JPanel mainPanel = new JPanel();
 
     public Book getLastSelectedBook() {
         return lastSelectedBook;
@@ -121,45 +120,67 @@ public class UserView extends View {
     }
 
     public void userButtonView(String labelText){
-        getMainPanel().removeAll();
-        getMainPanel().add(new JLabel(labelText));
+        mainPanel.removeAll();
+        mainPanel.add(new JLabel(labelText));
         setVisible(true);
         repaint();
     }
 
-    public void selectBookView(ArrayList<Book> books, JButton button1, JButton button2, JButton button3){
-        JList<Book> list = new JList<Book>();
+    public void displayLabelOnNorthOfMainPanel(String description){
+        JLabel myLabel = new JLabel(description);
+        mainPanel.removeAll();
+        mainPanel.setLayout(new BorderLayout());
+        flowPanel.removeAll();
+        //JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        mainPanel.add(flowPanel,BorderLayout.CENTER);
+        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 150));
+        flowPanel.add(myLabel);
+
+    }
+
+    public void setButtonsAtRight(JButton []buttons){
+       /* getMainPanel().removeAll();
+        getMainPanel().setLayout(new BorderLayout());
+        getMainPanel().add(myLabel,BorderLayout.NORTH);*/
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel buttonsAtRightPanel = new JPanel(new GridLayout(buttons.length,1));
+        bottomPanel.add(buttonsAtRightPanel, BorderLayout.EAST);
+        for(JButton button: buttons)
+            buttonsAtRightPanel.add(button);
+        buttonsAtRightPanel.setPreferredSize(new Dimension(150,100));
+        bottomPanel.setPreferredSize(new Dimension(150,50*buttons.length));
+        getMainPanel().add(bottomPanel,BorderLayout.SOUTH);
+        setVisible(true);
+        repaint();
+    }
+
+    public void selectBookView(ArrayList<Book> books, JButton []buttons){
+        JList<Book> list = getBookJList(books);
+
+        list.addListSelectionListener(e -> {
+            lastSelectedBook = (Book)list.getSelectedValue();
+            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
+            String description = lastSelectedBook.returnLongDescription();
+            displayLabelOnNorthOfMainPanel(description);
+            setButtonsAtRight(buttons);
+
+        });
+
+    }
+
+    private JList<Book> getBookJList(ArrayList<Book> books) {
+        JList<Book> list = new JList<>();
         DefaultListModel <Book> model = new DefaultListModel<>();
         list.setModel(model);
         model.addAll(books);
         list.setVisibleRowCount(30);
-        list.addListSelectionListener(new ListSelectionListener()
-        {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                lastSelectedBook = (Book)list.getSelectedValue();
-                JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
-                JPanel bottomPanel = new JPanel(new GridLayout(1,3));
-                bottomPanel.add(button1);
-                bottomPanel.add(button2);
-                bottomPanel.add(button3);
-                bottomPanel.setPreferredSize(new Dimension(150,100));
-                getMainPanel().removeAll();
-                getMainPanel().setLayout(new BorderLayout());
-                getMainPanel().add(myLabel,BorderLayout.NORTH);
-                getMainPanel().add(bottomPanel,BorderLayout.SOUTH);
-                setVisible(true);
-                repaint();
-            }
-        });
-        getMainPanel().removeAll();
+        mainPanel.removeAll();
         JScrollPane scroll = new JScrollPane(list);
-        getMainPanel().add(scroll);
+        mainPanel.add(scroll);
         setVisible(true);
         repaint();
-
+        return list;
     }
-
 
 
     public static void main (String []arg){

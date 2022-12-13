@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Administrator extends User{
+
+
     ArrayList<Reminder> reminders = new ArrayList<>();
 
     public void addBook(Library library,String description, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
@@ -12,7 +14,7 @@ public class Administrator extends User{
         return reminders;
     }
 
-    public void addReminder(String borrowerName, Book borrowedBook, int time){
+    public void addReminder(String borrowerName, Book borrowedBook, String time){
 
         Reminder reminder = new Reminder(borrowerName, borrowedBook,time);
         reminder.setReminder();
@@ -48,8 +50,8 @@ public class Administrator extends User{
         System.out.println("Jak się nazywa pożyczająca osoba?");
         String borrowerName = scanner.next();
         System.out.println("Wybierz na jak długo chccesz pożyczać książkę 1-tydzień, 2- dwa tygodnie, 3 - miesiąc, 4 - dwa miesiące");
-        int chosenNumber = scanner.nextInt();
-        addReminder(borrowerName, borrowedBook, chosenNumber);
+        String chosenTime = scanner.next();
+        addReminder(borrowerName, borrowedBook, chosenTime);
         library.addBorrowedBook(borrowedBook);
     }
 
@@ -68,7 +70,7 @@ public class Administrator extends User{
     }
 
 
-    public void postponeReminder(Reminder reminder, int time){
+    public void postponeReminder(Reminder reminder, String time){
         reminder.postponeReminder(time);
     }
 
@@ -82,6 +84,8 @@ public class Administrator extends User{
     }
 
     public Administrator(String name, String password, Library library) {
+
         super(name, password, library);
+        library.setAdmin(this);
     }
 }

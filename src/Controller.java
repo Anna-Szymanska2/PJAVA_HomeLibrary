@@ -45,9 +45,6 @@ public class Controller {
         view.getLogoutButton().addActionListener((e) -> {
             logoutButtonAction();
         });
-        view.getFindBookButton().addActionListener((e) -> {
-            findBookButtonAction();
-        });
         view.getRatedBooksButton().addActionListener((e) -> {
             ratedBooksButtonAction();
         });
@@ -57,17 +54,36 @@ public class Controller {
         view.getAddReadButton().addActionListener((e) -> {
             addReadButtonAction();
         });
+        view.getDeleteToReadButton().addActionListener((e) -> {
+            deleteToReadButtonAction();
+        });
+        view.getDeleteReadButton().addActionListener((e) -> {
+            deleteReadButtonAction();
+        });
+
     }
 
 
     public void bindUserButtons(){
         bindButtons(userView);
+        userView.getFindBookButton().addActionListener((e) -> {
+            findBookButtonUserAction();
+        });
     }
 
     public void bindAdminButtons(){
         bindButtons(adminView);
         adminView.getDeleteAccountButton().addActionListener((e) -> {
             deleteAccountButtonAction();
+        });
+        adminView.getFindBookButton().addActionListener((e) -> {
+            findBookButtonAdminAction();
+        });
+        adminView.getBorrowBookButton().addActionListener((e) -> {
+            borrowBookButtonAction();
+        });
+        adminView.getConfirmBorrowingBookButton().addActionListener((e) -> {
+            confirmBorrowingBookButtonAction();
         });
     }
     public void bindLoginButtons(){
@@ -85,23 +101,75 @@ public class Controller {
         }
     }
 
+    public void deleteToReadButtonAction(){
+        UserView view = (UserView) currentView;
+        library.getCurrentlyLoggedUser().getBooksToRead().remove(view.getLastSelectedBook());
+        view.addingDeletingBookMessage("Książka została usunięta z twojej listy do przeczytania", "");
+    }
+
+    public void deleteReadButtonAction(){
+        UserView view = (UserView) currentView;
+        library.getCurrentlyLoggedUser().getBooksRead().remove(view.getLastSelectedBook());
+        view.addingDeletingBookMessage("Książka została usunięta z twojej listy przeczytanych", "");
+    }
+
     public void addReadButtonAction(){
         UserView view = (UserView) currentView;
         if(library.getCurrentlyLoggedUser().getBooksRead().contains(view.getLastSelectedBook()))
             view.addingDeletingBookMessage("Książka znajduje się już na twojej liście przeczytanych", "");
         else{
             library.getCurrentlyLoggedUser().getBooksRead().add(view.getLastSelectedBook());
-            view.addingDeletingBookMessage("Książka została dodana", "");
+            if(library.getCurrentlyLoggedUser().getBooksToRead().contains(view.getLastSelectedBook())){
+                view.addingDeletingBookMessage("Książka została dodana i usunięta z listy do przeczytania", "");
+                library.getCurrentlyLoggedUser().getBooksToRead().remove(view.getLastSelectedBook());
+            }else{
+                view.addingDeletingBookMessage("Książka została dodana", "");
+            }
         }
     }
 
-    public void findBookButtonAction(){
+    public void findBookButtonUserAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getBooks();
         JButton button1 = view.getAddToReadButton();
         JButton button2 = view.getAddReadButton();
-        JButton button3 = view.getAddRateButton();
-        view.selectBookView(books, button1, button2, button3);
+        JButton[] buttons = {button1, button2};
+        view.selectBookView(books, buttons);
+    }
+    public void findBookButtonAdminAction(){
+        AdminView view = (AdminView) currentView;
+        ArrayList<Book> books = library.getBooks();
+        JButton button1 = view.getAddToReadButton();
+        JButton button2 = view.getAddReadButton();
+        JButton button3 = view.getBorrowBookButton();
+        JButton[] buttons = {button1, button2, button3};
+        view.selectBookView(books, buttons);
+    }
+
+    public void confirmBorrowingBookButtonAction(){
+        AdminView view = (AdminView) currentView;
+        Administrator admin = library.getAdmin();
+        Book borrowedBook = view.getLastSelectedBook();
+        String borrowerName = "";
+        try{
+            User borrower = (User) view.getUsersComboBox().getSelectedItem();
+            borrowerName  = borrower.getName();
+            borrower.addToBorrowed(borrowedBook);
+        }catch (ClassCastException e){
+            borrowerName = (String) view.getUsersComboBox().getSelectedItem();
+        }
+        System.out.println(borrowerName);
+        borrowedBook.setBorrowerName(borrowerName);
+        admin.addToBorrowed(borrowedBook);
+    }
+    public void borrowBookButtonAction(){
+        AdminView view = (AdminView) currentView;
+        ArrayList<User> libraryUsers = library.getUsers();
+        Administrator admin = library.getAdmin();
+        libraryUsers.remove(admin);
+        User[] users = new User[libraryUsers.size()];
+        users = libraryUsers.toArray(users);
+        view.borrowBookView(users);
 
     }
 
@@ -118,7 +186,10 @@ public class Controller {
     }
 
     public void logoutButtonAction(){
+        UserView view = (UserView) currentView;
         currentView.setVisible(false);
+        view.getMainPanel().removeAll();
+        view.repaint();
         currentView = loginView;
         currentView.setVisible(true);
     }
@@ -131,43 +202,29 @@ public class Controller {
 
     }
 
-    //taka wersja jest mało MVC, ale i tak to będzie wyglądac inaczej więc na razie nie poprawiam
-    /*public void toReadBooksButtonAction(){
-        UserView view = (UserView) currentView;
-        view.getMainPanel().removeAll();
-        ArrayList<Book> booksToRead = library.getCurrentlyLoggedUser().getBooksToRead();
-        String output = "";
-        for(Book book : booksToRead){
-            output = output + book.toString() + "\n";
-        }
-        view.getMainPanel().add(new JLabel(output));
-        view.setVisible(true);
-        view.repaint();
-    }*/
     public void toReadBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksToRead();
         JButton button1 = view.getDeleteToReadButton();
         JButton button2 = view.getAddReadButton();
-        JButton button3 = view.getAddRateButton();
-        view.selectBookView(books, button1, button2, button3);
+        JButton[] buttons = {button1, button2};
+        view.selectBookView(books, buttons);
     }
     public void ReadBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRead();
-        JButton button2 = view.getDeleteReadButton();
-        JButton button1 = view.getAddToReadButton();
-        JButton button3 = view.getAddRateButton();
-        view.selectBookView(books, button1, button2, button3);
+        JButton button1 = view.getDeleteReadButton();
+        JButton button2 = view.getAddRateButton();
+        JButton[] buttons = {button1, button2};
+        view.selectBookView(books, buttons);
     }
 
     public void ratedBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRated();
-        JButton button1 = view.getAddToReadButton();
-        JButton button2 = view.getAddReadButton();
-        JButton button3 = view.getDeleteRateButton();
-        view.selectBookView(books, button1, button2, button3);
+        JButton button1= view.getDeleteRateButton();
+        JButton[] buttons = {button1};
+        view.selectBookView(books, buttons);
     }
 
 
@@ -182,16 +239,17 @@ public class Controller {
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         Library library = new Library(books);
         User user = new User("ania", "haslo123", library);
+        User user2 = new User("Domcia", "345", library);
         Administrator admin = new Administrator("Dorota", "admin1", library);
         //user.chooseAndAddToBeRead(library.getBooks());
+        /*admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
         admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
+        admin.chooseAndAddToBeRead(library.getBooks());*/
 
         library.setCurrentlyLoggedUser(admin);
         Controller controller = new Controller(library, view, view1, view2);

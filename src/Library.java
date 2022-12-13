@@ -8,8 +8,25 @@ public class Library implements Serializable {
     ArrayList<Book> borrowedBooks = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
     HashMap<String,String> namesAndPasswords = new HashMap<>();
+    Administrator admin;
 
     private User currentlyLoggedUser = null;
+
+    public Administrator getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Administrator admin) {
+        this.admin = admin;
+    }
+
+    public ArrayList<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
     public User getCurrentlyLoggedUser() {
         return currentlyLoggedUser;
@@ -21,6 +38,9 @@ public class Library implements Serializable {
 
     public Library(ArrayList<Book> books){
         this.books = books;
+    }
+    public void addUser(User user){
+        users.add(user);
     }
 
     public void addBook(Book book){
