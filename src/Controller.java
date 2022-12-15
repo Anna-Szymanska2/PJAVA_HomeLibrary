@@ -1,8 +1,10 @@
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class Controller {
+public class Controller implements ReminderListener{
     private Library library;
     private View currentView;
     private LoginView loginView;
@@ -18,12 +20,62 @@ public class Controller {
         bindAllButtons();
         initViews();
         currentView.setVisible(true);
+        setRemindersListener();
+    }
+
+    public void setRemindersListener(){
+        ArrayList<Reminder> reminders = library.getAdmin().getReminders();
+        for(Reminder reminder: reminders){
+            reminder.setController(this);
+        }
     }
 
     public void initViews() {
         userView.initView();
+        userView.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                SaveRestoreData.save(library);
+            }
+
+        });
+
+
         adminView.initView();
+        adminView.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                SaveRestoreData.save(library);
+            }
+
+        });
+        adminView.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+                library.getAdmin().setOrSendReminders();
+            }
+
+        });
         loginView.initView();
+        loginView.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                SaveRestoreData.save(library);
+            }
+
+        });
     }
 
     public void bindAllButtons(){
@@ -33,63 +85,42 @@ public class Controller {
     }
 
     public void bindButtons(UserView view) {
-        view.getUserButton().addActionListener((e) -> {
-            userButtonAction();
-        });
-        view.getToReadBooksButton().addActionListener((e) -> {
-            toReadBooksButtonAction();
-        });
-        view.getReadBooksButton().addActionListener((e) -> {
-            ReadBooksButtonAction();
-        });
-        view.getLogoutButton().addActionListener((e) -> {
-            logoutButtonAction();
-        });
-        view.getRatedBooksButton().addActionListener((e) -> {
-            ratedBooksButtonAction();
-        });
-        view.getAddToReadButton().addActionListener((e) -> {
-            addToReadButtonAction();
-        });
-        view.getAddReadButton().addActionListener((e) -> {
-            addReadButtonAction();
-        });
-        view.getDeleteToReadButton().addActionListener((e) -> {
-            deleteToReadButtonAction();
-        });
-        view.getDeleteReadButton().addActionListener((e) -> {
-            deleteReadButtonAction();
-        });
+        view.getUserButton().addActionListener((e) -> userButtonAction());
+        view.getToReadBooksButton().addActionListener((e) -> toReadBooksButtonAction());
+        view.getReadBooksButton().addActionListener((e) -> ReadBooksButtonAction());
+        view.getLogoutButton().addActionListener((e) -> logoutButtonAction());
+        view.getRatedBooksButton().addActionListener((e) -> ratedBooksButtonAction());
+        view.getAddToReadButton().addActionListener((e) -> addToReadButtonAction());
+        view.getAddReadButton().addActionListener((e) -> addReadButtonAction());
+        view.getDeleteToReadButton().addActionListener((e) -> deleteToReadButtonAction());
+        view.getDeleteReadButton().addActionListener((e) -> deleteReadButtonAction());
 
     }
 
 
     public void bindUserButtons(){
         bindButtons(userView);
-        userView.getFindBookButton().addActionListener((e) -> {
-            findBookButtonUserAction();
-        });
+        userView.getFindBookButton().addActionListener((e) -> findBookButtonUserAction());
+        userView.getBorrowedBooksButton().addActionListener((e) -> borrowedBookButtonUserAction());
     }
 
     public void bindAdminButtons(){
         bindButtons(adminView);
-        adminView.getDeleteAccountButton().addActionListener((e) -> {
-            deleteAccountButtonAction();
-        });
-        adminView.getFindBookButton().addActionListener((e) -> {
-            findBookButtonAdminAction();
-        });
-        adminView.getBorrowBookButton().addActionListener((e) -> {
-            borrowBookButtonAction();
-        });
-        adminView.getConfirmBorrowingBookButton().addActionListener((e) -> {
-            confirmBorrowingBookButtonAction();
-        });
+        adminView.getDeleteAccountButton().addActionListener((e) -> deleteAccountButtonAction());
+        adminView.getFindBookButton().addActionListener((e) -> findBookButtonAdminAction());
+        adminView.getBorrowBookButton().addActionListener((e) -> borrowBookButtonAction());
+        adminView.getConfirmBorrowingBookButton().addActionListener((e) -> confirmBorrowingBookButtonAction());
+        adminView.getBorrowedBooksButton().addActionListener((e) -> borrowedBookButtonAdminAction());
+        adminView.getRemindersButton().addActionListener((e) -> remindersButtonAction());
+        adminView.getReturnedBookButton().addActionListener((e) -> returnedBookButtonAction());
+        adminView.getPostponeReturningBookButton().addActionListener((e) -> postponeReturningBookButtonAction());
+        adminView.getConfirmPostponingReturningBookButton().addActionListener((e) -> confirmPostponingReturningBookButtonAction());
+        adminView.getDeleteReminderButton().addActionListener((e) -> deleteReminderButtonAction());
+        adminView.getConfirmChoosingAccountButton().addActionListener((e -> confirmChoosingAccountButtonAction()));
+
     }
     public void bindLoginButtons(){
-        loginView.getLoginButton().addActionListener((e) -> {
-            loginButtonAction();
-        });
+        loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
     }
     public void addToReadButtonAction(){
         UserView view = (UserView) currentView;
@@ -105,12 +136,14 @@ public class Controller {
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksToRead().remove(view.getLastSelectedBook());
         view.addingDeletingBookMessage("Książka została usunięta z twojej listy do przeczytania", "");
+        view.resetMainPanel();
     }
 
     public void deleteReadButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksRead().remove(view.getLastSelectedBook());
         view.addingDeletingBookMessage("Książka została usunięta z twojej listy przeczytanych", "");
+        view.resetMainPanel();
     }
 
     public void addReadButtonAction(){
@@ -126,6 +159,39 @@ public class Controller {
                 view.addingDeletingBookMessage("Książka została dodana", "");
             }
         }
+    }
+    public void returnedBookButtonAction() {
+        AdminView view = (AdminView) currentView;
+        Administrator admin = library.getAdmin();
+        Book returnedBook = view.getLastSelectedBook();
+        view.addingDeletingBookMessage("Książka została usunięta z pożyczonych", "");
+        admin.bookReturned(returnedBook, library.getUsers());
+        view.resetMainPanel();
+    }
+    public void deleteReminderButtonAction(){
+        AdminView view = (AdminView) currentView;
+        Administrator admin = library.getAdmin();
+        Reminder deletingReminder = view.getLastSelectedReminder();
+        view.addingDeletingBookMessage("Przypomnienie zostało usunięte", "");
+        admin.deleteReminder(deletingReminder);
+        view.resetMainPanel();
+    }
+    public void postponeReturningBookButtonAction(){
+        AdminView view = (AdminView) currentView;
+        view.postponeReturningBookView();
+    }
+ /*   public void postponeReminderButtonAction(){
+
+    }*/
+
+    public void confirmPostponingReturningBookButtonAction(){
+        AdminView view = (AdminView) currentView;
+        Administrator admin = library.getAdmin();
+        Book borrowedBook = view.getLastSelectedBook();
+        String time = (String)view.getTimeComboBox().getSelectedItem();
+        admin.postponeReturningBook(time, borrowedBook);
+        view.resetMainPanel();
+        view.addingDeletingBookMessage("Czas na oddanie książki został zwiększony", "");
     }
 
     public void findBookButtonUserAction(){
@@ -144,6 +210,32 @@ public class Controller {
         JButton button3 = view.getBorrowBookButton();
         JButton[] buttons = {button1, button2, button3};
         view.selectBookView(books, buttons);
+
+    }
+    public void borrowedBookButtonUserAction(){
+        UserView view = (UserView) currentView;
+        ArrayList<Book> borrowedBooks = library.getCurrentlyLoggedUser().getBorrowedBooks();
+        JButton[] buttons = {};
+        view.selectBookView(borrowedBooks, buttons);
+    }
+
+    public void borrowedBookButtonAdminAction(){
+        AdminView view = (AdminView) currentView;
+        ArrayList<Book> borrowedBooks = library.getCurrentlyLoggedUser().getBorrowedBooks();
+        JButton button1 = view.getReturnedBookButton();
+        JButton button2 = view.getPostponeReturningBookButton();
+        JButton[] buttons = {button1, button2};
+        view.selectBookView(borrowedBooks, buttons);
+    }
+
+    public void remindersButtonAction(){
+        AdminView view = (AdminView) currentView;
+        Administrator admin = library.getAdmin();
+        ArrayList<Reminder> reminders = admin.getReminders();
+        JButton button1 = view.getDeleteReminderButton();
+        //JButton button2 = view.getPostponeReminderButton();
+        JButton[] buttons = {button1};
+        view.selectReminderView(reminders, buttons);
     }
 
     public void confirmBorrowingBookButtonAction(){
@@ -151,6 +243,8 @@ public class Controller {
         Administrator admin = library.getAdmin();
         Book borrowedBook = view.getLastSelectedBook();
         String borrowerName = "";
+        String time = (String)view.getTimeComboBox().getSelectedItem();
+        Boolean willReminderBeSet = view.getReminderCheckbox().isSelected();
         try{
             User borrower = (User) view.getUsersComboBox().getSelectedItem();
             borrowerName  = borrower.getName();
@@ -158,20 +252,35 @@ public class Controller {
         }catch (ClassCastException e){
             borrowerName = (String) view.getUsersComboBox().getSelectedItem();
         }
-        System.out.println(borrowerName);
-        borrowedBook.setBorrowerName(borrowerName);
-        admin.addToBorrowed(borrowedBook);
+        admin.borrowBook(borrowedBook,borrowerName,time,willReminderBeSet, this);
+        view.resetMainPanel();
+        if(willReminderBeSet)
+            view.addingDeletingBookMessage("Książka została pożyczona i dodano przypomnienie", "");
+        else
+            view.addingDeletingBookMessage("Książka została pożyczona", "");
     }
     public void borrowBookButtonAction(){
         AdminView view = (AdminView) currentView;
+        if(view.getLastSelectedBook().isBorrowed()){
+            view.addingDeletingBookMessage("Nie możesz pożyczyć książki, która jest już pożyczona", "");
+        }
+        else{
+            User[] users = getUsersTable();
+            view.borrowBookView(users);
+        }
+
+
+    }
+
+    private User[] getUsersTable() {
         ArrayList<User> libraryUsers = library.getUsers();
         Administrator admin = library.getAdmin();
         libraryUsers.remove(admin);
         User[] users = new User[libraryUsers.size()];
         users = libraryUsers.toArray(users);
-        view.borrowBookView(users);
-
+        return users;
     }
+
 
     public void loginButtonAction(){
         currentView.setVisible(false);
@@ -229,7 +338,20 @@ public class Controller {
 
 
     public void deleteAccountButtonAction(){
-        System.out.println("Konto usunięto");
+        AdminView view = (AdminView) currentView;
+        view.deleteAccountView(getUsersTable());
+    }
+    public void confirmChoosingAccountButtonAction(){
+        AdminView view = (AdminView) currentView;
+        User user = (User)view.getUsersComboBox().getSelectedItem();
+        if(view.showConfirmingDeletingAccountDialog() == 0){
+            library.getAdmin().deleteUser(user, library.getUsers());
+            view.addingDeletingBookMessage("Konto zostało usunięte","");
+        }
+        else
+            view.addingDeletingBookMessage("Konto nie zostało usunięte","");
+        view.resetMainPanel();
+
     }
 
     public static void main (String []arg) throws FileNotFoundException {
@@ -237,22 +359,27 @@ public class Controller {
         AdminView view1 = new AdminView();
         LoginView view2 = new LoginView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        Library library = new Library(books);
-        User user = new User("ania", "haslo123", library);
+        //Library library = new Library(books);
+        Library library = SaveRestoreData.restoreLibrary();
+       /* User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
-        Administrator admin = new Administrator("Dorota", "admin1", library);
-        //user.chooseAndAddToBeRead(library.getBooks());
-        /*admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());*/
-
-        library.setCurrentlyLoggedUser(admin);
+        Administrator admin = new Administrator("Dorota", "admin1", library);*/
+        library.setCurrentlyLoggedUser(library.getAdmin());
         Controller controller = new Controller(library, view, view1, view2);
+
     }
 
+
+    @Override
+    public void reminderSendAction(Reminder reminder) {
+        AdminView view = (AdminView) currentView;
+        view.setLastSelectedBook(reminder.getBorrowedBook());
+        view.setLastSelectedReminder(reminder);
+        int chosenAction = view.reminderWasSendView(reminder.returnReminderMessage());
+        switch (chosenAction){
+            case 0-> postponeReturningBookButtonAction();
+            case 1-> returnedBookButtonAction();
+            case 2-> deleteReminderButtonAction();
+        }
+    }
 }

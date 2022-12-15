@@ -128,14 +128,18 @@ public class UserView extends View {
 
     public void displayLabelOnNorthOfMainPanel(String description){
         JLabel myLabel = new JLabel(description);
+        prepareFLowLayout();
+        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 150));
+        flowPanel.add(myLabel);
+
+    }
+
+    public void prepareFLowLayout(){
         mainPanel.removeAll();
         mainPanel.setLayout(new BorderLayout());
         flowPanel.removeAll();
         //JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mainPanel.add(flowPanel,BorderLayout.CENTER);
-        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 150));
-        flowPanel.add(myLabel);
-
     }
 
     public void setButtonsAtRight(JButton []buttons){
@@ -150,8 +154,6 @@ public class UserView extends View {
         buttonsAtRightPanel.setPreferredSize(new Dimension(150,100));
         bottomPanel.setPreferredSize(new Dimension(150,50*buttons.length));
         getMainPanel().add(bottomPanel,BorderLayout.SOUTH);
-        setVisible(true);
-        repaint();
     }
 
     public void selectBookView(ArrayList<Book> books, JButton []buttons){
@@ -162,16 +164,26 @@ public class UserView extends View {
             //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
             String description = lastSelectedBook.returnLongDescription();
             displayLabelOnNorthOfMainPanel(description);
-            setButtonsAtRight(buttons);
+            if(buttons.length != 0)
+                setButtonsAtRight(buttons);
+            setVisible(true);
+            repaint();
 
         });
 
+    }
+
+    public void resetMainPanel(){
+        mainPanel.removeAll();
+        setVisible(true);
+        repaint();
     }
 
     private JList<Book> getBookJList(ArrayList<Book> books) {
         JList<Book> list = new JList<>();
         DefaultListModel <Book> model = new DefaultListModel<>();
         list.setModel(model);
+        list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(books);
         list.setVisibleRowCount(30);
         mainPanel.removeAll();

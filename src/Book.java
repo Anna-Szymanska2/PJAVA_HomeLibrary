@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-public class Book {
+public class Book implements Serializable{
     private final String description;
     String title ;
     String author;
@@ -37,6 +37,10 @@ public class Book {
 
     public void setBorrowerName(String borrowerName) {
         this.borrowerName = borrowerName;
+    }
+
+    public Calendar getReturningDate() {
+        return returningDate;
     }
 
     public String getDescription() {
@@ -75,6 +79,13 @@ public class Book {
         return rating;
     }
 
+    public void borrowBook(String borrowerName, String time ){
+        this.borrowerName = borrowerName;
+        returningDate = Calendar.getInstance();
+        addTimeToReturningDate(time);
+        setBorrowed(true);
+    }
+
     public void calculateRating(){
         double ratingsSum = 7;
         if(ratings!=null) {
@@ -98,6 +109,27 @@ public class Book {
 
     public void setReturningDate(Calendar returningDate) {
         this.returningDate = returningDate;
+    }
+
+    public void returnBook(){
+        setBorrowed(false);
+        returningDate = null;
+        borrowerName = null;
+    }
+
+    public void addTimeToReturningDate(String time){
+        Calendar currentDate = Calendar.getInstance();
+        if(currentDate.compareTo(returningDate) >= 0){
+            returningDate = currentDate;
+        }
+
+        switch(time){
+            case "tydzień" -> returningDate.add(Calendar.DAY_OF_YEAR, 7);
+            case "2 tygodnie" -> returningDate.add(Calendar.DAY_OF_YEAR, 14);
+            case "miesiąc" -> returningDate.add(Calendar.MONTH, 1);
+            case "2 miesiące" -> returningDate.add(Calendar.MONTH, 2);
+        }
+
     }
 
     // just for testing
@@ -135,7 +167,8 @@ public class Book {
 
         if(returningDate != null){
             DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-            longDescription = longDescription + "Książka jest chwilowo pożyczona, data zwrotu: " + dateFormat.format(returningDate.getTime())+"</html>";
+            longDescription = longDescription + "Książka jest chwilowo pożyczona przez " + getBorrowerName()+"<br/>";
+            longDescription = longDescription + "Data zwrotu: " + dateFormat.format(returningDate.getTime())+"</html>";
         }
     return longDescription;
     }

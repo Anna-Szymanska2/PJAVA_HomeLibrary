@@ -6,22 +6,25 @@ import java.util.*;
 
 public class Reminder implements Serializable{
 
-    Calendar borrowingDate;
+    //Calendar borrowingDate;
     Calendar returningDate;
-    String borrowerName;
+    //String borrowerName;
     Book borrowedBook;
     transient Timer timer;
     transient TimerTask task;
+    transient private ReminderListener controller;
     DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
 
-    public Reminder(String borrowerName, Book borrowedBook, String time){
+    public Reminder( Book borrowedBook, ReminderListener controller){
         this.borrowedBook = borrowedBook;
-        this.borrowerName = borrowerName;
-        borrowingDate = Calendar.getInstance();
-        returningDate = Calendar.getInstance();
-        addTimeToReturningDate(time);
-        borrowedBook.setReturningDate(returningDate);
-        borrowedBook.setBorrowed(true);
+        this.controller = controller;
+        //this.borrowerName = borrowerName;
+        //borrowingDate = Calendar.getInstance();
+        //returningDate = Calendar.getInstance();
+        returningDate = borrowedBook.getReturningDate();
+        //addTimeToReturningDate(time);
+        //borrowedBook.setReturningDate(returningDate);
+        //borrowedBook.setBorrowed(true);
 
     }
 
@@ -29,11 +32,18 @@ public class Reminder implements Serializable{
         return borrowedBook;
     }
 
-    public void sendReminderMessage(){
+    public void setController(ReminderListener controller) {
+        this.controller = controller;
+    }
+
+    public void sendReminderMessageConsole(){
         System.out.println("POWIADOMIENIE");
-        System.out.println(dateFormat.format(returningDate.getTime()) + " " + borrowerName + " powinien zwrócić Ci niżej wspomnianą książkę");
+        System.out.println(dateFormat.format(returningDate.getTime()) + " " + borrowedBook.getBorrowerName() + " powinien zwrócić Ci niżej wspomnianą książkę");
         borrowedBook.description();
         System.out.println();
+    }
+    public void sendReminder(){
+        controller.reminderSendAction(this);
     }
 
     public void setReminder(){
@@ -42,7 +52,8 @@ public class Reminder implements Serializable{
 
             @Override
             public void run() {
-                sendReminderMessage();
+                //sendReminderMessageConsole();
+                sendReminder();
                 timer.cancel();
             }
         };
@@ -50,7 +61,7 @@ public class Reminder implements Serializable{
     }
     public void displayReminder(){
         System.out.println("Data zwrotu: " + dateFormat.format(returningDate.getTime()));
-        System.out.println("Kto pożyczył: " + borrowerName);
+        System.out.println("Kto pożyczył: " + borrowedBook.getBorrowerName());
         System.out.println("Książka: ");
         borrowedBook.description();
         System.out.println();
@@ -61,22 +72,29 @@ public class Reminder implements Serializable{
         return currentDate.compareTo(returningDate) >= 0;
     }
 
+    public void sendOrSetConsole(){
+        if(isTimeUp())
+            sendReminderMessageConsole();
+        else
+            setReminder();
+
+    }
     public void sendOrSet(){
         if(isTimeUp())
-            sendReminderMessage();
+            sendReminder();
         else
             setReminder();
 
     }
 
-    public void postponeReminder(String time){
+
+    public void postponeReminder(){
         cancelReminderTimer();
-        addTimeToReturningDate(time);
+        returningDate = borrowedBook.getReturningDate();
         setReminder();
-        borrowedBook.setReturningDate(returningDate);
     }
 
-    public void addTimeToReturningDate(String time){
+   /* public void addTimeToReturningDate(String time){
         switch(time){
             case "tydzień" -> returningDate.add(Calendar.DAY_OF_YEAR, 7);
             case "2 tygodnie" -> returningDate.add(Calendar.DAY_OF_YEAR, 14);
@@ -84,10 +102,20 @@ public class Reminder implements Serializable{
             case "2 miesiące" -> returningDate.add(Calendar.MONTH, 2);
         }
 
-    }
+    }*/
 
     public void cancelReminderTimer(){
-        timer.cancel();
+        if(timer!= null)
+            timer.cancel();
+    }
+    @Override
+    public String toString(){
+        return borrowedBook.getDescription();
+    }
+    public String returnReminderMessage(){
+        String message = dateFormat.format(returningDate.getTime()) + " książka " + borrowedBook.toString() + " powinna zostać zwrócona przez " +
+                borrowedBook.getBorrowerName();
+        return message;
     }
 
     public static void main(String []arg) throws FileNotFoundException {

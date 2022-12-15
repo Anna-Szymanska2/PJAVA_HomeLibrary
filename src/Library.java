@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Library implements Serializable {
     ArrayList<Book> books;
-    ArrayList<Book> borrowedBooks = new ArrayList<>();
+   // ArrayList<Book> borrowedBooks = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
     HashMap<String,String> namesAndPasswords = new HashMap<>();
     Administrator admin;
@@ -20,9 +20,9 @@ public class Library implements Serializable {
         this.admin = admin;
     }
 
-    public ArrayList<Book> getBorrowedBooks() {
+    /*public ArrayList<Book> getBorrowedBooks() {
         return borrowedBooks;
-    }
+    }*/
 
     public ArrayList<User> getUsers() {
         return users;
@@ -54,7 +54,7 @@ public class Library implements Serializable {
         this.books.remove(book);
     }
 
-    public void addBorrowedBook(Book borrowedBook){borrowedBooks.add(borrowedBook);}
+   // public void addBorrowedBook(Book borrowedBook){borrowedBooks.add(borrowedBook);}
 
     public void removeBorrowedBook(Book borrowedBook){this.books.remove(borrowedBook);}
 
