@@ -14,6 +14,7 @@ public class FileLoader {
         int counter = 1;
         String title = null;
         String series = null;
+        String description = null;
         int seriesVolume = 0;
         String author = null;
         int pages = 0;
@@ -29,6 +30,7 @@ public class FileLoader {
             scanningResult = sc.next();  //find and returns the next complete token from this scanner
             switch(counter){
                 case 2: title = scanningResult;
+                    description = scanningResult;
                     int beginningIndex = title.indexOf(find);
                     if(beginningIndex>0){ // it's a series
                         series = title.substring(0, beginningIndex - 2);
@@ -56,7 +58,7 @@ public class FileLoader {
             counter++;
             if(counter == 11){ //scanning next line
                 counter = 1;
-                Book nextBook = new Book(title, author, pages, publishYear, genre, series, seriesVolume);
+                Book nextBook = new Book(description, title, author, pages, publishYear, genre, series, seriesVolume);
                 seriesVolume = 0;
                 series = null;
                 books.add(nextBook);
