@@ -13,11 +13,12 @@ public class Controller implements ReminderListener{
     private AdminView adminView;
     private RegisterView registerView;
 
-    public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView) {
+    public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView, RegisterView registerView) {
         this.library = library;
         this.userView = userView;
         this.loginView = loginView;
         this.adminView = adminView;
+        this.registerView = registerView;
         this.currentView = loginView;
         bindAllButtons();
         initViews();
@@ -78,12 +79,24 @@ public class Controller implements ReminderListener{
             }
 
         });
+        registerView.initView();
+        registerView.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                SaveRestoreData.save(library);
+            }
+
+        });
     }
 
     public void bindAllButtons(){
         bindUserButtons();
         bindAdminButtons();
         bindLoginButtons();
+        bindRegisterButtons();
     }
 
     public void bindButtons(UserView view) {
@@ -123,7 +136,11 @@ public class Controller implements ReminderListener{
     }
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
-        loginView.getRegisterButton().addActionListener((e) -> registerButtonAction());
+        loginView.getRegisterButton().addActionListener((e) -> registerButtonLoginAction());
+    }
+
+    public void bindRegisterButtons(){
+        registerView.getRegisterButton().addActionListener((e) -> registerButtonRegisterAction());
     }
     public void addToReadButtonAction(){
         UserView view = (UserView) currentView;
@@ -309,12 +326,27 @@ public class Controller implements ReminderListener{
                     i++;
                 }
             } else
-                JOptionPane.showMessageDialog(currentView, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(currentView, "Podano błędną nazwę użytkownika lub hasło", "Error", JOptionPane.ERROR_MESSAGE);
     }
-    public void registerButtonAction(){
+    public void registerButtonLoginAction(){
         currentView.setVisible(false);
         currentView = registerView;
         currentView.setVisible(true);
+    }
+    public void registerButtonRegisterAction(){
+        String name = registerView.getUsernameField().getText();
+        char[] password = registerView.getPasswordField().getPassword();
+        char[] confirmPassword = registerView.getConfirmPasswordField().getPassword();
+
+        if (library.namesAndPasswords.containsKey(name)){
+            JOptionPane.showMessageDialog(currentView, "Użytkownik o tej nazwie już istnieje", "Error", JOptionPane.ERROR_MESSAGE);
+        }else if (!Arrays.equals(password, confirmPassword)){
+            JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            User user = new User(name,password.toString(),library);
+            currentView = loginView;
+            currentView.setVisible(true);
+        }
     }
 
     public void logoutButtonAction(){
@@ -381,6 +413,7 @@ public class Controller implements ReminderListener{
         UserView view = new UserView();
         AdminView view1 = new AdminView();
         LoginView view2 = new LoginView();
+        RegisterView view3 = new RegisterView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         //Library library = new Library(books);
         Library library = SaveRestoreData.restoreLibrary();
@@ -389,7 +422,7 @@ public class Controller implements ReminderListener{
         User user2 = new User("Domcia", "345", library);
         Administrator admin = new Administrator("Dorota", "admin1", library);*/
         //library.setCurrentlyLoggedUser(library.getAdmin());
-        Controller controller = new Controller(library, view, view1, view2);
+        Controller controller = new Controller(library, view, view1, view2, view3);
 
     }
 

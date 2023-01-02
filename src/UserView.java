@@ -183,7 +183,7 @@ public class UserView extends View {
         JList<Book> list = new JList<>();
         DefaultListModel <Book> model = new DefaultListModel<>();
         list.setModel(model);
-        list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
+        //list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(books);
         list.setVisibleRowCount(30);
         mainPanel.removeAll();
