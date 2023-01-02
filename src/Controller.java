@@ -3,6 +3,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Controller implements ReminderListener{
     private Library library;
@@ -10,6 +11,7 @@ public class Controller implements ReminderListener{
     private LoginView loginView;
     private UserView userView;
     private AdminView adminView;
+    private RegisterView registerView;
 
     public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView) {
         this.library = library;
@@ -121,6 +123,7 @@ public class Controller implements ReminderListener{
     }
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
+        loginView.getRegisterButton().addActionListener((e) -> registerButtonAction());
     }
     public void addToReadButtonAction(){
         UserView view = (UserView) currentView;
@@ -283,14 +286,34 @@ public class Controller implements ReminderListener{
 
 
     public void loginButtonAction(){
+        User loggedUser = null;
+        String name = loginView.getUsernameField().getText();
+        char[] password = loginView.getPasswordField().getPassword();
+
+        if (library.namesAndPasswords.containsKey(name) && Arrays.equals(library.namesAndPasswords.get(name), password)) {
+                int i = 0;
+                for (User u : library.users) {
+                    if (u.getName().equals(name)) {
+                        loggedUser = library.users.get(i);
+                        library.setCurrentlyLoggedUser(loggedUser);
+                        currentView.setVisible(false);
+                        if(library.getCurrentlyLoggedUser().getClass() == Administrator.class){
+                            adminView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
+                            currentView = adminView;
+                        }else{
+                            userView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
+                            currentView = userView;
+                        }
+                        currentView.setVisible(true);
+                    }
+                    i++;
+                }
+            } else
+                JOptionPane.showMessageDialog(currentView, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void registerButtonAction(){
         currentView.setVisible(false);
-        if(library.getCurrentlyLoggedUser().getClass() == Administrator.class){
-            adminView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
-            currentView = adminView;
-        }else{
-            userView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
-            currentView = userView;
-        }
+        currentView = registerView;
         currentView.setVisible(true);
     }
 
@@ -361,10 +384,11 @@ public class Controller implements ReminderListener{
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         //Library library = new Library(books);
         Library library = SaveRestoreData.restoreLibrary();
-       /* User user = new User("ania", "haslo123", library);
+
+        /*User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
         Administrator admin = new Administrator("Dorota", "admin1", library);*/
-        library.setCurrentlyLoggedUser(library.getAdmin());
+        //library.setCurrentlyLoggedUser(library.getAdmin());
         Controller controller = new Controller(library, view, view1, view2);
 
     }

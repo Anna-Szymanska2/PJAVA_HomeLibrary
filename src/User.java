@@ -14,7 +14,7 @@ public class User implements Serializable {
     public User(String name, String password, Library library){
         this.name = name;
         this.password = password;
-        library.namesAndPasswords.put(name,password);
+        library.namesAndPasswords.put(name,password.toCharArray());
         library.users.add(this);
     }
 

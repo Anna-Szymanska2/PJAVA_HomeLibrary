@@ -7,7 +7,7 @@ public class Library implements Serializable {
     ArrayList<Book> books;
    // ArrayList<Book> borrowedBooks = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
-    HashMap<String,String> namesAndPasswords = new HashMap<>();
+    HashMap<String,char[]> namesAndPasswords = new HashMap<>();
     Administrator admin;
 
     private User currentlyLoggedUser = null;
@@ -41,6 +41,11 @@ public class Library implements Serializable {
     }
     public void addUser(User user){
         users.add(user);
+    }
+
+    public void removeUser(User user){
+        users.remove(user);
+        user.deleteAccount(user);
     }
 
     public void addBook(Book book){
