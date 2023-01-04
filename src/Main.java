@@ -6,7 +6,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         Library library = new Library(books);
-        library.filtration("0","Sanderson Brandon",0,0,0,0,"0","0",0,6,0,0);
+        //System.out.println(library.getBooks());
+        //library.filtration("0","Sanderson Brandon",0,0,0,0,"0","0",0,6,0,0);
 
 
 //        User Agata = new User("Agata","1234", library);
