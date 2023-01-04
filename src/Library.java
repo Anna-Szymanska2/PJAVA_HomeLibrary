@@ -71,16 +71,16 @@ public class Library implements Serializable {
         return booksToFilter;
     }
 
-    public void filtration(String title, String author, int pages, int pages2, int publishYear, int publishYear2, String genre, String series, int volumes,int volumes2, int rating, int rating2) {
-        ArrayList<Book> booksToFilter = this.books;
+    public ArrayList<Book> filtration(String author, int pages, int pages2, int publishYear, int publishYear2, String genre, int volumes, int volumes2, int rating, int rating2) {
+        ArrayList<Book> booksToFilter = getBooks();
         ArrayList<Book> booksAfterFiltration = new ArrayList<>();
-        if(!title.equals("0")){
-            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
-                    .filter(book -> book.title.equals(title))
-                    .collect(Collectors.toList());
-            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
-        }
-        if(!author.equals("0")){
+//        if(!title.equals("0")){
+//            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
+//                    .filter(book -> book.title.equals(title))
+//                    .collect(Collectors.toList());
+//            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
+//        }
+        if(!author.equals("-")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> book.author.equals(author))
                     .collect(Collectors.toList());
@@ -109,23 +109,23 @@ public class Library implements Serializable {
             }
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
-        if(!genre.equals("0")){
+        if(!genre.equals("-")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> book.genre.equals(genre))
                     .collect(Collectors.toList());
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
-        if(!series.equals("0")){
-            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
-                    .filter(book -> Objects.equals(book.series, series))
-                    .collect(Collectors.toList());
-            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
-        }
+//        if(!series.equals("0")){
+//            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
+//                    .filter(book -> Objects.equals(book.series, series))
+//                    .collect(Collectors.toList());
+//            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
+//        }
         if(volumes2 != 0 || volumes != 0){
             HashSet<String> namesOfFittingSeries = new HashSet<>();
             HashSet<String> namesOfUnFittingSeries = new HashSet<>();
             ArrayList<Book> booksAfterFiltration2 = new ArrayList<>();
-            if(volumes == 0){
+            if(volumes == 0 || volumes == 1){
                 booksAfterFiltration2 = (ArrayList<Book>) booksToFilter.stream()
                         .filter(book -> book.series == null)
                         .collect(Collectors.toList());
@@ -149,7 +149,7 @@ public class Library implements Serializable {
             booksAfterFiltration.addAll(booksAfterFiltration2);
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
-        if(rating != 0 || rating2 !=0){
+        if(rating != 0 || rating2 != 0){
             for(Book bookAfter: booksToFilter){
                 if(bookAfter.rating>rating2) {
                     booksAfterFiltration.remove(bookAfter);
@@ -160,10 +160,6 @@ public class Library implements Serializable {
             }
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
-        System.out.println("Twoje wybrane książki: ");
-        for(Book bookAfter: booksToFilter){
-            bookAfter.description();
-        }
-        System.out.println();
+        return booksAfterFiltration;
     }
 }

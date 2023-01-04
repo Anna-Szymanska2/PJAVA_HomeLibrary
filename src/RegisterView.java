@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RegisterView extends View{
-    private JLabel usernameLabel = new JLabel("Użytkownik: ");
+    private JLabel usernameLabel = new JLabel("Użytkownik: ",SwingConstants.CENTER);
     private JTextField usernameField = new JTextField();
-    private JLabel passwordLabel = new JLabel("Hasło: ");
+    private JLabel passwordLabel = new JLabel("Hasło: ", SwingConstants.CENTER);
     private JPasswordField passwordField = new JPasswordField();
-    private JLabel confirmPasswordLabel = new JLabel("Powtórz hasło: ");
+    private JLabel confirmPasswordLabel = new JLabel("Powtórz hasło: ", SwingConstants.CENTER);
     private JPasswordField confirmPasswordField = new JPasswordField();
     private JPanel formPanel = new JPanel(new GridLayout(3, 2));
     private JPanel buttonPanel = new JPanel(new FlowLayout());

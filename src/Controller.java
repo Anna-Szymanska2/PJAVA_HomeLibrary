@@ -117,6 +117,7 @@ public class Controller implements ReminderListener{
         bindButtons(userView);
         userView.getFindBookButton().addActionListener((e) -> findBookButtonUserAction());
         userView.getBorrowedBooksButton().addActionListener((e) -> borrowedBookButtonUserAction());
+        userView.getFilterButton().addActionListener((e) -> filterButtonUserAction());
     }
 
     public void bindAdminButtons(){
@@ -132,7 +133,7 @@ public class Controller implements ReminderListener{
         adminView.getConfirmPostponingReturningBookButton().addActionListener((e) -> confirmPostponingReturningBookButtonAction());
         adminView.getDeleteReminderButton().addActionListener((e) -> deleteReminderButtonAction());
         adminView.getConfirmChoosingAccountButton().addActionListener((e -> confirmChoosingAccountButtonAction()));
-
+        adminView.getFilterButton().addActionListener((e) -> filterButtonAdminAction());
     }
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
@@ -220,7 +221,7 @@ public class Controller implements ReminderListener{
         JButton button1 = view.getAddToReadButton();
         JButton button2 = view.getAddReadButton();
         JButton[] buttons = {button1, button2};
-        view.selectBookView(books, buttons);
+        view.findBookView(books, buttons);
     }
     public void findBookButtonAdminAction(){
         AdminView view = (AdminView) currentView;
@@ -229,8 +230,26 @@ public class Controller implements ReminderListener{
         JButton button2 = view.getAddReadButton();
         JButton button3 = view.getBorrowBookButton();
         JButton[] buttons = {button1, button2, button3};
-        view.selectBookView(books, buttons);
+        view.findBookView(books, buttons);
+    }
 
+    public void filterButtonUserAction(){
+        UserView view = (UserView) currentView;
+        ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
+        JButton button1 = view.getAddToReadButton();
+        JButton button2 = view.getAddReadButton();
+        JButton[] buttons = {button1, button2};
+        view.findBookView(books, buttons);
+    }
+
+    public void filterButtonAdminAction(){
+        AdminView view = (AdminView) currentView;
+        ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
+        JButton button1 = view.getAddToReadButton();
+        JButton button2 = view.getAddReadButton();
+        JButton button3 = view.getBorrowBookButton();
+        JButton[] buttons = {button1, button2, button3};
+        view.findBookView(books, buttons);
     }
     public void borrowedBookButtonUserAction(){
         UserView view = (UserView) currentView;
