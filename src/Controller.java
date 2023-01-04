@@ -13,12 +13,11 @@ public class Controller implements ReminderListener{
     private AdminView adminView;
     private RegisterView registerView;
 
-    public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView, RegisterView registerView) {
+    public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView) {
         this.library = library;
         this.userView = userView;
         this.loginView = loginView;
         this.adminView = adminView;
-        this.registerView = registerView;
         this.currentView = loginView;
         bindAllButtons();
         initViews();
@@ -79,24 +78,12 @@ public class Controller implements ReminderListener{
             }
 
         });
-        registerView.initView();
-        registerView.addWindowListener(new WindowAdapter() {
-
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                SaveRestoreData.save(library);
-            }
-
-        });
     }
 
     public void bindAllButtons(){
         bindUserButtons();
         bindAdminButtons();
         bindLoginButtons();
-        bindRegisterButtons();
     }
 
     public void bindButtons(UserView view) {
@@ -117,7 +104,6 @@ public class Controller implements ReminderListener{
         bindButtons(userView);
         userView.getFindBookButton().addActionListener((e) -> findBookButtonUserAction());
         userView.getBorrowedBooksButton().addActionListener((e) -> borrowedBookButtonUserAction());
-        userView.getFilterButton().addActionListener((e) -> filterButtonUserAction());
     }
 
     public void bindAdminButtons(){
@@ -133,15 +119,11 @@ public class Controller implements ReminderListener{
         adminView.getConfirmPostponingReturningBookButton().addActionListener((e) -> confirmPostponingReturningBookButtonAction());
         adminView.getDeleteReminderButton().addActionListener((e) -> deleteReminderButtonAction());
         adminView.getConfirmChoosingAccountButton().addActionListener((e -> confirmChoosingAccountButtonAction()));
-        adminView.getFilterButton().addActionListener((e) -> filterButtonAdminAction());
+
     }
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
-        loginView.getRegisterButton().addActionListener((e) -> registerButtonLoginAction());
-    }
-
-    public void bindRegisterButtons(){
-        registerView.getRegisterButton().addActionListener((e) -> registerButtonRegisterAction());
+        loginView.getRegisterButton().addActionListener((e) -> registerButtonAction());
     }
     public void addToReadButtonAction(){
         UserView view = (UserView) currentView;
@@ -221,7 +203,7 @@ public class Controller implements ReminderListener{
         JButton button1 = view.getAddToReadButton();
         JButton button2 = view.getAddReadButton();
         JButton[] buttons = {button1, button2};
-        view.findBookView(books, buttons);
+        view.selectBookView(books, buttons);
     }
     public void findBookButtonAdminAction(){
         AdminView view = (AdminView) currentView;
@@ -230,26 +212,8 @@ public class Controller implements ReminderListener{
         JButton button2 = view.getAddReadButton();
         JButton button3 = view.getBorrowBookButton();
         JButton[] buttons = {button1, button2, button3};
-        view.findBookView(books, buttons);
-    }
+        view.selectBookView(books, buttons);
 
-    public void filterButtonUserAction(){
-        UserView view = (UserView) currentView;
-        ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
-        JButton button1 = view.getAddToReadButton();
-        JButton button2 = view.getAddReadButton();
-        JButton[] buttons = {button1, button2};
-        view.findBookView(books, buttons);
-    }
-
-    public void filterButtonAdminAction(){
-        AdminView view = (AdminView) currentView;
-        ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
-        JButton button1 = view.getAddToReadButton();
-        JButton button2 = view.getAddReadButton();
-        JButton button3 = view.getBorrowBookButton();
-        JButton[] buttons = {button1, button2, button3};
-        view.findBookView(books, buttons);
     }
     public void borrowedBookButtonUserAction(){
         UserView view = (UserView) currentView;
@@ -345,27 +309,12 @@ public class Controller implements ReminderListener{
                     i++;
                 }
             } else
-                JOptionPane.showMessageDialog(currentView, "Podano błędną nazwę użytkownika lub hasło", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(currentView, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-    public void registerButtonLoginAction(){
+    public void registerButtonAction(){
         currentView.setVisible(false);
         currentView = registerView;
         currentView.setVisible(true);
-    }
-    public void registerButtonRegisterAction(){
-        String name = registerView.getUsernameField().getText();
-        char[] password = registerView.getPasswordField().getPassword();
-        char[] confirmPassword = registerView.getConfirmPasswordField().getPassword();
-
-        if (library.namesAndPasswords.containsKey(name)){
-            JOptionPane.showMessageDialog(currentView, "Użytkownik o tej nazwie już istnieje", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (!Arrays.equals(password, confirmPassword)){
-            JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
-        }else{
-            User user = new User(name,password.toString(),library);
-            currentView = loginView;
-            currentView.setVisible(true);
-        }
     }
 
     public void logoutButtonAction(){
@@ -432,17 +381,15 @@ public class Controller implements ReminderListener{
         UserView view = new UserView();
         AdminView view1 = new AdminView();
         LoginView view2 = new LoginView();
-        RegisterView view3 = new RegisterView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         //Library library = new Library(books);
         Library library = SaveRestoreData.restoreLibrary();
-        //library.books = books;
 
         /*User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
         Administrator admin = new Administrator("Dorota", "admin1", library);*/
         //library.setCurrentlyLoggedUser(library.getAdmin());
-        Controller controller = new Controller(library, view, view1, view2, view3);
+        Controller controller = new Controller(library, view, view1, view2);
 
     }
 

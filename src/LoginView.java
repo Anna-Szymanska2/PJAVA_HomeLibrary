@@ -6,9 +6,9 @@ public class LoginView extends View {
     private JButton  loginButton = new JButton("Zaloguj");
     private JButton  registerButton = new JButton("Zarejestruj");
     private JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
-    private JLabel usernameLabel = new JLabel("Użytkownik: ", SwingConstants.CENTER);
+    private JLabel usernameLabel = new JLabel("Użytkownik: ");
     private JTextField usernameField = new JTextField();
-    private JLabel passwordLabel = new JLabel("Hasło: ", SwingConstants.CENTER);
+    private JLabel passwordLabel = new JLabel("Hasło: ");
     private JPasswordField passwordField = new JPasswordField();
     private JPanel formPanel = new JPanel(new GridLayout(2, 2));
 
