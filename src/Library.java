@@ -72,7 +72,7 @@ public class Library implements Serializable {
     }
 
     public ArrayList<Book> filtration(String author, int pages, int pages2, int publishYear, int publishYear2, String genre, int volumes, int volumes2, int rating, int rating2) {
-        ArrayList<Book> booksToFilter = getBooks();
+        ArrayList<Book> booksToFilter = new ArrayList<>(getBooks());
         ArrayList<Book> booksAfterFiltration = new ArrayList<>();
 //        if(!title.equals("0")){
 //            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()

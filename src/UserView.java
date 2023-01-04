@@ -221,6 +221,7 @@ public class UserView extends View {
     }
 
     public void findBookView(ArrayList<Book> books, JButton []buttons){
+        mainPanel.setLayout(new FlowLayout());
         JPanel filterBooksPanel = new JPanel(new GridLayout(5,4));
         filterBooksPanel.setPreferredSize(new Dimension(500,200));
         JLabel authorLabel = new JLabel("Autor: ", SwingConstants.CENTER);

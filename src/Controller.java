@@ -436,6 +436,7 @@ public class Controller implements ReminderListener{
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
         //Library library = new Library(books);
         Library library = SaveRestoreData.restoreLibrary();
+        //library.books = books;
 
         /*User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
