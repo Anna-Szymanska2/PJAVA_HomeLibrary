@@ -109,7 +109,8 @@ public class Controller implements ReminderListener{
         view.getAddReadButton().addActionListener((e) -> addReadButtonAction());
         view.getDeleteToReadButton().addActionListener((e) -> deleteToReadButtonAction());
         view.getDeleteReadButton().addActionListener((e) -> deleteReadButtonAction());
-
+        view.getAddRateButton().addActionListener((e) -> addRateButtonAction());
+        view.getDeleteRateButton().addActionListener((e) -> deleteRateButtonAction());
     }
 
 
@@ -164,6 +165,20 @@ public class Controller implements ReminderListener{
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksRead().remove(view.getLastSelectedBook());
         view.addingDeletingBookMessage("Książka została usunięta z twojej listy przeczytanych", "");
+        view.resetMainPanel();
+    }
+
+    public void addRateButtonAction(){
+        UserView view = (UserView) currentView;
+        library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
+        view.addingDeletingBookMessage("Ocena ksiązki została dodana", "");
+        view.resetMainPanel();
+    }
+
+    public void deleteRateButtonAction(){
+        UserView view = (UserView) currentView;
+        library.getCurrentlyLoggedUser().removeRating(view.getLastSelectedBook());
+        view.addingDeletingBookMessage("Ocena ksiązki została usunięta", "");
         view.resetMainPanel();
     }
 
@@ -397,18 +412,21 @@ public class Controller implements ReminderListener{
     public void ReadBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRead();
+        ArrayList<Book> booksRated = library.getCurrentlyLoggedUser().getBooksRated();
+        String name = library.getCurrentlyLoggedUser().getName();
         JButton button1 = view.getDeleteReadButton();
         JButton button2 = view.getAddRateButton();
         JButton[] buttons = {button1, button2};
-        view.selectBookView(books, buttons);
+        view.selectReadBookView(books,booksRated,name, buttons);
     }
 
     public void ratedBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRated();
+        String name = library.getCurrentlyLoggedUser().getName();
         JButton button1= view.getDeleteRateButton();
         JButton[] buttons = {button1};
-        view.selectBookView(books, buttons);
+        view.selectRatedBookView(books, name,buttons);
     }
 
 
@@ -435,13 +453,13 @@ public class Controller implements ReminderListener{
         LoginView view2 = new LoginView();
         RegisterView view3 = new RegisterView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        Library library = new Library(books);
-        //Library library = SaveRestoreData.restoreLibrary();
+        //Library library = new Library(books);
+        Library library = SaveRestoreData.restoreLibrary();
         //library.books = books;
 
-        User user = new User("ania", "haslo123", library);
+        /*User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
-        Administrator admin = new Administrator("Dorota", "admin1", library);
+        Administrator admin = new Administrator("Dorota", "admin1", library);*/
         //library.setCurrentlyLoggedUser(library.getAdmin());
         Controller controller = new Controller(library, view, view1, view2, view3);
 

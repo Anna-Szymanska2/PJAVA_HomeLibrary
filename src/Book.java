@@ -14,7 +14,7 @@ public class Book implements Serializable{
     int seriesVolume;
     double rating;
     private String borrowerName;
-    HashMap<String,Integer> ratings;
+    HashMap<String,Integer> ratings = new HashMap<>();
     private boolean isBorrowed = false;
     private Calendar returningDate = null;
 

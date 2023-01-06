@@ -31,6 +31,8 @@ public class UserView extends View {
     private JSpinner volumesMaxSpinner;
     private JComboBox publishYearMinBox;
     private JComboBox publishYearMaxBox;
+
+    private JSlider ratingSlider = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);
     protected JPanel buttonsPanel = new JPanel(new GridLayout(8, 1));
     protected JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     protected JPanel mainPanel = new JPanel();
@@ -135,6 +137,9 @@ public class UserView extends View {
     public JComboBox getPublishYearMaxBox() {
         return publishYearMaxBox;
     }
+    public JSlider getRatingSlider() {
+        return ratingSlider;
+    }
 
 
     public UserView(){
@@ -178,7 +183,6 @@ public class UserView extends View {
         prepareFLowLayout();
         myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 150));
         flowPanel.add(myLabel);
-
     }
 
     public void prepareFLowLayout(){
@@ -211,6 +215,55 @@ public class UserView extends View {
             //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
             String description = lastSelectedBook.returnLongDescription();
             displayLabelOnNorthOfMainPanel(description);
+            if(buttons.length != 0)
+                setButtonsAtRight(buttons);
+            setVisible(true);
+            repaint();
+
+        });
+
+    }
+    public void selectRatedBookView(ArrayList<Book> books,String name, JButton []buttons){
+        JList<Book> list = getBookJList(books);
+
+        list.addListSelectionListener(e -> {
+            lastSelectedBook = (Book)list.getSelectedValue();
+            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
+            String description = lastSelectedBook.returnLongDescription();
+            displayLabelOnNorthOfMainPanel(description);
+            JLabel ratingLabel = new JLabel("Oceniłeś tę książkę na: " + lastSelectedBook.ratings.get(name), SwingConstants.CENTER);
+            ratingLabel.setSize(new Dimension(550/2,50));
+            flowPanel.add(ratingLabel,BorderLayout.SOUTH);
+            if(buttons.length != 0)
+                setButtonsAtRight(buttons);
+            setVisible(true);
+            repaint();
+
+        });
+
+    }
+
+    public void selectReadBookView(ArrayList<Book> books, ArrayList<Book> booksRated,String name,JButton []buttons){
+        JList<Book> list = getBookJList(books);
+
+        list.addListSelectionListener(e -> {
+            lastSelectedBook = (Book)list.getSelectedValue();
+            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
+            String description = lastSelectedBook.returnLongDescription();
+            displayLabelOnNorthOfMainPanel(description);
+            if(booksRated.contains(lastSelectedBook)){
+                buttons[1] = getDeleteRateButton();
+                JLabel ratingLabel = new JLabel("Oceniłeś tę książkę na: " + lastSelectedBook.ratings.get(name), SwingConstants.CENTER);
+                ratingLabel.setSize(new Dimension(550/2,50));
+                flowPanel.add(ratingLabel,BorderLayout.SOUTH);
+            }else{
+                ratingSlider.setMinorTickSpacing(1);
+                ratingSlider.setMajorTickSpacing(5);
+                ratingSlider.setPaintTicks(true);
+                ratingSlider.setPaintLabels(true);
+                ratingSlider.setSize(new Dimension(550/2,50));
+                flowPanel.add(ratingSlider,BorderLayout.SOUTH);
+            }
             if(buttons.length != 0)
                 setButtonsAtRight(buttons);
             setVisible(true);
