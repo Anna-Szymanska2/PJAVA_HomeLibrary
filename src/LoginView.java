@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class LoginView extends View {
@@ -42,6 +43,9 @@ public class LoginView extends View {
         setSize(500, 300);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        loginButton.setBackground(Color.BLACK);
+        loginButton.setForeground(Color.GRAY);
+        //loginButton.setBorder(new LineBorder(Color.decode("#49B51F")));
         formPanel.add(usernameLabel);
         formPanel.add(usernameField);
         formPanel.add(passwordLabel);

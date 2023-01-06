@@ -146,6 +146,7 @@ public class UserView extends View {
         setSize(700, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
         buttonsPanel.add(userButton);
         buttonsPanel.add(findBookButton);
         buttonsPanel.add(readBooksButton);
@@ -303,15 +304,14 @@ public class UserView extends View {
         searchBooksPanel.add(searchField);
 
 
-
         JList<Book> list = getBookJList(books);
         list.setSize(new Dimension(550,350));
+        JScrollPane scroll = new JScrollPane(list);
 
         mainPanel.add(filterBooksPanel);
         mainPanel.add(filterButton);
         mainPanel.add(searchBooksPanel);
         mainPanel.add(list);
-        JScrollPane scroll = new JScrollPane(list);
         mainPanel.add(scroll);
         setVisible(true);
         repaint();

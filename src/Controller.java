@@ -235,7 +235,7 @@ public class Controller implements ReminderListener{
 
     public void filterButtonUserAction(){
         UserView view = (UserView) currentView;
-        ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
+        ArrayList<Book> books = library.filtration(library.getBooks(),(String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
         JButton button1 = view.getAddToReadButton();
         JButton button2 = view.getAddReadButton();
         JButton[] buttons = {button1, button2};
@@ -244,7 +244,7 @@ public class Controller implements ReminderListener{
 
     public void filterButtonAdminAction(){
         AdminView view = (AdminView) currentView;
-        ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
+        ArrayList<Book> books = library.filtration(library.getBooks(),(String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
         JButton button1 = view.getAddToReadButton();
         JButton button2 = view.getAddReadButton();
         JButton button3 = view.getBorrowBookButton();
@@ -362,7 +362,8 @@ public class Controller implements ReminderListener{
         }else if (!Arrays.equals(password, confirmPassword)){
             JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
         }else{
-            User user = new User(name,password.toString(),library);
+            User user = new User(name,password,library);
+            currentView.setVisible(false);
             currentView = loginView;
             currentView.setVisible(true);
         }
@@ -429,17 +430,18 @@ public class Controller implements ReminderListener{
     }
 
     public static void main (String []arg) throws FileNotFoundException {
+
         UserView view = new UserView();
         AdminView view1 = new AdminView();
         LoginView view2 = new LoginView();
         RegisterView view3 = new RegisterView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        //Library library = new Library(books);
-        Library library = SaveRestoreData.restoreLibrary();
+        Library library = new Library(books);
+        //Library library = SaveRestoreData.restoreLibrary();
 
-        /*User user = new User("ania", "haslo123", library);
+        User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
-        Administrator admin = new Administrator("Dorota", "admin1", library);*/
+        Administrator admin = new Administrator("Dorota", "admin1", library);
         //library.setCurrentlyLoggedUser(library.getAdmin());
         Controller controller = new Controller(library, view, view1, view2, view3);
 

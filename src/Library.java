@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Library implements Serializable {
-    ArrayList<Book> books;
+    private ArrayList<Book> books;
    // ArrayList<Book> borrowedBooks = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
     HashMap<String,char[]> namesAndPasswords = new HashMap<>();
@@ -71,8 +71,8 @@ public class Library implements Serializable {
         return booksToFilter;
     }
 
-    public ArrayList<Book> filtration(String author, int pages, int pages2, int publishYear, int publishYear2, String genre, int volumes, int volumes2, int rating, int rating2) {
-        ArrayList<Book> booksToFilter = getBooks();
+    public ArrayList<Book> filtration(ArrayList<Book> books,String author, int pages, int pages2, int publishYear, int publishYear2, String genre, int volumes, int volumes2, int rating, int rating2) {
+        ArrayList<Book> booksToFilter = books;
         ArrayList<Book> booksAfterFiltration = new ArrayList<>();
 //        if(!title.equals("0")){
 //            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
