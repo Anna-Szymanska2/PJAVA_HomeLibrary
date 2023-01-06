@@ -2,8 +2,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class Controller implements ReminderListener{
     private Library library;
@@ -119,6 +118,7 @@ public class Controller implements ReminderListener{
         userView.getFindBookButton().addActionListener((e) -> findBookButtonUserAction());
         userView.getBorrowedBooksButton().addActionListener((e) -> borrowedBookButtonUserAction());
         userView.getFilterButton().addActionListener((e) -> filterButtonUserAction());
+        userView.getRecommendBookButton().addActionListener((e) -> recommendButtonUserAction());
     }
 
     public void bindAdminButtons(){
@@ -248,6 +248,26 @@ public class Controller implements ReminderListener{
         view.findBookView(books, buttons);
     }
 
+    public void recommendButtonUserAction(){
+        UserView view = (UserView) currentView;
+        if(library.getCurrentlyLoggedUser().getBooksRead().size()>=10) {
+            ArrayList<Book> books = new ArrayList<>();
+            Random randomGenerator = new Random();
+            List<Book> booksRecommended = library.getCurrentlyLoggedUser().recommendBooks(library);
+            while(books.size()<10){
+                int index = randomGenerator.nextInt(booksRecommended.size());
+                if(!books.contains(booksRecommended.get(index)))
+                    books.add(booksRecommended.get(index));
+            }
+            JButton button1 = view.getAddToReadButton();
+            JButton button2 = view.getAddReadButton();
+            JButton[] buttons = {button1, button2};
+            view.selectBookView(books, buttons);
+        }
+        else
+            view.addingDeletingBookMessage("<html>Musisz mieć przynajmniej 10 książek dodanych do listy przeczytanych,<br/> aby aplikacja mogła ci coś polecić</html>", "");
+    }
+
     public void filterButtonUserAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
@@ -355,12 +375,16 @@ public class Controller implements ReminderListener{
                             userView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
                             currentView = userView;
                         }
+                        loginView.getUsernameField().setText(null);
+                        loginView.getPasswordField().setText(null);
                         currentView.setVisible(true);
                     }
                     i++;
                 }
-            } else
+            } else {
                 JOptionPane.showMessageDialog(currentView, "Podano błędną nazwę użytkownika lub hasło", "Error", JOptionPane.ERROR_MESSAGE);
+                loginView.getPasswordField().setText(null);
+            }
     }
     public void registerButtonLoginAction(){
         currentView.setVisible(false);
@@ -428,7 +452,6 @@ public class Controller implements ReminderListener{
         JButton[] buttons = {button1};
         view.selectRatedBookView(books, name,buttons);
     }
-
 
     public void deleteAccountButtonAction(){
         AdminView view = (AdminView) currentView;

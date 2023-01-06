@@ -1,6 +1,6 @@
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+
 public class User implements Serializable {
     private String name;
     private String password;
@@ -119,6 +119,57 @@ public class User implements Serializable {
         book.ratings.remove(this.name);
         else
             System.out.println("Nie wystawiłeś tej książce oceny");
+    }
+
+    public List<Book> recommendBooks(Library library){
+        Set<Book> recommendedBooks = new HashSet<>();
+        Random randomGenerator = new Random();
+        Map<String, Integer> genresLiked = new HashMap<>();
+        for (Book book : getBooksRead()) {
+            String genre = book.getGenre();
+            int count = genresLiked.getOrDefault(genre, 0);
+            genresLiked.put(genre, count + 1);
+        }
+
+        int sum = getBooksRead().size();
+        Set keySet = genresLiked.keySet();
+        ArrayList<Book> booksWithTheSameGenre = new ArrayList<>();
+
+        for(Object genre: keySet){
+            booksWithTheSameGenre.addAll(library.filtration("-",0,0,0,0, (String) genre,0,0,0,0));
+            int countOfRandomBooksToChoose = (genresLiked.get(genre)*50)/sum;
+            for (int i = 0; i < countOfRandomBooksToChoose; i++) {
+                int index = randomGenerator.nextInt(booksWithTheSameGenre.size());
+                if(booksWithTheSameGenre.get(index).getRating()<5){
+                    booksWithTheSameGenre.remove(index);
+                }else {
+                    recommendedBooks.add(booksWithTheSameGenre.get(index));
+                }
+            }
+            booksWithTheSameGenre.clear();
+        }
+
+        Set<String> authorsRead = new HashSet<>();
+        for(Book book: getBooksRead()){
+            authorsRead.add(book.getAuthor());
+        }
+        for(String author: authorsRead) {
+            recommendedBooks.addAll(library.filtration(author,0,0,0,0,"-",0,0,0,0));
+        }
+
+        for(Book book: getBooksRead()){
+            recommendedBooks.remove(book);
+        }
+
+        List<Book> booksRecommended = new ArrayList<>(recommendedBooks);
+        Iterator<Book> i = booksRecommended.iterator();
+        while (i.hasNext()) {
+            Book book = i.next();
+            if(book.seriesVolume>1)
+                i.remove();
+        }
+
+        return booksRecommended;
     }
 
     public void deleteAccount(User user){
