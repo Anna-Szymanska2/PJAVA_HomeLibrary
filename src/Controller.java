@@ -362,7 +362,7 @@ public class Controller implements ReminderListener{
         }else if (!Arrays.equals(password, confirmPassword)){
             JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
         }else{
-            User user = new User(name,password.toString(),library);
+            User user = new User(name,password,library);
             currentView = loginView;
             currentView.setVisible(true);
         }
@@ -373,6 +373,7 @@ public class Controller implements ReminderListener{
         currentView.setVisible(false);
         view.getMainPanel().removeAll();
         view.repaint();
+        currentView.setVisible(false);
         currentView = loginView;
         currentView.setVisible(true);
     }
@@ -434,13 +435,13 @@ public class Controller implements ReminderListener{
         LoginView view2 = new LoginView();
         RegisterView view3 = new RegisterView();
         ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        //Library library = new Library(books);
-        Library library = SaveRestoreData.restoreLibrary();
+        Library library = new Library(books);
+        //Library library = SaveRestoreData.restoreLibrary();
         //library.books = books;
 
-        /*User user = new User("ania", "haslo123", library);
+        User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
-        Administrator admin = new Administrator("Dorota", "admin1", library);*/
+        Administrator admin = new Administrator("Dorota", "admin1", library);
         //library.setCurrentlyLoggedUser(library.getAdmin());
         Controller controller = new Controller(library, view, view1, view2, view3);
 
