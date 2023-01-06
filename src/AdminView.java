@@ -157,11 +157,12 @@ public class AdminView extends UserView{
         JList<Reminder> list = new JList<>();
         DefaultListModel <Reminder> model = new DefaultListModel<>();
         list.setModel(model);
-        list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
+        //list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(reminders);
         list.setVisibleRowCount(30);
         mainPanel.removeAll();
         JScrollPane scroll = new JScrollPane(list);
+        scroll.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         mainPanel.add(scroll);
         setVisible(true);
         repaint();

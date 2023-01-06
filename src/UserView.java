@@ -202,7 +202,8 @@ public class UserView extends View {
     }
 
     public void selectBookView(ArrayList<Book> books, JButton []buttons){
-        JList<Book> list = getBookJList(books);
+        mainPanel.removeAll();
+        JList<Book> list = getBookJList(books, mainPanel.getHeight());
 
         list.addListSelectionListener(e -> {
             lastSelectedBook = (Book)list.getSelectedValue();
@@ -219,6 +220,7 @@ public class UserView extends View {
     }
 
     public void findBookView(ArrayList<Book> books, JButton []buttons){
+        resetMainPanel();
         mainPanel.setLayout(new FlowLayout());
         JPanel filterBooksPanel = new JPanel(new GridLayout(5,4));
         filterBooksPanel.setPreferredSize(new Dimension(500,200));
@@ -300,18 +302,17 @@ public class UserView extends View {
         JTextField searchField = new JTextField();
         searchBooksPanel.add(searchLabel);
         searchBooksPanel.add(searchField);
-
-
-
-        JList<Book> list = getBookJList(books);
-        list.setSize(new Dimension(550,350));
-
         mainPanel.add(filterBooksPanel);
         mainPanel.add(filterButton);
         mainPanel.add(searchBooksPanel);
-        mainPanel.add(list);
+        JList<Book> list = getBookJList(books, 275);
+        //list.setSize(new Dimension(550,350));
+
+
+       /* mainPanel.add(list);
         JScrollPane scroll = new JScrollPane(list);
-        mainPanel.add(scroll);
+        scroll.setSize(new Dimension(550,350));
+        mainPanel.add(scroll);*/
         setVisible(true);
         repaint();
 
@@ -334,16 +335,17 @@ public class UserView extends View {
         repaint();
     }
 
-    private JList<Book> getBookJList(ArrayList<Book> books) {
+    private JList<Book> getBookJList(ArrayList<Book> books,int scrollHeight) {
         JList<Book> list = new JList<>();
         DefaultListModel <Book> model = new DefaultListModel<>();
         list.setModel(model);
         //list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(books);
         list.setVisibleRowCount(30);
-        mainPanel.removeAll();
+        //mainPanel.removeAll();
         JScrollPane scroll = new JScrollPane(list);
         mainPanel.add(scroll);
+        scroll.setPreferredSize(new Dimension(mainPanel.getWidth() - 20,scrollHeight));
         setVisible(true);
         repaint();
         return list;
