@@ -402,6 +402,9 @@ public class Controller implements ReminderListener{
             JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
         }else{
             User user = new User(name,password,library);
+            registerView.getUsernameField().setText(null);
+            registerView.getPasswordField().setText(null);
+            registerView.getConfirmPasswordField().setText(null);
             currentView = loginView;
             currentView.setVisible(true);
         }

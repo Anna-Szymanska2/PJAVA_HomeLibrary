@@ -209,7 +209,7 @@ public class UserView extends View {
 
     public void selectBookView(ArrayList<Book> books, JButton []buttons){
         JList<Book> list = getBookJList(books);
-
+        list.setSize(new Dimension(550,600));
         list.addListSelectionListener(e -> {
             lastSelectedBook = (Book)list.getSelectedValue();
             //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
@@ -225,7 +225,7 @@ public class UserView extends View {
     }
     public void selectRatedBookView(ArrayList<Book> books,String name, JButton []buttons){
         JList<Book> list = getBookJList(books);
-
+        list.setSize(new Dimension(550,600));
         list.addListSelectionListener(e -> {
             lastSelectedBook = (Book)list.getSelectedValue();
             //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
@@ -245,7 +245,7 @@ public class UserView extends View {
 
     public void selectReadBookView(ArrayList<Book> books, ArrayList<Book> booksRated,String name,JButton []buttons){
         JList<Book> list = getBookJList(books);
-
+        list.setSize(new Dimension(550,600));
         list.addListSelectionListener(e -> {
             lastSelectedBook = (Book)list.getSelectedValue();
             //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
@@ -344,10 +344,7 @@ public class UserView extends View {
         filterBooksPanel.add(volumesMaxLabel);
         filterBooksPanel.add(volumesMaxSpinner);
 
-
-        //JButton filterButton = new JButton("Filtruj");
         filterButton.setSize(new Dimension(550/4,25));
-
 
         JPanel searchBooksPanel = new JPanel(new GridLayout(1,2));
         searchBooksPanel.setPreferredSize(new Dimension(500,25));
@@ -356,10 +353,10 @@ public class UserView extends View {
         searchBooksPanel.add(searchLabel);
         searchBooksPanel.add(searchField);
 
-
-
         JList<Book> list = getBookJList(books);
+        list.setVisibleRowCount(15);
         list.setSize(new Dimension(550,350));
+
 
         mainPanel.add(filterBooksPanel);
         mainPanel.add(filterButton);
