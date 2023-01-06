@@ -1,9 +1,12 @@
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
+import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class Controller implements ReminderListener{
     private Library library;
@@ -12,18 +15,21 @@ public class Controller implements ReminderListener{
     private UserView userView;
     private AdminView adminView;
     private RegisterView registerView;
+    private AddBooksView addBooksView;
 
-    public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView, RegisterView registerView) {
+    public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView, RegisterView registerView, AddBooksView addBooksView) {
         this.library = library;
         this.userView = userView;
         this.loginView = loginView;
         this.adminView = adminView;
         this.registerView = registerView;
+        this.addBooksView = addBooksView;
         this.currentView = loginView;
+        //this.currentView = addBooksView;
         bindAllButtons();
         initViews();
         currentView.setVisible(true);
-        setRemindersListener();
+        //setRemindersListener();
     }
 
     public void setRemindersListener(){
@@ -90,6 +96,7 @@ public class Controller implements ReminderListener{
             }
 
         });
+        addBooksView.initView();
     }
 
     public void bindAllButtons(){
@@ -97,6 +104,7 @@ public class Controller implements ReminderListener{
         bindAdminButtons();
         bindLoginButtons();
         bindRegisterButtons();
+        bindAddBooksButtons();
     }
 
     public void bindButtons(UserView view) {
@@ -143,41 +151,66 @@ public class Controller implements ReminderListener{
     public void bindRegisterButtons(){
         registerView.getRegisterButton().addActionListener((e) -> registerButtonRegisterAction());
     }
+
+    public void bindAddBooksButtons(){
+        addBooksView.getSelectBooksButton().addActionListener((e) -> selectBooksButtonAction());
+    }
+
+    public void selectBooksButtonAction(){
+        AddBooksView view = (AddBooksView) currentView;
+        int response = view.getFileChooser().showOpenDialog(null);
+        if(response == JFileChooser.APPROVE_OPTION){
+            try {
+                ArrayList<Book> books =  FileLoader.returnBooksFromFile(view.getFileChooser().getSelectedFile().getAbsolutePath());
+                library.setBooks(books);
+                view.showPlainMessage("Książki zostały dodane do biblioteki", "");
+                currentView.setVisible(false);
+                currentView = loginView;
+                currentView.setVisible(true);
+            } catch (IOException e) {
+                view.showErrorMessage(e.getMessage());
+            }catch (NoSuchElementException|NumberFormatException e){
+                view.showErrorMessage("Plik, który wybrałeś ma zły format");
+            }
+
+        }
+
+    }
     public void addToReadButtonAction(){
         UserView view = (UserView) currentView;
         if(library.getCurrentlyLoggedUser().getBooksToRead().contains(view.getLastSelectedBook()))
-            view.addingDeletingBookMessage("Książka znajduje się już na twojej liście do przeczytania", "");
+            view.showPlainMessage("Książka znajduje się już na twojej liście do przeczytania", "");
         else{
             library.getCurrentlyLoggedUser().getBooksToRead().add(view.getLastSelectedBook());
-            view.addingDeletingBookMessage("Książka została dodana", "");
+            view.showPlainMessage("Książka została dodana", "");
         }
     }
 
     public void deleteToReadButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksToRead().remove(view.getLastSelectedBook());
-        view.addingDeletingBookMessage("Książka została usunięta z twojej listy do przeczytania", "");
+        view.showPlainMessage("Książka została usunięta z twojej listy do przeczytania", "");
         view.resetMainPanel();
     }
 
     public void deleteReadButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksRead().remove(view.getLastSelectedBook());
-        view.addingDeletingBookMessage("Książka została usunięta z twojej listy przeczytanych", "");
+        view.showPlainMessage("Książka została usunięta z twojej listy przeczytanych", "");
         view.resetMainPanel();
     }
 
     public void addReadButtonAction(){
         UserView view = (UserView) currentView;
         if(library.getCurrentlyLoggedUser().getBooksRead().contains(view.getLastSelectedBook()))
-            view.addingDeletingBookMessage("Książka znajduje się już na twojej liście przeczytanych", "");
+            view.showPlainMessage("Książka znajduje się już na twojej liście przeczytanych", "");
         else{
             library.getCurrentlyLoggedUser().getBooksRead().add(view.getLastSelectedBook());
             if(library.getCurrentlyLoggedUser().getBooksToRead().contains(view.getLastSelectedBook())){
-                view.addingDeletingBookMessage("Książka została dodana i usunięta z listy do przeczytania", "");
+                view.showPlainMessage("Książka została dodana i usunięta z listy do przeczytania", "");
                 library.getCurrentlyLoggedUser().getBooksToRead().remove(view.getLastSelectedBook());
             }else{
-                view.addingDeletingBookMessage("Książka została dodana", "");
+                view.showPlainMessage("Książka została dodana", "");
             }
         }
     }
@@ -185,7 +218,7 @@ public class Controller implements ReminderListener{
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
         Book returnedBook = view.getLastSelectedBook();
-        view.addingDeletingBookMessage("Książka została usunięta z pożyczonych", "");
+        view.showPlainMessage("Książka została usunięta z pożyczonych", "");
         admin.bookReturned(returnedBook, library.getUsers());
         view.resetMainPanel();
     }
@@ -193,7 +226,7 @@ public class Controller implements ReminderListener{
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
         Reminder deletingReminder = view.getLastSelectedReminder();
-        view.addingDeletingBookMessage("Przypomnienie zostało usunięte", "");
+        view.showPlainMessage("Przypomnienie zostało usunięte", "");
         admin.deleteReminder(deletingReminder);
         view.resetMainPanel();
     }
@@ -212,7 +245,7 @@ public class Controller implements ReminderListener{
         String time = (String)view.getTimeComboBox().getSelectedItem();
         admin.postponeReturningBook(time, borrowedBook);
         view.resetMainPanel();
-        view.addingDeletingBookMessage("Czas na oddanie książki został zwiększony", "");
+        view.showPlainMessage("Czas na oddanie książki został zwiększony", "");
     }
 
     public void findBookButtonUserAction(){
@@ -294,14 +327,14 @@ public class Controller implements ReminderListener{
         admin.borrowBook(borrowedBook,borrowerName,time,willReminderBeSet, this);
         view.resetMainPanel();
         if(willReminderBeSet)
-            view.addingDeletingBookMessage("Książka została pożyczona i dodano przypomnienie", "");
+            view.showPlainMessage("Książka została pożyczona i dodano przypomnienie", "");
         else
-            view.addingDeletingBookMessage("Książka została pożyczona", "");
+            view.showPlainMessage("Książka została pożyczona", "");
     }
     public void borrowBookButtonAction(){
         AdminView view = (AdminView) currentView;
         if(view.getLastSelectedBook().isBorrowed()){
-            view.addingDeletingBookMessage("Nie możesz pożyczyć książki, która jest już pożyczona", "");
+            view.showPlainMessage("Nie możesz pożyczyć książki, która jest już pożyczona", "");
         }
         else{
             User[] users = getUsersTable();
@@ -362,9 +395,17 @@ public class Controller implements ReminderListener{
         }else if (!Arrays.equals(password, confirmPassword)){
             JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
         }else{
-            User user = new User(name,password.toString(),library);
-            currentView = loginView;
-            currentView.setVisible(true);
+
+            if (library.getAdmin() == null){
+                currentView.setVisible(false);
+                currentView = addBooksView;
+                currentView.setVisible(true);
+                Administrator admin = new Administrator(name, password, library);
+            }else{
+                currentView = loginView;
+                currentView.setVisible(true);
+                User user = new User(name,password,library);
+            }
         }
     }
 
@@ -420,29 +461,36 @@ public class Controller implements ReminderListener{
         User user = (User)view.getUsersComboBox().getSelectedItem();
         if(view.showConfirmingDeletingAccountDialog() == 0){
             library.getAdmin().deleteUser(user, library.getUsers());
-            view.addingDeletingBookMessage("Konto zostało usunięte","");
+            view.showPlainMessage("Konto zostało usunięte","");
         }
         else
-            view.addingDeletingBookMessage("Konto nie zostało usunięte","");
+            view.showPlainMessage("Konto nie zostało usunięte","");
         view.resetMainPanel();
 
     }
 
-    public static void main (String []arg) throws FileNotFoundException {
+    public static void main (String []arg) throws IOException {
         UserView view = new UserView();
         AdminView view1 = new AdminView();
         LoginView view2 = new LoginView();
         RegisterView view3 = new RegisterView();
-        ArrayList<Book> books = FileLoader.returnBooksFromFile();
+        AddBooksView view4 = new AddBooksView();
+        //ArrayList<Book> books = FileLoader.returnBooksFromFile();
         //Library library = new Library(books);
-        Library library = SaveRestoreData.restoreLibrary();
+        //Library library = SaveRestoreData.restoreLibrary();
         //library.books = books;
 
         /*User user = new User("ania", "haslo123", library);
         User user2 = new User("Domcia", "345", library);
         Administrator admin = new Administrator("Dorota", "admin1", library);*/
         //library.setCurrentlyLoggedUser(library.getAdmin());
-        Controller controller = new Controller(library, view, view1, view2, view3);
+        Library library = new Library();
+        File file = new File("library.ser");
+        if (file.exists()) {
+            library = SaveRestoreData.restoreLibrary();
+        }
+
+        Controller controller = new Controller(library, view, view1, view2, view3, view4);
 
     }
 

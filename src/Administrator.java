@@ -140,7 +140,7 @@ public class Administrator extends User{
         return user.getPassword();
     }
 
-    public Administrator(String name, String password, Library library) {
+    public Administrator(String name, char[] password, Library library) {
 
         super(name, password, library);
         library.setAdmin(this);

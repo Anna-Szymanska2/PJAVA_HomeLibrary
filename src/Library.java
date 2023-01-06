@@ -10,6 +10,10 @@ public class Library implements Serializable {
     HashMap<String,char[]> namesAndPasswords = new HashMap<>();
     Administrator admin;
 
+    public void setBooks(ArrayList<Book> books) {
+        this.books = books;
+    }
+
     private User currentlyLoggedUser = null;
 
     public Administrator getAdmin() {
@@ -38,6 +42,8 @@ public class Library implements Serializable {
 
     public Library(ArrayList<Book> books){
         this.books = books;
+    }
+    public Library(){
     }
     public void addUser(User user){
         users.add(user);

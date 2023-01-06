@@ -162,9 +162,7 @@ public class UserView extends View {
 
     }
 
-    public void addingDeletingBookMessage(String message, String title){
-        JOptionPane.showMessageDialog(this, message, title,JOptionPane.INFORMATION_MESSAGE );
-    }
+
 
     public void userButtonView(String labelText){
         mainPanel.removeAll();

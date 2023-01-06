@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -119,13 +120,13 @@ public class Reminder implements Serializable{
     }
 
     public static void main(String []arg) throws FileNotFoundException {
-        test();
+        //test();
 
     }
 
-    public static void test() throws FileNotFoundException {
-        ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        Library library = new Library(books);
+    public static void test() throws IOException {
+        //ArrayList<Book> books = FileLoader.returnBooksFromFile();
+        //Library library = new Library(books);
         /*Administrator admin = new Administrator("ania", "haslo");
         //admin.borrowBook(library);
         //admin.borrowBook(library);

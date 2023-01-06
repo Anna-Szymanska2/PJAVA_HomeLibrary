@@ -117,7 +117,7 @@ public class AdminView extends UserView{
 
     }
     public void deleteAccountView(User[] users){
-        JLabel chooseUserLabel = new JLabel("Wybierz użytkonwika, którego konto chcesz usunąć");
+        JLabel chooseUserLabel = new JLabel("Wybierz użytkownika, którego konto chcesz usunąć");
         prepareFLowLayout();
         flowPanel.add(chooseUserLabel);
         usersComboBox = new JComboBox<>(users);
