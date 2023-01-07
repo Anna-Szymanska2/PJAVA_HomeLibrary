@@ -164,6 +164,7 @@ public class Book implements Serializable{
         longDescription = longDescription + "Rok wydania - " + publishYear +"<br/>";
         longDescription = longDescription + "Liczba stron - " + pages +"<br/>";
         longDescription = longDescription + "Gatunek - " + genre+"<br/>";
+        longDescription = longDescription + "Ocena - " + rating +"<br/>";
 
         if(returningDate != null){
             DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
