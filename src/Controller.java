@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.NoSuchElementException;
 
 public class Controller implements ReminderListener{
@@ -145,6 +146,8 @@ public class Controller implements ReminderListener{
         adminView.getDeleteReminderButton().addActionListener((e) -> deleteReminderButtonAction());
         adminView.getConfirmChoosingAccountButton().addActionListener((e -> confirmChoosingAccountButtonAction()));
         adminView.getFilterButton().addActionListener((e) -> filterButtonAdminAction());
+        adminView.getAddBookButton().addActionListener((e) -> addBookButtonAction());
+        adminView.getConfirmAddingBookButton().addActionListener((e) -> confirmAddingBookButtonAction());
     }
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
@@ -157,6 +160,59 @@ public class Controller implements ReminderListener{
 
     public void bindAddBooksButtons(){
         addBooksView.getSelectBooksButton().addActionListener((e) -> selectBooksButtonAction());
+    }
+
+    public void addBookButtonAction(){
+        AdminView view = (AdminView) currentView;
+        view.addBookView();
+
+    }
+
+    public void confirmAddingBookButtonAction(){
+        AdminView view = (AdminView) currentView;
+        int i = 0;
+        for(JTextField textField: view.getAddBookTextFields()){
+                if(textField.getText().equals("") && i < 5){
+                    view.showErrorMessage("Jedno z obowiązkowych pól nie jest uzupełnione");
+                    return;
+                }
+                i++;
+        }
+        String series = view.getAddBookTextFields()[5].getText();
+        String volumeString = view.getAddBookTextFields()[6].getText();
+        if((series.equals("") && !volumeString.equals("")) || (volumeString.equals("") && !series.equals(""))) {
+            view.showErrorMessage("Nie podałeś wszytkich danych odnośnie serii");
+            return;
+        }
+        String title = view.getAddBookTextFields()[0].getText();
+        String author = view.getAddBookTextFields()[1].getText();
+        String genre = view.getAddBookTextFields()[4].getText();
+
+        try{
+            int pages = Integer.parseInt(view.getAddBookTextFields()[2].getText());
+            int publishYear = Integer.parseInt(view.getAddBookTextFields()[3].getText());
+            int volume = 0;
+            if(!volumeString.equals("")){
+                volume = Integer.parseInt(volumeString);
+                if(volume < 0)
+                    throw new NumberFormatException();
+            }else {
+                series = null;
+            }
+            Calendar currentDate = Calendar.getInstance();
+            if(pages < 0 || publishYear < 0)
+                throw new NumberFormatException();
+            if(publishYear > (int)currentDate.get(Calendar.YEAR))
+                throw new NumberFormatException();
+            library.getAdmin().addBook(library, title, author, pages, publishYear, genre, series, volume);
+            view.showPlainMessage("Książka została dodana do biblioteki", "");
+            view.resetMainPanel();
+        }catch(NumberFormatException e){
+            view.showErrorMessage("Podałeś dane w złym formacie");
+        }catch (SimilarBookException e){
+            view.showErrorMessage(e.getMessage());
+        }
+
     }
 
     public void selectBooksButtonAction(){
@@ -476,6 +532,10 @@ public class Controller implements ReminderListener{
     public void confirmChoosingAccountButtonAction(){
         AdminView view = (AdminView) currentView;
         User user = (User)view.getUsersComboBox().getSelectedItem();
+        if(user == null){
+            view.showErrorMessage("Nie można usunąć konta bez podania użytkownika");
+            return;
+        }
         if(view.showConfirmingDeletingAccountDialog() == 0){
             library.getAdmin().deleteUser(user, library.getUsers());
             view.showPlainMessage("Konto zostało usunięte","");

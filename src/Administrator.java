@@ -7,8 +7,18 @@ public class Administrator extends User{
     private ArrayList<Reminder> reminders = new ArrayList<>();
     private ArrayList<Reminder> remindersToDelete = new ArrayList<>();
 
-    public void addBook(Library library,String description, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
+    public void addBook(Library library, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume) throws SimilarBookException {
+
+        String description = "";
+        if(series != null){
+            description = series + ", " + "tom " + seriesVolume + ", ";
+        }
+        description = description + title;
         Book book = new Book(description, title,author,pages,publishYear,genre,series,seriesVolume);
+        for(Book bookLibrary: library.getBooks()){
+            if(bookLibrary.equals(book))
+                throw new SimilarBookException("Taka książka jest już w bibliotece");
+        }
         library.addBook(book);
     }
 

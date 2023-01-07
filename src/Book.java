@@ -187,4 +187,30 @@ public class Book implements Serializable{
     public String toString(){
         return description;
     }
+
+    @Override
+    public boolean equals(Object o){
+        Book book = (Book) o;
+        if(!book.getTitle().equals(title))
+            return false;
+        if(!book.getAuthor().equals(author))
+            return false;
+        if(book.getPages() != pages)
+            return false;
+        if(book.getPublishYear() != publishYear)
+            return false;
+        if(!book.getGenre().equals(genre))
+            return false;
+
+        if(book.getSeries() != null){
+            if(!book.getSeries().equals(series))
+                return false;
+            if(book.getSeriesVolume() != seriesVolume)
+                return false;
+        }
+
+        return true;
+    }
 }
+
+
