@@ -3,6 +3,9 @@ package model;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * A User class represents user of the application.
+ */
 public class User implements Serializable {
     private String name;
     private String password;
@@ -12,7 +15,6 @@ public class User implements Serializable {
     private ArrayList<Book> borrowedBooks = new ArrayList<>();
 
 
-    //tutaj trzeba poprawic, nie mozna dawac biblioteki w konstruktorze bo bedzie to robic problemy
     public User(String name, String password, Library library){
         this.name = name;
         this.password = password;
@@ -35,6 +37,7 @@ public class User implements Serializable {
         borrowedBooks.add(book);
     }
 
+    //To jest chyba nie potrzebne wszystko (do getName)
     Book selectBook(ArrayList<Book> books){
         for(int i = 0; i < books.size(); i++){
             System.out.print((i+1) + ". ");
@@ -108,28 +111,46 @@ public class User implements Serializable {
         this.booksToRead.remove(book);
     }
 
+    /**
+     * Adds rating of the book given by user to all of this book ratings
+     * and adds the book to user's list of books rated.
+     *
+     * @param rating
+     * @param book
+     */
     public void addRating(int rating,Book book){
-        if(booksRead.contains(book)) {
+
             if(booksRated.contains(book)){
                 book.getRatings().replace(this.name,rating);
             }else {
                 book.getRatings().put(this.name, rating);
                 booksRated.add(book);
             }
-        }
-        else
-            System.out.println("Nie możesz ocenić książki, której nie przeczytałeś");
+
     }
 
+    /**
+     * Removes rating of the book given by user from all of this book ratings
+     * and deletes the book from user's list of books rated.
+     *
+     * @param book
+     */
     public void removeRating(Book book){
         if(booksRated.contains(book)){
         book.getRatings().remove(this.name);
         booksRated.remove(book);
         }
-        else
-            System.out.println("Nie wystawiłeś tej książce oceny");
     }
 
+    /**
+     * Returns list of books recommended for user to read next depending on the list of books user has already read.
+     * Books are recommended based on which genres user has already read and which genres they read the most often
+     * except for books rated lower than 5/10.
+     * Books written by authors which books user has read are also added to the recommendation list.
+     *
+     * @param library
+     * @return
+     */
     public List<Book> recommendBooks(Library library){
         Set<Book> recommendedBooks = new HashSet<>();
         Random randomGenerator = new Random();
@@ -181,9 +202,16 @@ public class User implements Serializable {
         return booksRecommended;
     }
 
+    /**
+     * Deletes user account.
+     *
+     * @param user
+     */
     public void deleteAccount(User user){
         user = null;
     }
+
+    //Te chyba też są niepotrzebne
     public void displayReadBooks(){
         System.out.println("Twoje przeczytane książki: ");
         for(Book readBook: booksRead){

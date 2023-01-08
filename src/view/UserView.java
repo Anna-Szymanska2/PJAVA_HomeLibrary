@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class defining view for user.
+ */
 public class UserView extends View {
     protected Book lastSelectedBook;
     protected JButton logoutButton = new JButton("Wyloguj");
@@ -150,6 +153,10 @@ public class UserView extends View {
 
     }
 
+    /**
+     * Method used to initialise user main page view
+     * by setting its size and adding all fields, buttons and main panel.
+     */
     public void initView(){
         //setVisible(true);
         setSize(700, 600);
@@ -171,7 +178,11 @@ public class UserView extends View {
 
     }
 
-
+    /**
+     * Changes text seen on the main panel after clicking related button.
+     *
+     * @param labelText
+     */
 
     public void userButtonView(String labelText){
         mainPanel.removeAll();
@@ -180,6 +191,11 @@ public class UserView extends View {
         repaint();
     }
 
+    /**
+     * Displays label with given description on north of the main panel.
+     *
+     * @param description
+     */
     public void displayLabelOnNorthOfMainPanel(String description){
         JLabel myLabel = new JLabel(description);
         prepareFLowLayout();
@@ -187,6 +203,9 @@ public class UserView extends View {
         flowPanel.add(myLabel);
     }
 
+    /**
+     * Prepares FlowLayout of the main panel.
+     */
     public void prepareFLowLayout(){
         mainPanel.removeAll();
         mainPanel.setLayout(new BorderLayout());
@@ -195,6 +214,11 @@ public class UserView extends View {
         mainPanel.add(flowPanel,BorderLayout.CENTER);
     }
 
+    /**
+     * Displays given array of buttons on the right side of the main panel.
+     *
+     * @param buttons
+     */
     public void setButtonsAtRight(JButton []buttons){
        /* getMainPanel().removeAll();
         getMainPanel().setLayout(new BorderLayout());
@@ -209,6 +233,14 @@ public class UserView extends View {
         getMainPanel().add(bottomPanel,BorderLayout.SOUTH);
     }
 
+    /**
+     * Changes the look of the main panel to display list of books.
+     * After clicking on one of them, the description of the book is displayed
+     * along with array of buttons assigned to actions that can be taken by user.
+     *
+     * @param books
+     * @param buttons
+     */
     public void selectBookView(ArrayList<Book> books, JButton []buttons){
         resetMainPanel();
         JList<Book> list = getBookJList(books, mainPanel.getHeight());
@@ -226,6 +258,17 @@ public class UserView extends View {
         });
 
     }
+
+    /**
+     * Changes the look of the main panel to display list of books.
+     * After clicking on one of them, the description of the book is displayed
+     * along with array of buttons assigned to actions that can be taken by user.
+     * Under book description there is a label displayed with rating given to this book by logged user.
+     *
+     * @param books
+     * @param name
+     * @param buttons
+     */
     public void selectRatedBookView(ArrayList<Book> books,String name, JButton []buttons){
         resetMainPanel();
         JList<Book> list = getBookJList(books,mainPanel.getHeight() );
@@ -246,6 +289,18 @@ public class UserView extends View {
         });
 
     }
+    /**
+     * Changes the look of the main panel to display list of books.
+     * After clicking on one of them, the description of the book is displayed
+     * along with array of buttons assigned to actions that can be taken by user.
+     * If the book has been rated by the user there is a label displayed under book description with rating given to this book by logged user.
+     * If the book has not been rated, the label changes to slider on which user can set their rating for the book.
+     *
+     * @param books
+     * @param booksRated
+     * @param name
+     * @param buttons
+     */
 
     public void selectReadBookView(ArrayList<Book> books, ArrayList<Book> booksRated,String name,JButton []buttons){
         resetMainPanel();
@@ -278,6 +333,16 @@ public class UserView extends View {
 
     }
 
+    /**
+     * Changes the look of the main panel to display list of books.
+     * After clicking on one of them, the description of the book is displayed
+     * along with array of buttons assigned to actions that can be taken by user.
+     * Method also displays a menu on the north of the main panel which can be used to set filtering parameters
+     * to lower the amount of books displayed on the page, by showing only the ones with comply with filtering requirements.
+     *
+     * @param books
+     * @param buttons
+     */
     public void findBookView(ArrayList<Book> books, JButton []buttons){
         resetMainPanel();
         mainPanel.setLayout(new FlowLayout());
@@ -352,29 +417,15 @@ public class UserView extends View {
 
         filterButton.setPreferredSize(new Dimension(550/4,25));
 
-        JPanel searchBooksPanel = new JPanel(new GridLayout(1,2));
-        searchBooksPanel.setPreferredSize(new Dimension(500,25));
-        JLabel searchLabel = new JLabel("Wyszukaj: ", SwingConstants.CENTER);
-        JTextField searchField = new JTextField();
-        searchBooksPanel.add(searchLabel);
-        searchBooksPanel.add(searchField);
         mainPanel.add(filterBooksPanel);
         mainPanel.add(filterButton);
-        mainPanel.add(searchBooksPanel);
         JList<Book> list = getBookJList(books, 275);
-        //list.setSize(new Dimension(550,350));
 
-
-       /* mainPanel.add(list);
-        JScrollPane scroll = new JScrollPane(list);
-        scroll.setSize(new Dimension(550,350));
-        mainPanel.add(scroll);*/
         setVisible(true);
         repaint();
 
         list.addListSelectionListener(e -> {
             lastSelectedBook = (Book)list.getSelectedValue();
-            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
             String description = lastSelectedBook.returnLongDescription();
             displayLabelOnNorthOfMainPanel(description);
             if(buttons.length != 0)
@@ -385,11 +436,22 @@ public class UserView extends View {
 
     }
 
+    /**
+     * Restores original look of main panel.
+     */
     public void resetMainPanel(){
         mainPanel.removeAll();
         setVisible(true);
         repaint();
     }
+
+    /**
+     * Returns JList with a scroll containing list of chosen books to display on the main panel.
+     *
+     * @param books
+     * @param scrollHeight
+     * @return
+     */
 
     private JList<Book> getBookJList(ArrayList<Book> books,int scrollHeight) {
         JList<Book> list = new JList<>();

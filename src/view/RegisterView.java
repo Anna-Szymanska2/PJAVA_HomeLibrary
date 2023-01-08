@@ -2,7 +2,9 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Class defining view for the registration page.
+ */
 public class RegisterView extends View{
     private JLabel usernameLabel = new JLabel("Użytkownik: ",SwingConstants.CENTER);
     private JTextField usernameField = new JTextField();
@@ -41,6 +43,11 @@ public class RegisterView extends View{
     public JButton getRegisterButton() {
         return registerButton;
     }
+
+    /**
+     * Method used to initialise registration page view
+     * by setting its size and adding all fields and buttons.
+     */
     @Override
     public void initView() {
         setSize(500, 300);

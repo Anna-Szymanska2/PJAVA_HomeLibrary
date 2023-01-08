@@ -5,6 +5,11 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+/**
+ * A Book class represents books stored in the library. Books can be used
+ * to perform various actions within library management program.
+ */
 public class Book implements Serializable{
     private final String description;
     private final String title ;
@@ -14,8 +19,14 @@ public class Book implements Serializable{
     private final String genre;
     private final String series ;
     private final int seriesVolume;
+    /**
+     * Book rating calculated from all ratings added by users.
+     */
     private double rating;
     private String borrowerName;
+    /**
+     * Storing all ratings added to the book by users with username attached to them.
+     */
     private HashMap<String,Integer> ratings = new HashMap<>();
     private boolean isBorrowed = false;
     private Calendar returningDate = null;
@@ -92,6 +103,11 @@ public class Book implements Serializable{
         setBorrowed(true);
     }
 
+    /**
+     * Method calculates rating of the book from all individual ratings added by users.
+     * Each book has 7 added to the sum of ratings, which represents rating added by owner of the book collection.
+     * Rating is calculated as an average of added ratings.
+     */
     public void calculateRating(){
         double ratingsSum = 7;
         if(ratings!=null) {

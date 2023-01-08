@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Scanner;
 public class Administrator extends User{
@@ -22,6 +23,8 @@ public class Administrator extends User{
                 throw new SimilarBookException("Taka książka jest już w bibliotece");
         }
         library.addBook(book);
+        Comparator<Book> c = (b1, b2) -> b1.getAuthor().compareTo(b2.getAuthor());
+        library.getBooks().sort(c);
     }
 
     public ArrayList<Reminder> getReminders() {
