@@ -1,17 +1,33 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 public class Administrator extends User{
 
 
     private ArrayList<Reminder> reminders = new ArrayList<>();
+    private ArrayList<Reminder> remindersToDelete = new ArrayList<>();
 
-    public void addBook(Library library,String description, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume){
+    public void addBook(Library library, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume) throws SimilarBookException {
+
+        String description = "";
+        if(series != null){
+            description = series + ", " + "tom " + seriesVolume + ", ";
+        }
+        description = description + title;
         Book book = new Book(description, title,author,pages,publishYear,genre,series,seriesVolume);
+        for(Book bookLibrary: library.getBooks()){
+            if(bookLibrary.equals(book))
+                throw new SimilarBookException("Taka książka jest już w bibliotece");
+        }
         library.addBook(book);
     }
 
     public ArrayList<Reminder> getReminders() {
         return reminders;
+    }
+
+    public ArrayList<Reminder> getRemindersToDelete() {
+        return remindersToDelete;
     }
 
     public void addReminder(Book borrowedBook, ReminderListener controller){
@@ -35,7 +51,18 @@ public class Administrator extends User{
         for(Reminder reminder: reminders){
             reminder.sendOrSet();
         }
+        for(Reminder reminderToDelete: remindersToDelete){
+            reminders.remove(reminderToDelete);
+        }
+        remindersToDelete.clear();
     }
+
+    /*public void setOrSendReminders(){
+        for(Iterator<Reminder> it = reminders.iterator(); it.hasNext();){
+            Reminder next = it.next();
+            next.sendOrSet();
+        }
+    }*/
 
 
     public void cancelReminders(){
@@ -101,7 +128,13 @@ public class Administrator extends User{
 
     public void deleteReminder(Reminder reminder){
         reminder.cancelReminderTimer();
-        reminders.remove(reminder);
+        for(Iterator<Reminder> it = reminders.iterator(); it.hasNext();){
+            Reminder next = it.next();
+            if(reminder == next){
+                it.remove();
+            }
+        }
+        //reminders.remove(reminder);
     }
 
     public void bookReturned(Book returnedBook, ArrayList<User> users){
@@ -111,7 +144,8 @@ public class Administrator extends User{
 
         Reminder reminderToDelete = returnBooksReminder(returnedBook);
         if(reminderToDelete!=null){
-            deleteReminder(reminderToDelete);
+            //deleteReminder(reminderToDelete);
+            remindersToDelete.add(reminderToDelete);
         }
         User borrower = returnBooksBorrower(borrowerName, users);
         if(borrower!= null)
@@ -140,7 +174,7 @@ public class Administrator extends User{
         return user.getPassword();
     }
 
-    public Administrator(String name, String password, Library library) {
+    public Administrator(String name, char[] password, Library library) {
 
         super(name, password, library);
         library.setAdmin(this);

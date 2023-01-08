@@ -9,8 +9,6 @@ public class SaveRestoreData {
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(admin);
             out.close(); fileOut.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -23,8 +21,6 @@ public class SaveRestoreData {
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(library);
             out.close(); fileOut.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

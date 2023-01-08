@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 
 public class AdminView extends UserView{
@@ -16,9 +15,15 @@ public class AdminView extends UserView{
     private JButton confirmPostponingReturningBookButton = new JButton("Potwierdź");
     private JButton confirmBorrowingBookButton = new JButton("Potwierdź");
     private JButton confirmChoosingAccountButton = new JButton("Potwierdź");
+    private JButton confirmAddingBookButton = new JButton("Potwierdź");
     private JComboBox<User> usersComboBox;
     private JComboBox<String> timeComboBox;
     private JCheckBox reminderCheckbox;
+    private JTextField addBookTextFields[] = new JTextField[7];
+
+    public JButton getConfirmAddingBookButton() {
+        return confirmAddingBookButton;
+    }
 
     public JButton getConfirmChoosingAccountButton() {
         return confirmChoosingAccountButton;
@@ -30,6 +35,10 @@ public class AdminView extends UserView{
 
     public void setLastSelectedReminder(Reminder lastSelectedReminder) {
         this.lastSelectedReminder = lastSelectedReminder;
+    }
+
+    public JTextField[] getAddBookTextFields() {
+        return addBookTextFields;
     }
 
     private Reminder lastSelectedReminder;
@@ -116,8 +125,36 @@ public class AdminView extends UserView{
         repaint();
 
     }
+
+    public void addBookView(){
+        resetMainPanel();
+        mainPanel.setLayout(new BorderLayout());
+        JPanel addBookPanel = new JPanel(new GridLayout(7,2));
+        addBookPanel.setPreferredSize(new Dimension(500,200));
+        JLabel titleLabel = new JLabel("Tytuł");
+        JLabel authorLabel = new JLabel("Autor");
+        JLabel pagesLabel = new JLabel("Liczba stron");
+        JLabel publishYearLabel = new JLabel("Rok wydania");
+        JLabel genreLabel = new JLabel("Gatunek");
+        JLabel seriesLabel = new JLabel("Seria");
+        JLabel seriesVolumeLabel = new JLabel("Tom");
+        JLabel labels[] ={titleLabel, authorLabel, pagesLabel, publishYearLabel, genreLabel, seriesLabel, seriesVolumeLabel};
+        mainPanel.add(addBookPanel);
+
+        for(int i = 0; i < 7; i++){
+            JTextField textField = new JTextField();
+            labels[i].setHorizontalAlignment(SwingConstants.CENTER);
+            addBookPanel.add(labels[i]);
+            addBookPanel.add(textField);
+            addBookTextFields[i] = textField;
+        }
+        JButton[] buttons = {getConfirmAddingBookButton()};
+        setButtonsAtRight(buttons);
+        setVisible(true);
+        repaint();
+    }
     public void deleteAccountView(User[] users){
-        JLabel chooseUserLabel = new JLabel("Wybierz użytkonwika, którego konto chcesz usunąć");
+        JLabel chooseUserLabel = new JLabel("Wybierz użytkownika, którego konto chcesz usunąć");
         prepareFLowLayout();
         flowPanel.add(chooseUserLabel);
         usersComboBox = new JComboBox<>(users);
@@ -157,11 +194,12 @@ public class AdminView extends UserView{
         JList<Reminder> list = new JList<>();
         DefaultListModel <Reminder> model = new DefaultListModel<>();
         list.setModel(model);
-        list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
+        //list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(reminders);
         list.setVisibleRowCount(30);
         mainPanel.removeAll();
         JScrollPane scroll = new JScrollPane(list);
+        scroll.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         mainPanel.add(scroll);
         setVisible(true);
         repaint();

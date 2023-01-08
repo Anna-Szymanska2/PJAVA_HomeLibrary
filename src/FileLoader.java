@@ -1,15 +1,24 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileLoader {
-    public static void main(String []arg) throws FileNotFoundException {
+    public static void main(String []arg) throws IOException {
         test();
     }
-    public static ArrayList<Book> returnBooksFromFile() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("Książki.csv"));
+    public static ArrayList<Book> returnBooksFromFile(String path) throws IOException {
+        int path_length = path.length();
+        if(!path.substring(path_length - 4, path_length).equals(".csv"))
+            throw new IOException("Złe rozszerzenie pliku, wybierz plik .csv");
+        Scanner sc = new Scanner(new File(path));
         sc.useDelimiter(";");   //sets the delimiter pattern
+       /* try{
+            sc.nextLine();
+        }catch (NoSuchElementException e){
+            throw new RuntimeException();
+        }*/
         sc.nextLine();
         int counter = 1;
         String title = null;
@@ -69,11 +78,11 @@ public class FileLoader {
         return books;
     }
 
-    public static void test() throws FileNotFoundException {
-        ArrayList<Book> books = returnBooksFromFile();
+    public static void test() throws IOException {
+       /* ArrayList<Book> books = returnBooksFromFile();
         for(Book book: books){
             book.description();
             System.out.println();
-        }
+        }*/
     }
 }

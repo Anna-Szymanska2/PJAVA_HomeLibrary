@@ -167,9 +167,7 @@ public class UserView extends View {
 
     }
 
-    public void addingDeletingBookMessage(String message, String title){
-        JOptionPane.showMessageDialog(this, message, title,JOptionPane.INFORMATION_MESSAGE );
-    }
+
 
     public void userButtonView(String labelText){
         mainPanel.removeAll();
@@ -208,44 +206,9 @@ public class UserView extends View {
     }
 
     public void selectBookView(ArrayList<Book> books, JButton []buttons){
-        JList<Book> list = getBookJList(books);
-        list.setSize(new Dimension(550,600));
-        list.addListSelectionListener(e -> {
-            lastSelectedBook = (Book)list.getSelectedValue();
-            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
-            String description = lastSelectedBook.returnLongDescription();
-            displayLabelOnNorthOfMainPanel(description);
-            if(buttons.length != 0)
-                setButtonsAtRight(buttons);
-            setVisible(true);
-            repaint();
+        mainPanel.removeAll();
+        JList<Book> list = getBookJList(books, mainPanel.getHeight());
 
-        });
-
-    }
-    public void selectRatedBookView(ArrayList<Book> books,String name, JButton []buttons){
-        JList<Book> list = getBookJList(books);
-        list.setSize(new Dimension(550,600));
-        list.addListSelectionListener(e -> {
-            lastSelectedBook = (Book)list.getSelectedValue();
-            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
-            String description = lastSelectedBook.returnLongDescription();
-            displayLabelOnNorthOfMainPanel(description);
-            JLabel ratingLabel = new JLabel("Oceniłeś tę książkę na: " + lastSelectedBook.ratings.get(name), SwingConstants.CENTER);
-            ratingLabel.setSize(new Dimension(550/2,50));
-            flowPanel.add(ratingLabel,BorderLayout.SOUTH);
-            if(buttons.length != 0)
-                setButtonsAtRight(buttons);
-            setVisible(true);
-            repaint();
-
-        });
-
-    }
-
-    public void selectReadBookView(ArrayList<Book> books, ArrayList<Book> booksRated,String name,JButton []buttons){
-        JList<Book> list = getBookJList(books);
-        list.setSize(new Dimension(550,600));
         list.addListSelectionListener(e -> {
             lastSelectedBook = (Book)list.getSelectedValue();
             //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
@@ -274,6 +237,7 @@ public class UserView extends View {
     }
 
     public void findBookView(ArrayList<Book> books, JButton []buttons){
+        resetMainPanel();
         mainPanel.setLayout(new FlowLayout());
         JPanel filterBooksPanel = new JPanel(new GridLayout(5,4));
         filterBooksPanel.setPreferredSize(new Dimension(500,200));
@@ -352,18 +316,17 @@ public class UserView extends View {
         JTextField searchField = new JTextField();
         searchBooksPanel.add(searchLabel);
         searchBooksPanel.add(searchField);
-
-        JList<Book> list = getBookJList(books);
-        list.setVisibleRowCount(15);
-        list.setSize(new Dimension(550,350));
-
-
         mainPanel.add(filterBooksPanel);
         mainPanel.add(filterButton);
         mainPanel.add(searchBooksPanel);
-        mainPanel.add(list);
+        JList<Book> list = getBookJList(books, 275);
+        //list.setSize(new Dimension(550,350));
+
+
+       /* mainPanel.add(list);
         JScrollPane scroll = new JScrollPane(list);
-        mainPanel.add(scroll);
+        scroll.setSize(new Dimension(550,350));
+        mainPanel.add(scroll);*/
         setVisible(true);
         repaint();
 
@@ -386,16 +349,17 @@ public class UserView extends View {
         repaint();
     }
 
-    private JList<Book> getBookJList(ArrayList<Book> books) {
+    private JList<Book> getBookJList(ArrayList<Book> books,int scrollHeight) {
         JList<Book> list = new JList<>();
         DefaultListModel <Book> model = new DefaultListModel<>();
         list.setModel(model);
         //list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(books);
         list.setVisibleRowCount(30);
-        mainPanel.removeAll();
+        //mainPanel.removeAll();
         JScrollPane scroll = new JScrollPane(list);
         mainPanel.add(scroll);
+        scroll.setPreferredSize(new Dimension(mainPanel.getWidth() - 20,scrollHeight));
         setVisible(true);
         repaint();
         return list;
