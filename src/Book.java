@@ -5,16 +5,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 public class Book implements Serializable{
     private final String description;
-    String title ;
-    String author;
-    int pages;
-    int publishYear;
-    String genre;
-    String series ;
-    int seriesVolume;
-    double rating;
+    private final String title ;
+    private final String author;
+    private final int pages;
+    private final int publishYear;
+    private final String genre;
+    private final String series ;
+    private final int seriesVolume;
+    private double rating;
     private String borrowerName;
-    HashMap<String,Integer> ratings;
+    private HashMap<String,Integer> ratings;
     private boolean isBorrowed = false;
     private Calendar returningDate = null;
 
@@ -29,6 +29,10 @@ public class Book implements Serializable{
         this.series = series;
         this.seriesVolume = seriesVolume;
         this.calculateRating();
+    }
+
+    public HashMap<String, Integer> getRatings() {
+        return ratings;
     }
 
     public String getBorrowerName() {

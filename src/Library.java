@@ -4,17 +4,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Library implements Serializable {
-    ArrayList<Book> books;
+    private ArrayList<Book> books;
    // ArrayList<Book> borrowedBooks = new ArrayList<>();
-    ArrayList<User> users = new ArrayList<>();
-    HashMap<String,char[]> namesAndPasswords = new HashMap<>();
-    Administrator admin;
+    private ArrayList<User> users = new ArrayList<>();
+    private HashMap<String,char[]> namesAndPasswords = new HashMap<>();
+    private Administrator admin;
+    private User currentlyLoggedUser = null;
 
     public void setBooks(ArrayList<Book> books) {
         this.books = books;
     }
 
-    private User currentlyLoggedUser = null;
+    public HashMap<String, char[]> getNamesAndPasswords() {
+        return namesAndPasswords;
+    }
 
     public Administrator getAdmin() {
         return admin;
@@ -88,16 +91,16 @@ public class Library implements Serializable {
 //        }
         if(!author.equals("-")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
-                    .filter(book -> book.author.equals(author))
+                    .filter(book -> book.getAuthor().equals(author))
                     .collect(Collectors.toList());
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(pages2 != 0 || pages !=0){
             for(Book bookAfter : booksToFilter){
-                if(bookAfter.pages>pages2) {
+                if(bookAfter.getPages()>pages2) {
                     booksAfterFiltration.remove(bookAfter);
                 }
-                if(bookAfter.pages<pages){
+                if(bookAfter.getPages()<pages){
                      booksAfterFiltration.remove(bookAfter);
                 }
             }
@@ -106,10 +109,10 @@ public class Library implements Serializable {
 
         if(publishYear != 0 || publishYear2 !=0){
             for(Book bookAfter: booksToFilter){
-                if(bookAfter.publishYear>publishYear2) {
+                if(bookAfter.getPublishYear()>publishYear2) {
                     booksAfterFiltration.remove(bookAfter);
                 }
-                if(bookAfter.publishYear<publishYear){
+                if(bookAfter.getPublishYear()<publishYear){
                     booksAfterFiltration.remove(bookAfter);
                 }
             }
@@ -117,7 +120,7 @@ public class Library implements Serializable {
         }
         if(!genre.equals("-")){
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
-                    .filter(book -> book.genre.equals(genre))
+                    .filter(book -> book.getGenre().equals(genre))
                     .collect(Collectors.toList());
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
@@ -133,34 +136,34 @@ public class Library implements Serializable {
             ArrayList<Book> booksAfterFiltration2 = new ArrayList<>();
             if(volumes == 0 || volumes == 1){
                 booksAfterFiltration2 = (ArrayList<Book>) booksToFilter.stream()
-                        .filter(book -> book.series == null)
+                        .filter(book -> book.getSeries() == null)
                         .collect(Collectors.toList());
                 volumes = 1;
             }
             for(Book bookAfter: booksToFilter){
-                if(bookAfter.series != null) {
-                    if (bookAfter.seriesVolume > volumes2)
-                        namesOfUnFittingSeries.add(bookAfter.series);
-                    if(!namesOfUnFittingSeries.contains(bookAfter.series)) {
-                        if (bookAfter.seriesVolume > volumes)
-                            namesOfFittingSeries.add(bookAfter.series);
+                if(bookAfter.getSeries() != null) {
+                    if (bookAfter.getSeriesVolume() > volumes2)
+                        namesOfUnFittingSeries.add(bookAfter.getSeries());
+                    if(!namesOfUnFittingSeries.contains(bookAfter.getSeries())) {
+                        if (bookAfter.getSeriesVolume() > volumes)
+                            namesOfFittingSeries.add(bookAfter.getSeries());
                     }
                 }
             }
             namesOfFittingSeries.removeIf(next -> namesOfUnFittingSeries.contains(next));
             System.out.println(namesOfFittingSeries);
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
-                    .filter(book -> namesOfFittingSeries.contains(book.series))
+                    .filter(book -> namesOfFittingSeries.contains(book.getSeries()))
                     .collect(Collectors.toList());
             booksAfterFiltration.addAll(booksAfterFiltration2);
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(rating != 0 || rating2 != 0){
             for(Book bookAfter: booksToFilter){
-                if(bookAfter.rating>rating2) {
+                if(bookAfter.getRating()>rating2) {
                     booksAfterFiltration.remove(bookAfter);
                 }
-                if(bookAfter.rating<rating){
+                if(bookAfter.getRating()<rating){
                     booksAfterFiltration.remove(bookAfter);
                 }
             }

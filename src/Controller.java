@@ -429,11 +429,11 @@ public class Controller implements ReminderListener{
         String name = loginView.getUsernameField().getText();
         char[] password = loginView.getPasswordField().getPassword();
 
-        if (library.namesAndPasswords.containsKey(name) && Arrays.equals(library.namesAndPasswords.get(name), password)) {
+        if (library.getNamesAndPasswords().containsKey(name) && Arrays.equals(library.getNamesAndPasswords().get(name), password)) {
                 int i = 0;
-                for (User u : library.users) {
+                for (User u : library.getUsers()) {
                     if (u.getName().equals(name)) {
-                        loggedUser = library.users.get(i);
+                        loggedUser = library.getUsers().get(i);
                         library.setCurrentlyLoggedUser(loggedUser);
                         currentView.setVisible(false);
                         if(library.getCurrentlyLoggedUser().getClass() == Administrator.class){
@@ -461,7 +461,7 @@ public class Controller implements ReminderListener{
         char[] password = registerView.getPasswordField().getPassword();
         char[] confirmPassword = registerView.getConfirmPasswordField().getPassword();
 
-        if (library.namesAndPasswords.containsKey(name)){
+        if (library.getNamesAndPasswords().containsKey(name)){
             JOptionPane.showMessageDialog(currentView, "Użytkownik o tej nazwie już istnieje", "Error", JOptionPane.ERROR_MESSAGE);
         }else if (!Arrays.equals(password, confirmPassword)){
             JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);

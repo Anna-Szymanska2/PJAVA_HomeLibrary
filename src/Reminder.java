@@ -8,13 +8,13 @@ import java.util.*;
 public class Reminder implements Serializable{
 
     //Calendar borrowingDate;
-    Calendar returningDate;
+    private Calendar returningDate;
     //String borrowerName;
-    Book borrowedBook;
+    private Book borrowedBook;
     transient Timer timer;
     transient TimerTask task;
     transient private ReminderListener controller;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
 
     public Reminder( Book borrowedBook, ReminderListener controller){
         this.borrowedBook = borrowedBook;

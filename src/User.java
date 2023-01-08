@@ -14,14 +14,14 @@ public class User implements Serializable {
     public User(String name, String password, Library library){
         this.name = name;
         this.password = password;
-        library.namesAndPasswords.put(name,password.toCharArray());
-        library.users.add(this);
+        library.getNamesAndPasswords().put(name,password.toCharArray());
+        library.getUsers().add(this);
     }
     public User(String name, char[] password, Library library){
         this.name = name;
         this.password = password.toString();
-        library.namesAndPasswords.put(name,password);
-        library.users.add(this);
+        library.getNamesAndPasswords().put(name,password);
+        library.getUsers().add(this);
     }
 
     public ArrayList<Book> getBorrowedBooks() {
@@ -107,7 +107,7 @@ public class User implements Serializable {
 
     public void addRating(int rating,Book book){
         if(booksRead.contains(book)) {
-            book.ratings.put(this.name, rating);
+            book.getRatings().put(this.name, rating);
             booksRated.add(book);
         }
         else
@@ -116,7 +116,7 @@ public class User implements Serializable {
 
     public void removeRating(Book book){
         if(booksRated.contains(book))
-        book.ratings.remove(this.name);
+        book.getRatings().remove(this.name);
         else
             System.out.println("Nie wystawiłeś tej książce oceny");
     }

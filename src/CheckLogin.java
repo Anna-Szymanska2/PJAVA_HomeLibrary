@@ -2,13 +2,13 @@
 public class CheckLogin {
     public static User checkLogin(String name, String password, Library library) {
         User loggedUser = null;
-        if (library.namesAndPasswords.containsKey(name)) {
-            if (library.namesAndPasswords.get(name).equals(password)) {
+        if (library.getNamesAndPasswords().containsKey(name)) {
+            if (library.getNamesAndPasswords().get(name).equals(password)) {
                 System.out.println("Logowanie przebiegło pomyślnie jako: " + name);
                 int i = 0;
-                for (User u : library.users) {
+                for (User u : library.getUsers()) {
                     if (u.getName().equals(name)) {
-                        loggedUser = library.users.get(i);
+                        loggedUser = library.getUsers().get(i);
                     }
                     i++;
                 }
