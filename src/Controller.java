@@ -262,6 +262,8 @@ public class Controller implements ReminderListener{
         library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
         view.showPlainMessage("Ocena ksiązki została dodana", "");
         view.resetMainPanel();
+        view.showPlainMessage("Ocena ksiązki została dodana", "");
+        view.getRatingSlider().setValue(5);
     }
 
     public void deleteRateButtonAction(){
@@ -497,25 +499,30 @@ public class Controller implements ReminderListener{
         char[] password = registerView.getPasswordField().getPassword();
         char[] confirmPassword = registerView.getConfirmPasswordField().getPassword();
 
-        if (library.getNamesAndPasswords().containsKey(name)){
-            JOptionPane.showMessageDialog(currentView, "Użytkownik o tej nazwie już istnieje", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (!Arrays.equals(password, confirmPassword)){
-            JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
-        }else{
-            currentView.setVisible(false);
-            if (library.getAdmin() == null){
-                currentView = addBooksView;
+        if(name.length()<= 3 || password.length <= 3 || name.length()>= 20 || password.length >= 20){
+            JOptionPane.showMessageDialog(currentView, "<html> Nazwa użytkownika oraz hasło musi składać się <br/> z przynajmniej 3  i maksymalnie 20 znaków </html>", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            if (library.getNamesAndPasswords().containsKey(name)) {
+                JOptionPane.showMessageDialog(currentView, "Użytkownik o tej nazwie już istnieje", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!Arrays.equals(password, confirmPassword)) {
+                JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                currentView.setVisible(false);
+                if (library.getAdmin() == null) {
+                    currentView = addBooksView;
+                    currentView.setVisible(true);
+                    Administrator admin = new Administrator(name, password, library);
+                } else {
+                    currentView = loginView;
+                    currentView.setVisible(true);
+                    User user = new User(name, password, library);
+                }
+                registerView.getUsernameField().setText(null);
+                registerView.getPasswordField().setText(null);
+                registerView.getConfirmPasswordField().setText(null);
                 currentView.setVisible(true);
-                Administrator admin = new Administrator(name, password, library);
-            }else{
-                currentView = loginView;
-                currentView.setVisible(true);
-                User user = new User(name,password,library);
             }
-            registerView.getUsernameField().setText(null);
-            registerView.getPasswordField().setText(null);
-            registerView.getConfirmPasswordField().setText(null);
-            currentView.setVisible(true);
         }
     }
 

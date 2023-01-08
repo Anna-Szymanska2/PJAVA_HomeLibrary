@@ -346,7 +346,7 @@ public class UserView extends View {
         filterBooksPanel.add(volumesMaxLabel);
         filterBooksPanel.add(volumesMaxSpinner);
 
-        filterButton.setSize(new Dimension(550/4,25));
+        filterButton.setPreferredSize(new Dimension(550/4,25));
 
         JPanel searchBooksPanel = new JPanel(new GridLayout(1,2));
         searchBooksPanel.setPreferredSize(new Dimension(500,25));
