@@ -1,3 +1,5 @@
+package model;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -6,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Reminder is a class that enables to operate on reminders that remind about returning books.
+ * model.Reminder is a class that enables to operate on reminders that remind about returning books.
  * Thanks to it is possible to set, postpone and cancel reminders. It informs its listeners that reminders time is up
  * and book should be returned.
  */
@@ -22,7 +24,7 @@ public class Reminder implements Serializable{
      */
     transient TimerTask task;
     /**
-     * Controller is a reminder listener that gets info that time for returning book is up.
+     * controller.Controller is a reminder listener that gets info that time for returning book is up.
      */
     transient private ReminderListener controller;
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
@@ -118,9 +120,9 @@ public class Reminder implements Serializable{
     }
 
     public static void test() throws IOException {
-        //ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        //Library library = new Library(books);
-        /*Administrator admin = new Administrator("ania", "haslo");
+        //ArrayList<model.Book> books = model.FileLoader.returnBooksFromFile();
+        //model.Library library = new model.Library(books);
+        /*model.Administrator admin = new model.Administrator("ania", "haslo");
         //admin.borrowBook(library);
         //admin.borrowBook(library);
         admin.displayReminders();
@@ -133,7 +135,7 @@ public class Reminder implements Serializable{
         admin.chooseAndAddToRead(library.getBooks());
 
 
-        SaveRestoreData.save(admin);*/
+        model.SaveRestoreData.save(admin);*/
         //Scanner scanner = new Scanner(System.in);
         //scanner.next();
 
@@ -145,7 +147,7 @@ public class Reminder implements Serializable{
         admin.cancelReminders();
         admin.displayBooksToRead();
         admin.displayReadBooks();
-        //ArrayList<Reminder> reminders = admin.getReminders();
+        //ArrayList<model.Reminder> reminders = admin.getReminders();
         //admin.postponeReminder(reminders.get(0), 1);
         //admin.bookReturned(library);
 

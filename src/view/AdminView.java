@@ -1,3 +1,9 @@
+package view;
+
+import model.Book;
+import model.Reminder;
+import model.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
