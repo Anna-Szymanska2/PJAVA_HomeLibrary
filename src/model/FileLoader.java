@@ -1,5 +1,6 @@
+package model;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -79,8 +80,8 @@ public class FileLoader {
     }
 
     public static void test() throws IOException {
-       /* ArrayList<Book> books = returnBooksFromFile();
-        for(Book book: books){
+       /* ArrayList<model.Book> books = returnBooksFromFile();
+        for(model.Book book: books){
             book.description();
             System.out.println();
         }*/

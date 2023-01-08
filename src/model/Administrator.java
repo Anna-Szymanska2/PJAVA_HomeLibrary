@@ -1,3 +1,5 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -58,8 +60,8 @@ public class Administrator extends User{
     }
 
     /*public void setOrSendReminders(){
-        for(Iterator<Reminder> it = reminders.iterator(); it.hasNext();){
-            Reminder next = it.next();
+        for(Iterator<model.Reminder> it = reminders.iterator(); it.hasNext();){
+            model.Reminder next = it.next();
             next.sendOrSet();
         }
     }*/

@@ -1,7 +1,9 @@
+package view;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class AddBooksView extends View{
+public class AddBooksView extends View {
     private JButton selectBooksButton = new JButton("Wybierz plik z książkami");
     private JFileChooser fileChooser = new JFileChooser();
 
