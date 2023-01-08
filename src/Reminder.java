@@ -5,28 +5,32 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Reminder is a class that enables to operate on reminders that remind about returning books.
+ * Thanks to it is possible to set, postpone and cancel reminders. It informs its listeners that reminders time is up
+ * and book should be returned.
+ */
 public class Reminder implements Serializable{
-
-    //Calendar borrowingDate;
     private Calendar returningDate;
-    //String borrowerName;
     private Book borrowedBook;
+    /**
+     * Timer that counts time till returning date.
+     */
     transient Timer timer;
+    /**
+     * Task - sends info that time for returning book is up.
+     */
     transient TimerTask task;
+    /**
+     * Controller is a reminder listener that gets info that time for returning book is up.
+     */
     transient private ReminderListener controller;
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
 
     public Reminder( Book borrowedBook, ReminderListener controller){
         this.borrowedBook = borrowedBook;
         this.controller = controller;
-        //this.borrowerName = borrowerName;
-        //borrowingDate = Calendar.getInstance();
-        //returningDate = Calendar.getInstance();
         returningDate = borrowedBook.getReturningDate();
-        //addTimeToReturningDate(time);
-        //borrowedBook.setReturningDate(returningDate);
-        //borrowedBook.setBorrowed(true);
-
     }
 
     public Book getBorrowedBook() {
@@ -37,15 +41,10 @@ public class Reminder implements Serializable{
         this.controller = controller;
     }
 
-    public void sendReminderMessageConsole(){
-        System.out.println("POWIADOMIENIE");
-        System.out.println(dateFormat.format(returningDate.getTime()) + " " + borrowedBook.getBorrowerName() + " powinien zwrócić Ci niżej wspomnianą książkę");
-        borrowedBook.description();
-        System.out.println();
-    }
     public void sendReminder(){
         controller.reminderSendAction(this);
     }
+
 
     public void setReminder(){
         timer = new Timer();
@@ -73,13 +72,7 @@ public class Reminder implements Serializable{
         return currentDate.compareTo(returningDate) >= 0;
     }
 
-    public void sendOrSetConsole(){
-        if(isTimeUp())
-            sendReminderMessageConsole();
-        else
-            setReminder();
 
-    }
     public void sendOrSet(){
         if(isTimeUp())
             sendReminder();
