@@ -3,6 +3,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class defining view for the login page.
+ */
 public class LoginView extends View {
 
     private JButton  loginButton = new JButton("Zaloguj");
@@ -39,6 +42,10 @@ public class LoginView extends View {
         return buttonPanel;
     }
 
+    /**
+     * Method used to initialise login page view
+     * by setting its size and adding all fields and buttons.
+     */
     @Override
     public void initView() {
         setSize(500, 300);

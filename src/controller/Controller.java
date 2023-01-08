@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.*;
 import view.*;
 
+/**
+ * Controller is a class used to control changes between the views and actions of the buttons.
+ */
 public class Controller implements ReminderListener{
     private Library library;
     private View currentView;
@@ -158,11 +161,18 @@ public class Controller implements ReminderListener{
         adminView.getAddBookButton().addActionListener((e) -> addBookButtonAction());
         adminView.getConfirmAddingBookButton().addActionListener((e) -> confirmAddingBookButtonAction());
     }
+
+    /**
+     * Adds ActionListeners for buttons in login view.
+     */
     public void bindLoginButtons(){
         loginView.getLoginButton().addActionListener((e) -> loginButtonAction());
         loginView.getRegisterButton().addActionListener((e) -> registerButtonLoginAction());
     }
 
+    /**
+     * Adds ActionListeners for buttons in register view.
+     */
     public void bindRegisterButtons(){
         registerView.getRegisterButton().addActionListener((e) -> registerButtonRegisterAction());
     }
@@ -289,6 +299,9 @@ public class Controller implements ReminderListener{
         view.resetMainPanel();
     }
 
+    /**
+     * Adds rating given by user to all ratings for the chosen book and resets value of rating slider.
+     */
     public void addRateButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
@@ -298,6 +311,9 @@ public class Controller implements ReminderListener{
 
     }
 
+    /**
+     * Removes rating given by user form all ratings for the chosen book.
+     */
     public void deleteRateButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().removeRating(view.getLastSelectedBook());
@@ -397,6 +413,12 @@ public class Controller implements ReminderListener{
         view.findBookView(books, buttons);
     }
 
+    /**
+     * Generates list of books recommended for user and chooses 10 of them randomly to display with
+     * array of buttons.
+     * If user has read less than 10 books this action won't be performed and a dialog window will be displayed.
+     *
+     */
     public void recommendButtonUserAction(){
         UserView view = (UserView) currentView;
         if(library.getCurrentlyLoggedUser().getBooksRead().size()>=10) {
@@ -417,6 +439,10 @@ public class Controller implements ReminderListener{
             view.showPlainMessage("<html>Musisz mieć przynajmniej 10 książek dodanych do listy przeczytanych,<br/> aby aplikacja mogła ci coś polecić</html>", "");
     }
 
+    /**
+     * Performs filtering function on the list of books in the library using parameters chosen by user.
+     * Displays filtered books with an array of buttons.
+     */
     public void filterButtonUserAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
@@ -426,6 +452,10 @@ public class Controller implements ReminderListener{
         view.findBookView(books, buttons);
     }
 
+    /**
+     * Performs filtering function on the list of books in the library using parameters chosen by administrator.
+     * Displays filtered books with an array of buttons which is different from an array of user buttons.
+     */
     public void filterButtonAdminAction(){
         AdminView view = (AdminView) currentView;
         ArrayList<Book> books = library.filtration((String) view.getAuthorComboBox().getItemAt(view.getAuthorComboBox().getSelectedIndex()), (Integer) view.getPageCountMinSpinner().getValue(), (Integer) view.getPageCountMaxSpinner().getValue(), (Integer) view.getPublishYearMinBox().getItemAt(view.getPublishYearMinBox().getSelectedIndex()), (Integer) view.getPublishYearMaxBox().getItemAt(view.getPublishYearMaxBox().getSelectedIndex()),(String) view.getGenreComboBox().getItemAt(view.getGenreComboBox().getSelectedIndex()),(Integer) view.getVolumesMinSpinner().getValue(),(Integer) view.getVolumesMaxSpinner().getValue(),(Integer) view.getRatingMinSpinner().getValue(),(Integer) view.getRatingMaxSpinner().getValue());
@@ -531,7 +561,11 @@ public class Controller implements ReminderListener{
         return users;
     }
 
-
+    /**
+     * Method checks if name and password given by user is correct.
+     * If it is, method logs user into their account. If either name of password is not correct matching
+     * dialog window is displayed.
+     */
     public void loginButtonAction(){
         User loggedUser = null;
         String name = loginView.getUsernameField().getText();
@@ -559,28 +593,40 @@ public class Controller implements ReminderListener{
                     i++;
                 }
             } else {
-                JOptionPane.showMessageDialog(currentView, "Podano błędną nazwę użytkownika lub hasło", "Error", JOptionPane.ERROR_MESSAGE);
+                currentView.showErrorMessage("Podano błędną nazwę użytkownika lub hasło");
                 loginView.getPasswordField().setText(null);
             }
     }
+
+    /**
+     * Changes view from login to registration view.
+     */
     public void registerButtonLoginAction(){
         currentView.setVisible(false);
         currentView = registerView;
         currentView.setVisible(true);
     }
+
+    /**
+     * Creates new account for user depending on the parameters given by user.
+     * If user is the first one creating an account it creates an administrator account.
+     * If username or password is shorter than 3 or longer than 20 characters, an account with this
+     * username already exists or password and cofirmPassword fields are not matching then user account
+     * is not created and appropriate dialog window is displayed.
+     */
     public void registerButtonRegisterAction(){
         String name = registerView.getUsernameField().getText();
         char[] password = registerView.getPasswordField().getPassword();
         char[] confirmPassword = registerView.getConfirmPasswordField().getPassword();
 
         if(name.length()<= 3 || password.length <= 3 || name.length()>= 20 || password.length >= 20){
-            JOptionPane.showMessageDialog(currentView, "<html> Nazwa użytkownika oraz hasło musi składać się <br/> z przynajmniej 3  i maksymalnie 20 znaków </html>", "Error", JOptionPane.ERROR_MESSAGE);
+            currentView.showErrorMessage("<html> Nazwa użytkownika oraz hasło musi składać się <br/> z przynajmniej 3  i maksymalnie 20 znaków </html>");
         }
         else {
             if (library.getNamesAndPasswords().containsKey(name)) {
-                JOptionPane.showMessageDialog(currentView, "Użytkownik o tej nazwie już istnieje", "Error", JOptionPane.ERROR_MESSAGE);
+                currentView.showErrorMessage("Użytkownik o tej nazwie już istnieje");
             } else if (!Arrays.equals(password, confirmPassword)) {
-                JOptionPane.showMessageDialog(currentView, "Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie", "Error", JOptionPane.ERROR_MESSAGE);
+                currentView.showErrorMessage("Pola 'Hasło' oraz 'Powtórz hasło' różnią się od siebie");
             } else {
                 currentView.setVisible(false);
                 if (library.getAdmin() == null) {

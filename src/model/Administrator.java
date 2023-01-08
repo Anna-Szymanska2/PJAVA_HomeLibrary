@@ -6,6 +6,9 @@ import java.util.ArrayList;
  * Administrator is a class that extends User functions. Thanks to it is possible to add new books to library, borrow
  * and return them and manage reminders.
  */
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Scanner;
 public class Administrator extends User{
     private ArrayList<Reminder> reminders = new ArrayList<>();
     private ArrayList<Reminder> remindersToDelete = new ArrayList<>();
@@ -35,6 +38,8 @@ public class Administrator extends User{
                 throw new SimilarBookException("Taka książka jest już w bibliotece");
         }
         library.addBook(book);
+        Comparator<Book> c = (b1, b2) -> b1.getAuthor().compareTo(b2.getAuthor());
+        library.getBooks().sort(c);
     }
 
     public ArrayList<Reminder> getReminders() {
