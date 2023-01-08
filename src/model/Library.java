@@ -1,3 +1,5 @@
+package model;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.io.Serializable;
@@ -5,7 +7,7 @@ import java.util.ArrayList;
 
 public class Library implements Serializable {
     private ArrayList<Book> books;
-   // ArrayList<Book> borrowedBooks = new ArrayList<>();
+   // ArrayList<model.Book> borrowedBooks = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private HashMap<String,char[]> namesAndPasswords = new HashMap<>();
     private Administrator admin;
@@ -27,7 +29,7 @@ public class Library implements Serializable {
         this.admin = admin;
     }
 
-    /*public ArrayList<Book> getBorrowedBooks() {
+    /*public ArrayList<model.Book> getBorrowedBooks() {
         return borrowedBooks;
     }*/
 
@@ -68,7 +70,7 @@ public class Library implements Serializable {
         this.books.remove(book);
     }
 
-   // public void addBorrowedBook(Book borrowedBook){borrowedBooks.add(borrowedBook);}
+   // public void addBorrowedBook(model.Book borrowedBook){borrowedBooks.add(borrowedBook);}
 
     public void removeBorrowedBook(Book borrowedBook){this.books.remove(borrowedBook);}
 
@@ -84,7 +86,7 @@ public class Library implements Serializable {
         ArrayList<Book> booksToFilter = new ArrayList<>(getBooks());
         ArrayList<Book> booksAfterFiltration = new ArrayList<>();
 //        if(!title.equals("0")){
-//            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
+//            booksAfterFiltration = (ArrayList<model.Book>) booksToFilter.stream()
 //                    .filter(book -> book.title.equals(title))
 //                    .collect(Collectors.toList());
 //            reassignBooksToFilter(booksToFilter,booksAfterFiltration);
@@ -125,7 +127,7 @@ public class Library implements Serializable {
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
 //        if(!series.equals("0")){
-//            booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
+//            booksAfterFiltration = (ArrayList<model.Book>) booksToFilter.stream()
 //                    .filter(book -> Objects.equals(book.series, series))
 //                    .collect(Collectors.toList());
 //            reassignBooksToFilter(booksToFilter,booksAfterFiltration);

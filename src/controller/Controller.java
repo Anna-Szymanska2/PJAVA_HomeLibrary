@@ -1,10 +1,12 @@
+package controller;
+import model.*;
+import view.AddBooksView;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
-import java.rmi.NoSuchObjectException;
 import java.util.*;
+import view.*;
 
 public class Controller implements ReminderListener{
     private Library library;
@@ -593,23 +595,6 @@ public class Controller implements ReminderListener{
         view.resetMainPanel();
 
     }
-
-    public static void main (String []arg) throws IOException {
-        UserView view = new UserView();
-        AdminView view1 = new AdminView();
-        LoginView view2 = new LoginView();
-        RegisterView view3 = new RegisterView();
-        AddBooksView view4 = new AddBooksView();
-        Library library = new Library();
-        File file = new File("library.ser");
-        if (file.exists()) {
-            library = SaveRestoreData.restoreLibrary();
-        }
-
-        Controller controller = new Controller(library, view, view1, view2, view3, view4);
-
-    }
-
 
     @Override
     public void reminderSendAction(Reminder reminder) {
