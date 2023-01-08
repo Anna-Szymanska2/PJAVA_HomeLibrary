@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="484c8e65-4188-4274-8f40-96d5dd0473a3" name="Changes" comment="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')">
-      <change afterPath="$PROJECT_DIR$/src/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/UserView.java" afterDir="false" />
+    <list default="true" id="484c8e65-4188-4274-8f40-96d5dd0473a3" name="Changes" comment="adding user button view">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Library.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library.ser" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UserView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +25,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -44,18 +44,58 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Studia/V semestr/PIJAVA/projekt/PJAVA_HomeLibrary"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Studia/V semestr/PIJAVA/projekt/PJAVA_HomeLibrary&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Studia\V semestr\PIJAVA\projekt\PJAVA_HomeLibrary" />
       <recent name="C:\Studia\V semestr\PIJAVA\projekt\PJAVA_HomeLibrary\src" />
     </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Controller" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Controller" />
+      <module name="PJAVA_HomeLibrary" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="controller.Main" />
+      <module name="PJAVA_HomeLibrary" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Controller" />
+        <item itemvalue="Application.Controller" />
+        <item itemvalue="Application.Controller" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -65,6 +105,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1667988992728</updated>
+      <workItem from="1673213831674" duration="1143000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1667990675025</created>
@@ -94,8 +135,95 @@
       <option name="project" value="LOCAL" />
       <updated>1669069660656</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="filtration bug fixing">
+      <created>1672859907028</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1672859907028</updated>
+    </task>
+    <task id="LOCAL-00006" summary="adding choosing file with books">
+      <created>1673018905908</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1673018905908</updated>
+    </task>
+    <task id="LOCAL-00007" summary="reminders should work now">
+      <created>1687977451271</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1687977451271</updated>
+    </task>
+    <task id="LOCAL-00008" summary="lists look better">
+      <created>1673046938232</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1673046938232</updated>
+    </task>
+    <task id="LOCAL-00009" summary="adding adding books">
+      <created>1673095911068</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1673095911068</updated>
+    </task>
+    <task id="LOCAL-00010" summary="rating is displayed now">
+      <created>1673096186225</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1673096186225</updated>
+    </task>
+    <task id="LOCAL-00011" summary="adding private">
+      <created>1673168366565</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1673168366565</updated>
+    </task>
+    <task id="LOCAL-00012" summary="start of documentation">
+      <created>1673173882296</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1673173882296</updated>
+    </task>
+    <task id="LOCAL-00013" summary="resolving merge conflicts">
+      <created>1673178416765</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1673178416765</updated>
+    </task>
+    <task id="LOCAL-00014" summary="adding new project structure">
+      <created>1673180188104</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1673180188104</updated>
+    </task>
+    <task id="LOCAL-00015" summary="documentation and reminders fixing">
+      <created>1673211169175</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1673211169175</updated>
+    </task>
+    <task id="LOCAL-00016" summary="adding user button view">
+      <created>1673211747529</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1673211747529</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ID_ORDER">
@@ -112,7 +240,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="documentation_Ania" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -123,27 +263,73 @@
     <MESSAGE value="Adding Book class and possibility to read file with books" />
     <MESSAGE value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists" />
     <MESSAGE value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding reminders, saving program data and possibility of choosing books and adding them to various lists :')" />
+    <MESSAGE value="filtration bug fixing" />
+    <MESSAGE value="adding choosing file with books" />
+    <MESSAGE value="reminders should work now" />
+    <MESSAGE value="lists look better" />
+    <MESSAGE value="adding adding books" />
+    <MESSAGE value="rating is displayed now" />
+    <MESSAGE value="adding private" />
+    <MESSAGE value="start of documentation" />
+    <MESSAGE value="resolving merge conflicts" />
+    <MESSAGE value="adding new project structure" />
+    <MESSAGE value="documentation and reminders fixing" />
+    <MESSAGE value="adding user button view" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding user button view" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/FileLoader.java</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/src/model/Administrator.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/FileLoader.java</url>
-          <line>12</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/src/model/Administrator.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/FileLoader.java</url>
-          <line>13</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/src/model/Administrator.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/model/Administrator.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/model/Administrator.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/controller/Controller.java</url>
+          <line>348</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/model/Administrator.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/controller/Controller.java</url>
+          <line>465</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/controller/Controller.java</url>
+          <line>464</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

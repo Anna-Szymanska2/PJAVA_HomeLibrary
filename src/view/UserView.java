@@ -184,9 +184,13 @@ public class UserView extends View {
      * @param labelText
      */
 
-    public void userButtonView(String labelText){
+    public void userButtonView(){
+        String labelText = "<html>Aplikacja Home Library służy do wygodnego zarządzania domowym księgozbiorem.<br/>" +
+                "Twórcy:<br/>Dorota Wlazło<br/>Anna Szymańska</html>";
         mainPanel.removeAll();
-        mainPanel.add(new JLabel(labelText));
+        JLabel myLabel = new JLabel(labelText);
+        prepareFLowLayout();
+        flowPanel.add(myLabel);
         setVisible(true);
         repaint();
     }
@@ -198,8 +202,7 @@ public class UserView extends View {
      */
     public void displayLabelOnNorthOfMainPanel(String description){
         JLabel myLabel = new JLabel(description);
-        prepareFLowLayout();
-        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 150));
+        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 200));
         flowPanel.add(myLabel);
     }
 

@@ -37,36 +37,6 @@ public class User implements Serializable {
         borrowedBooks.add(book);
     }
 
-    //To jest chyba nie potrzebne wszystko (do getName)
-    Book selectBook(ArrayList<Book> books){
-        for(int i = 0; i < books.size(); i++){
-            System.out.print((i+1) + ". ");
-            books.get(i).description();
-        }
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Podaj numer książki, którą chcesz wybrać: ");
-        int chosenNumber = scanner.nextInt();
-        scanner.nextLine();
-
-        return books.get(chosenNumber - 1);
-    }
-
-    public void chooseAndAddToRead(ArrayList<Book> books){
-        Book readBook = selectBook(books);
-        if(!booksRead.contains(readBook))
-            addRead(readBook);
-        else
-            System.out.println("Już dodałeś tę książkę do przeczytanych");
-    }
-
-    public void chooseAndAddToBeRead(ArrayList<Book> books){
-        Book bookToRead = selectBook(books);
-        if(!booksToRead.contains(bookToRead))
-            addToRead(bookToRead);
-        else
-            System.out.println("Już dodałeś tę książkę do listy książek do czytania");
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -211,28 +181,6 @@ public class User implements Serializable {
         user = null;
     }
 
-    //Te chyba też są niepotrzebne
-    public void displayReadBooks(){
-        System.out.println("Twoje przeczytane książki: ");
-        for(Book readBook: booksRead){
-            readBook.description();
-        }
-        System.out.println();
-    }
-    public void displayRatedBooks(){
-        System.out.println("Twoje ocenione książki: ");
-        for(Book ratedBook: booksRated){
-            ratedBook.description();
-        }
-        System.out.println();
-    }
-    public void displayBooksToRead(){
-        System.out.println("Twoje książki do przeczytania: ");
-        for(Book bookToRead: booksToRead){
-            bookToRead.description();
-        }
-        System.out.println();
-    }
 
     @Override
     public String toString(){

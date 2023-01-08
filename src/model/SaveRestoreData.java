@@ -2,20 +2,15 @@ package model;
 
 import java.io.*;
 
-
+/**
+ * SavaRestoreData is a class that enables restoring and saving library data.
+ */
 public class SaveRestoreData {
-    public static void save(Administrator admin){
-        FileOutputStream fileOut;
-        try {
-            fileOut = new FileOutputStream("admin.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(admin);
-            out.close(); fileOut.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Object has been saved");
-    }
+
+    /**
+     * Saves library data by creating serialization file.
+     * @param library library which data is saved.
+     */
     public static void save(Library library){
         FileOutputStream fileOut;
         try {
@@ -28,24 +23,10 @@ public class SaveRestoreData {
         }
     }
 
-    public static Administrator restore(){
-        Administrator admin;
-        FileInputStream fileIn;
-        try {
-            fileIn = new FileInputStream("C:\\Users\\Dorota\\Documents\\Cukierki\\Studia\\3 rok\\Pijawa\\admin.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            admin = (Administrator) in.readObject();
-            in.close(); fileIn.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        return admin;
-    }
+    /**
+     * Restores library data from serialization file.
+     * @return library created thanks to data stored in serialization file.
+     */
     public static Library restoreLibrary(){
         Library library;
         FileInputStream fileIn;
@@ -54,17 +35,11 @@ public class SaveRestoreData {
             ObjectInputStream in = new ObjectInputStream(fileIn);
             library = (Library) in.readObject();
             in.close(); fileIn.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         return library;
     }
-    public static void main (String []arg){
 
-    }
 }

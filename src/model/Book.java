@@ -96,7 +96,12 @@ public class Book implements Serializable{
         return rating;
     }
 
-    public void borrowBook(String borrowerName, String time ){
+    /**
+     * Sets name of borrower and sets date of returning as a date distant specific time from the current date.
+     * @param borrowerName name of borrower.
+     * @param time time for which book is borrowed.
+     */
+    public void borrowBook(String borrowerName, String time){
         this.borrowerName = borrowerName;
         returningDate = Calendar.getInstance();
         addTimeToReturningDate(time);
@@ -119,7 +124,6 @@ public class Book implements Serializable{
         else
             this.rating = ratingsSum;
     }
-    // just for testing
     public boolean isBorrowed() {
         return isBorrowed;
     }
@@ -133,12 +137,20 @@ public class Book implements Serializable{
         this.returningDate = returningDate;
     }
 
+    /**
+     * Sets arguments of book in that way that they indicate that book is nor borrowed.
+     */
     public void returnBook(){
         setBorrowed(false);
         returningDate = null;
         borrowerName = null;
     }
 
+    /**
+     * Adds specific amount of time to the returning date. Before adding it checks whether the returning date is in the
+     * past if so it sets it as the current date.
+     * @param time time that is added.
+     */
     public void addTimeToReturningDate(String time){
         Calendar currentDate = Calendar.getInstance();
         if(currentDate.compareTo(returningDate) >= 0){
@@ -154,24 +166,10 @@ public class Book implements Serializable{
 
     }
 
-    // just for testing
-    public void description(){
-        if(series != null){
-            System.out.println("seria - " + series);
-            System.out.println("tom - " + seriesVolume);
-        }
-        System.out.println("tytuł - " + title);
-        System.out.println("autor - " + author);
-        System.out.println("rok wydania - " + publishYear);
-        System.out.println("liczba stron - " + pages);
-        System.out.println("gatunek - " + genre);
-
-        if(returningDate != null){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-            System.out.println("Książka jest chwilowo pożyczona, data zwrotu: " + dateFormat.format(returningDate.getTime()));
-        }
-    }
-
+    /**
+     * Returns long description of the book.
+     * @return description and values of most attributes of the book.
+     */
     public String returnLongDescription(){
         String longDescription = "";
         if(series != null){
@@ -196,21 +194,16 @@ public class Book implements Serializable{
     return longDescription;
     }
 
-    /*@Override
-    public String toString(){
-        String decription = "";
-        if(series != null){
-            decription = series + " " + "tom " + seriesVolume;
-        }
-        decription = decription +  " " + title + " " + author + " " + publishYear + " " + pages + " " + genre;
-
-        return decription;
-    }*/
     @Override
     public String toString(){
         return description;
     }
 
+    /**
+     * Checks whether two books are the same.
+     * @param o compared book.
+     * @return result of comparison.
+     */
     @Override
     public boolean equals(Object o){
         Book book = (Book) o;

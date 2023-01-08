@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * AdminView class enables to show views which only admin can see.
+ */
 public class AdminView extends UserView{
     private JButton remindersButton = new JButton("Przypomnienia");
     private JButton addBookButton = new JButton("Dodaj książkę");
@@ -99,6 +102,9 @@ public class AdminView extends UserView{
         return deleteAccountButton;
     }
 
+    /**
+     * Initializes the view.
+     */
     @Override
     public void initView(){
         super.initView();
@@ -112,6 +118,10 @@ public class AdminView extends UserView{
         timeComboBox = new JComboBox<>(time);
     }
 
+    /**
+     * Displays the view that enables to choose borrowing book details.
+     * @param users array of users which is used to create combobox from which it is possible to choose borrower.
+     */
     public void borrowBookView(User[] users) {
         String description = lastSelectedBook.returnLongDescription();
         displayLabelOnNorthOfMainPanel(description);
@@ -132,6 +142,9 @@ public class AdminView extends UserView{
 
     }
 
+    /**
+     * Displays the view where you can write details of the book which is being added to the library.
+     */
     public void addBookView(){
         resetMainPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -159,6 +172,12 @@ public class AdminView extends UserView{
         setVisible(true);
         repaint();
     }
+
+    /**
+     * Displays the view in which you can choose account to delete.
+     * @param users array of users which is used to create combobox from which it is possible to choose which user's
+     *              account will be deleted.
+     */
     public void deleteAccountView(User[] users){
         JLabel chooseUserLabel = new JLabel("Wybierz użytkownika, którego konto chcesz usunąć");
         prepareFLowLayout();
@@ -171,10 +190,19 @@ public class AdminView extends UserView{
         repaint();
 
     }
+
+    /**
+     * Shows the confirmation dialog about deleting the account.
+     * @return answer which indicates which button of confirmation dialog was chosen.
+     */
     public int showConfirmingDeletingAccountDialog(){
-        int answer = JOptionPane.showConfirmDialog(null, "Czy na pewno chesz usunąć to konto?", "", JOptionPane.YES_NO_CANCEL_OPTION );
+        int answer = JOptionPane.showConfirmDialog(this, "Czy na pewno chesz usunąć to konto?", "", JOptionPane.YES_NO_CANCEL_OPTION );
         return answer;
     }
+
+    /**
+     * Displays the view in which it is possible to choose time.
+     */
     public void choosingBorrowingTimeView(){
         JLabel chooseTimeLabel = new JLabel("<html>Wybierz okres czasu, na który książka ma zostać pożyczona, pamiętaj, " +
                 "jeśli książka powinna <br/>zostać już zwrócona wybrany czas zostanie dodany do obecnej daty, jeśli nie, do" +
@@ -187,6 +215,9 @@ public class AdminView extends UserView{
         return confirmPostponingReturningBookButton;
     }
 
+    /**
+     * Displays the view in which you can choose postponing returning date of the book details.
+     */
     public void postponeReturningBookView(){
         String description = lastSelectedBook.returnLongDescription();
         displayLabelOnNorthOfMainPanel(description);
@@ -196,11 +227,16 @@ public class AdminView extends UserView{
         setVisible(true);
         repaint();
     }
+
+    /**
+     * Returns JList of reminders.
+     * @param reminders reminders that are added to JList.
+     * @return JList of reminders.
+     */
     private JList<Reminder> getReminderJList(ArrayList<Reminder> reminders) {
         JList<Reminder> list = new JList<>();
         DefaultListModel <Reminder> model = new DefaultListModel<>();
         list.setModel(model);
-        //list.setPreferredSize(new Dimension(mainPanel.getWidth() - 20, mainPanel.getHeight()));
         model.addAll(reminders);
         list.setVisibleRowCount(30);
         mainPanel.removeAll();
@@ -212,8 +248,13 @@ public class AdminView extends UserView{
         return list;
     }
 
-    public void selectReminderView(ArrayList<Reminder> books, JButton []buttons){
-        JList<Reminder> list = getReminderJList(books);
+    /**
+     * Displays the view of the list of reminders.
+     * @param reminders reminders added to the list.
+     * @param buttons array of buttons which are displayed after choosing a reminder.
+     */
+    public void selectReminderView(ArrayList<Reminder> reminders, JButton []buttons){
+        JList<Reminder> list = getReminderJList(reminders);
 
         list.addListSelectionListener(e -> {
             lastSelectedReminder = (Reminder)list.getSelectedValue();
@@ -228,6 +269,11 @@ public class AdminView extends UserView{
 
     }
 
+    /**
+     * Displays the dialog of choices what user can do with sent reminder.
+     * @param message
+     * @return
+     */
     public int reminderWasSendView(String message){
         String [] responses = {"Chcę przedłużyć czas na zwrot książki", "Książka została zwrócona", "Usuń powiadomienie"};
         return (JOptionPane.showOptionDialog(null,
@@ -239,13 +285,6 @@ public class AdminView extends UserView{
                 responses,
                 2));
     }
-
-    public static void main (String []arg) {
-        AdminView view = new AdminView();
-        view.initView();
-        view.setVisible(true);
-    }
-
 
     public void setLastSelectedBook(Book book) {
         lastSelectedBook = book;

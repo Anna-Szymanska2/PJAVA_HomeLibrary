@@ -3,6 +3,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * AddBooksView class enables to choose file with books that will be the base for library.
+ */
 public class AddBooksView extends View {
     private JButton selectBooksButton = new JButton("Wybierz plik z książkami");
     private JFileChooser fileChooser = new JFileChooser();
@@ -15,15 +18,15 @@ public class AddBooksView extends View {
         return fileChooser;
     }
 
+    /**
+     * Initializes the view.
+     */
     @Override
     public void initView() {
         setSize(500, 300);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(2,1));
-        //JPanel labelPanel = new JPanel(new BorderLayout());
-        //labelPanel.add(new JLabel("Cześć, zostałeś administratorem domowej biblioteczki!", SwingConstants.CENTER), BorderLayout.CENTER);
         add(new JLabel("Cześć, zostałeś administratorem domowej biblioteczki!", SwingConstants.CENTER));
-        //add((labelPanel));
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         selectBooksButton.setPreferredSize(new Dimension(200,100));
         selectBooksButton.setFocusable(false);
@@ -33,9 +36,4 @@ public class AddBooksView extends View {
 
     }
 
-    public static void main (String []arg){
-        AddBooksView view = new AddBooksView();
-        view.initView();
-        view.setVisible(true);
-    }
 }

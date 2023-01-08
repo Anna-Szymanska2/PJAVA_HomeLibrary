@@ -35,6 +35,9 @@ public class Controller implements ReminderListener{
         setRemindersListener();
     }
 
+    /**
+     * Sets itself as a reminder listener to all reminders that admin of library has.
+     */
     public void setRemindersListener(){
         if(library.getAdmin() == null)
             return;
@@ -44,6 +47,10 @@ public class Controller implements ReminderListener{
         }
     }
 
+    /**
+     * Initializes all views, adds saving library when views are being closed (except addBooksView) and adds setting or
+     * sending reminders when adminView is opening.
+     */
     public void initViews() {
         userView.initView();
         userView.addWindowListener(new WindowAdapter() {
@@ -69,6 +76,7 @@ public class Controller implements ReminderListener{
             }
 
         });
+
         adminView.addWindowListener(new WindowAdapter() {
 
 
@@ -79,6 +87,7 @@ public class Controller implements ReminderListener{
             }
 
        });
+
         loginView.initView();
         loginView.addWindowListener(new WindowAdapter() {
 
@@ -172,12 +181,18 @@ public class Controller implements ReminderListener{
         addBooksView.getSelectBooksButton().addActionListener((e) -> selectBooksButtonAction());
     }
 
+    /**
+     * Shows view in which is possible to add new book.
+     */
     public void addBookButtonAction(){
         AdminView view = (AdminView) currentView;
         view.addBookView();
 
     }
 
+    /**
+     * Checks whether values given by user in adding book view are correct and if they are, adds new book to library.
+     */
     public void confirmAddingBookButtonAction(){
         AdminView view = (AdminView) currentView;
         int i = 0;
@@ -225,6 +240,11 @@ public class Controller implements ReminderListener{
 
     }
 
+    /**
+     * Gives possibility to choose file from which books should be returned. Checks whether file is appropriate and if
+     * it is adds all book from file to library.
+     */
+
     public void selectBooksButtonAction(){
         AddBooksView view = (AddBooksView) currentView;
         int response = view.getFileChooser().showOpenDialog(null);
@@ -245,6 +265,11 @@ public class Controller implements ReminderListener{
         }
 
     }
+
+    /**
+     * Adds selected by user book to list of book he wants to read if book hasn't been there already. Displays
+     * communicate about it.
+     */
     public void addToReadButtonAction(){
         UserView view = (UserView) currentView;
         if(library.getCurrentlyLoggedUser().getBooksToRead().contains(view.getLastSelectedBook()))
@@ -255,13 +280,18 @@ public class Controller implements ReminderListener{
         }
     }
 
+    /**
+     * Deletes selected by user book from list of book he wants to read. Displays communicate about it.
+     */
     public void deleteToReadButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksToRead().remove(view.getLastSelectedBook());
         view.showPlainMessage("Książka została usunięta z twojej listy do przeczytania", "");
         view.resetMainPanel();
     }
-
+    /**
+     * Deletes selected by user book from list of book he read. Displays communicate about it.
+     */
     public void deleteReadButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().getBooksRead().remove(view.getLastSelectedBook());
@@ -291,6 +321,10 @@ public class Controller implements ReminderListener{
         view.resetMainPanel();
     }
 
+    /**
+     * Adds selected by user book to list of book he read if book hasn't been there already. It also deletes this book
+     * from list of book user wanted to read if this book was there. Displays communicate about it.
+     */
     public void addReadButtonAction(){
         UserView view = (UserView) currentView;
         if(library.getCurrentlyLoggedUser().getBooksRead().contains(view.getLastSelectedBook()))
@@ -305,6 +339,10 @@ public class Controller implements ReminderListener{
             }
         }
     }
+
+    /**
+     * Deletes book from the list of borrowed books.
+     */
     public void returnedBookButtonAction() {
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
@@ -313,25 +351,31 @@ public class Controller implements ReminderListener{
         admin.bookReturned(returnedBook, library.getUsers());
         view.resetMainPanel();
     }
+
+    /**
+     * Deletes reminder from list of reminders and cancels its timer.
+     */
     public void deleteReminderButtonAction(){
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
         Reminder deletingReminder = view.getLastSelectedReminder();
         view.showPlainMessage("Przypomnienie zostało usunięte", "");
-        //admin.deleteReminder(deletingReminder);
         admin.getRemindersToDelete().add(deletingReminder);
+        deletingReminder.cancelReminderTimer();
         view.resetMainPanel();
-        /*library.getAdmin().cancelReminders();
-        library.getAdmin().setOrSendReminders();*/
     }
+
+    /**
+     * Shows view that enables to postpone the date of returning book.
+     */
     public void postponeReturningBookButtonAction(){
         AdminView view = (AdminView) currentView;
         view.postponeReturningBookView();
     }
- /*   public void postponeReminderButtonAction(){
 
-    }*/
-
+    /**
+     * Postpones date of returning selected by user book, if reminder was set its time is also postponed.
+     */
     public void confirmPostponingReturningBookButtonAction(){
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
@@ -345,6 +389,9 @@ public class Controller implements ReminderListener{
         ;
     }
 
+    /**
+     * Changes view to view where it's possible to find book with user buttons.
+     */
     public void findBookButtonUserAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getBooks();
@@ -353,6 +400,9 @@ public class Controller implements ReminderListener{
         JButton[] buttons = {button1, button2};
         view.findBookView(books, buttons);
     }
+    /**
+     * Changes view to view where it's possible to find book with admin buttons.
+     */
     public void findBookButtonAdminAction(){
         AdminView view = (AdminView) currentView;
         ArrayList<Book> books = library.getBooks();
@@ -415,13 +465,19 @@ public class Controller implements ReminderListener{
         JButton[] buttons = {button1, button2, button3};
         view.findBookView(books, buttons);
     }
+
+    /**
+     * Changes the view to a view which displays list of borrowed books.
+     */
     public void borrowedBookButtonUserAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> borrowedBooks = library.getCurrentlyLoggedUser().getBorrowedBooks();
         JButton[] buttons = {};
         view.selectBookView(borrowedBooks, buttons);
     }
-
+    /**
+     * Changes the view to a view which displays list of borrowed books with admin buttons.
+     */
     public void borrowedBookButtonAdminAction(){
         AdminView view = (AdminView) currentView;
         ArrayList<Book> borrowedBooks = library.getCurrentlyLoggedUser().getBorrowedBooks();
@@ -430,10 +486,13 @@ public class Controller implements ReminderListener{
         JButton[] buttons = {button1, button2};
         view.selectBookView(borrowedBooks, buttons);
     }
-
+    /**
+     * Changes the view to a view which displays list of reminders.
+     */
     public void remindersButtonAction(){
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
+        admin.deleteReminders();
         ArrayList<Reminder> reminders = admin.getReminders();
         JButton button1 = view.getDeleteReminderButton();
         //JButton button2 = view.getPostponeReminderButton();
@@ -441,6 +500,10 @@ public class Controller implements ReminderListener{
         view.selectReminderView(reminders, buttons);
     }
 
+    /**
+     * Borrows the last selected by admin book to the user or to the person that doesn't have an account. User/person
+     * and time for which the book borrowed is taken from combobox. Also it sets reminder if checkbox was selected.
+     */
     public void confirmBorrowingBookButtonAction(){
         AdminView view = (AdminView) currentView;
         Administrator admin = library.getAdmin();
@@ -467,6 +530,11 @@ public class Controller implements ReminderListener{
         else
             view.showPlainMessage("Książka została pożyczona", "");
     }
+
+    /**
+     * Checks if the last selected book can be borrowed and if it does, it changes the view in which you can choose
+     * borrowing book details.
+     */
     public void borrowBookButtonAction(){
         AdminView view = (AdminView) currentView;
         if(view.getLastSelectedBook().isBorrowed()){
@@ -480,6 +548,10 @@ public class Controller implements ReminderListener{
 
     }
 
+    /**
+     * Creates an array of users of the library without the admin.
+     * @return an array of users of the library
+     */
     private User[] getUsersTable() {
         ArrayList<User> libraryUsers = new ArrayList<>(library.getUsers());
         Administrator admin = library.getAdmin();
@@ -574,6 +646,11 @@ public class Controller implements ReminderListener{
         }
     }
 
+    /**
+     * Checks whether currently logged user is an admin and if so it cancels all reminders. Afterwards it changes view
+     * to the loginview.
+     */
+
     public void logoutButtonAction(){
         UserView view = (UserView) currentView;
         if(library.getAdmin() == library.getCurrentlyLoggedUser()){
@@ -587,14 +664,18 @@ public class Controller implements ReminderListener{
         currentView.setVisible(true);
     }
 
+    /**
+     * Changes view to the one that displays info about the Home Library app.
+     */
+
     public void userButtonAction() {
         UserView view = (UserView) currentView;
-        String userName = library.getCurrentlyLoggedUser().getName();
-        String labelText = "Hello " + userName + "!";
-        view.userButtonView(labelText);
+        view.userButtonView();
 
     }
-
+    /**
+     * Changes the view to a view which displays list of books that user wants to read.
+     */
     public void toReadBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksToRead();
@@ -603,6 +684,9 @@ public class Controller implements ReminderListener{
         JButton[] buttons = {button1, button2};
         view.selectBookView(books, buttons);
     }
+    /**
+     * Changes the view to a view which displays list of books that user read.
+     */
     public void ReadBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRead();
@@ -623,10 +707,17 @@ public class Controller implements ReminderListener{
         view.selectRatedBookView(books, name,buttons);
     }
 
+    /**
+     * Changes the view to a view in which you can choose account to delete.
+     */
     public void deleteAccountButtonAction(){
         AdminView view = (AdminView) currentView;
         view.deleteAccountView(getUsersTable());
     }
+
+    /**
+     * Deletes an account that was chosen in combobox. But before it asks the user whether is sure to do it.
+     */
     public void confirmChoosingAccountButtonAction(){
         AdminView view = (AdminView) currentView;
         User user = (User)view.getUsersComboBox().getSelectedItem();
@@ -644,6 +735,10 @@ public class Controller implements ReminderListener{
 
     }
 
+    /**
+     * Asks user what he wants to do with the reminder which time was up.
+     * @param reminder reminder which time was up.
+     */
     @Override
     public void reminderSendAction(Reminder reminder) {
         AdminView view = (AdminView) currentView;
