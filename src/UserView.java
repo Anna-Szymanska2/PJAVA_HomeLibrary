@@ -206,7 +206,45 @@ public class UserView extends View {
     }
 
     public void selectBookView(ArrayList<Book> books, JButton []buttons){
-        mainPanel.removeAll();
+        resetMainPanel();
+        JList<Book> list = getBookJList(books, mainPanel.getHeight());
+
+        list.addListSelectionListener(e -> {
+            lastSelectedBook = (Book)list.getSelectedValue();
+            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
+            String description = lastSelectedBook.returnLongDescription();
+            displayLabelOnNorthOfMainPanel(description);
+            if(buttons.length != 0)
+                setButtonsAtRight(buttons);
+            setVisible(true);
+            repaint();
+
+        });
+
+    }
+    public void selectRatedBookView(ArrayList<Book> books,String name, JButton []buttons){
+        resetMainPanel();
+        JList<Book> list = getBookJList(books,mainPanel.getHeight() );
+
+        list.addListSelectionListener(e -> {
+            lastSelectedBook = (Book)list.getSelectedValue();
+            //JLabel myLabel = new JLabel(lastSelectedBook.returnLongDescription());
+            String description = lastSelectedBook.returnLongDescription();
+            displayLabelOnNorthOfMainPanel(description);
+            JLabel ratingLabel = new JLabel("Oceniłeś tę książkę na: " + lastSelectedBook.getRatings().get(name), SwingConstants.CENTER);
+            ratingLabel.setSize(new Dimension(550/2,50));
+            flowPanel.add(ratingLabel,BorderLayout.SOUTH);
+            if(buttons.length != 0)
+                setButtonsAtRight(buttons);
+            setVisible(true);
+            repaint();
+
+        });
+
+    }
+
+    public void selectReadBookView(ArrayList<Book> books, ArrayList<Book> booksRated,String name,JButton []buttons){
+        resetMainPanel();
         JList<Book> list = getBookJList(books, mainPanel.getHeight());
 
         list.addListSelectionListener(e -> {
@@ -216,7 +254,7 @@ public class UserView extends View {
             displayLabelOnNorthOfMainPanel(description);
             if(booksRated.contains(lastSelectedBook)){
                 buttons[1] = getDeleteRateButton();
-                JLabel ratingLabel = new JLabel("Oceniłeś tę książkę na: " + lastSelectedBook.ratings.get(name), SwingConstants.CENTER);
+                JLabel ratingLabel = new JLabel("Oceniłeś tę książkę na: " + lastSelectedBook.getRatings().get(name), SwingConstants.CENTER);
                 ratingLabel.setSize(new Dimension(550/2,50));
                 flowPanel.add(ratingLabel,BorderLayout.SOUTH);
             }else{

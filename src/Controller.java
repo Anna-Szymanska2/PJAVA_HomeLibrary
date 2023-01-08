@@ -4,10 +4,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.NoSuchObjectException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Controller implements ReminderListener{
     private Library library;
@@ -263,14 +260,14 @@ public class Controller implements ReminderListener{
     public void addRateButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
-        view.addingDeletingBookMessage("Ocena ksiązki została dodana", "");
+        view.showPlainMessage("Ocena ksiązki została dodana", "");
         view.resetMainPanel();
     }
 
     public void deleteRateButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().removeRating(view.getLastSelectedBook());
-        view.addingDeletingBookMessage("Ocena ksiązki została usunięta", "");
+        view.showPlainMessage("Ocena ksiązki została usunięta", "");
         view.resetMainPanel();
     }
 
@@ -363,7 +360,7 @@ public class Controller implements ReminderListener{
             view.selectBookView(books, buttons);
         }
         else
-            view.addingDeletingBookMessage("<html>Musisz mieć przynajmniej 10 książek dodanych do listy przeczytanych,<br/> aby aplikacja mogła ci coś polecić</html>", "");
+            view.showPlainMessage("<html>Musisz mieć przynajmniej 10 książek dodanych do listy przeczytanych,<br/> aby aplikacja mogła ci coś polecić</html>", "");
     }
 
     public void filterButtonUserAction(){
@@ -515,11 +512,9 @@ public class Controller implements ReminderListener{
                 currentView.setVisible(true);
                 User user = new User(name,password,library);
             }
-            User user = new User(name,password,library);
             registerView.getUsernameField().setText(null);
             registerView.getPasswordField().setText(null);
             registerView.getConfirmPasswordField().setText(null);
-            currentView = loginView;
             currentView.setVisible(true);
         }
     }

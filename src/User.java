@@ -17,17 +17,12 @@ public class User implements Serializable {
         library.getNamesAndPasswords().put(name,password.toCharArray());
         library.getUsers().add(this);
     }
+
     public User(String name, char[] password, Library library){
         this.name = name;
         this.password = password.toString();
         library.getNamesAndPasswords().put(name,password);
         library.getUsers().add(this);
-    }
-    public User(String name, char[] password, Library library){
-        this.name = name;
-        this.password = password.toString();
-        library.namesAndPasswords.put(name,password);
-        library.users.add(this);
     }
 
     public ArrayList<Book> getBorrowedBooks() {
@@ -171,7 +166,7 @@ public class User implements Serializable {
         Iterator<Book> i = booksRecommended.iterator();
         while (i.hasNext()) {
             Book book = i.next();
-            if(book.seriesVolume>1)
+            if(book.getSeriesVolume()>1)
                 i.remove();
         }
 
