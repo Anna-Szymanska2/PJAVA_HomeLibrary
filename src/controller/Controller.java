@@ -624,9 +624,7 @@ public class Controller implements ReminderListener{
 
     public void userButtonAction() {
         UserView view = (UserView) currentView;
-        String userName = library.getCurrentlyLoggedUser().getName();
-        String labelText = "Hello " + userName + "!";
-        view.userButtonView(labelText);
+        view.userButtonView();
 
     }
     /**
