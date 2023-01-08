@@ -261,16 +261,14 @@ public class Controller implements ReminderListener{
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
         view.showPlainMessage("Ocena ksiązki została dodana", "");
-        view.resetMainPanel();
-        view.showPlainMessage("Ocena ksiązki została dodana", "");
         view.getRatingSlider().setValue(5);
+
     }
 
     public void deleteRateButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().removeRating(view.getLastSelectedBook());
         view.showPlainMessage("Ocena ksiązki została usunięta", "");
-        view.resetMainPanel();
     }
 
     public void addReadButtonAction(){
@@ -602,15 +600,6 @@ public class Controller implements ReminderListener{
         LoginView view2 = new LoginView();
         RegisterView view3 = new RegisterView();
         AddBooksView view4 = new AddBooksView();
-        //ArrayList<Book> books = FileLoader.returnBooksFromFile();
-        //Library library = new Library(books);
-        //Library library = SaveRestoreData.restoreLibrary();
-        //library.books = books;
-
-        /*User user = new User("ania", "haslo123", library);
-        User user2 = new User("Domcia", "345", library);
-        Administrator admin = new Administrator("Dorota", "admin1", library);*/
-        //library.setCurrentlyLoggedUser(library.getAdmin());
         Library library = new Library();
         File file = new File("library.ser");
         if (file.exists()) {

@@ -108,16 +108,22 @@ public class User implements Serializable {
 
     public void addRating(int rating,Book book){
         if(booksRead.contains(book)) {
-            book.getRatings().put(this.name, rating);
-            booksRated.add(book);
+            if(booksRated.contains(book)){
+                book.getRatings().replace(this.name,rating);
+            }else {
+                book.getRatings().put(this.name, rating);
+                booksRated.add(book);
+            }
         }
         else
             System.out.println("Nie możesz ocenić książki, której nie przeczytałeś");
     }
 
     public void removeRating(Book book){
-        if(booksRated.contains(book))
+        if(booksRated.contains(book)){
         book.getRatings().remove(this.name);
+        booksRated.remove(book);
+        }
         else
             System.out.println("Nie wystawiłeś tej książce oceny");
     }
