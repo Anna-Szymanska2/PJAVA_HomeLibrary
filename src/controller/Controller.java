@@ -264,6 +264,7 @@ public class Controller implements ReminderListener{
         library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
         view.showPlainMessage("Ocena ksiązki została dodana", "");
         view.getRatingSlider().setValue(5);
+        view.resetMainPanel();
 
     }
 
@@ -271,6 +272,7 @@ public class Controller implements ReminderListener{
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().removeRating(view.getLastSelectedBook());
         view.showPlainMessage("Ocena ksiązki została usunięta", "");
+        view.resetMainPanel();
     }
 
     public void addReadButtonAction(){
