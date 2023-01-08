@@ -5,21 +5,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * FileLoader is a class that loads books from .csv file to ArrayList.
+ */
 public class FileLoader {
-    public static void main(String []arg) throws IOException {
-        test();
-    }
+
+    /**
+     * Returns book from .csv file.
+     * @param path absolute path to .csv file.
+     * @return ArrayList with books.
+     * @throws IOException when path is not a path of .csv file.
+     */
     public static ArrayList<Book> returnBooksFromFile(String path) throws IOException {
         int path_length = path.length();
         if(!path.substring(path_length - 4, path_length).equals(".csv"))
             throw new IOException("Złe rozszerzenie pliku, wybierz plik .csv");
         Scanner sc = new Scanner(new File(path));
         sc.useDelimiter(";");   //sets the delimiter pattern
-       /* try{
-            sc.nextLine();
-        }catch (NoSuchElementException e){
-            throw new RuntimeException();
-        }*/
         sc.nextLine();
         int counter = 1;
         String title = null;
@@ -75,15 +77,8 @@ public class FileLoader {
             }
 
         }
-        sc.close();  //closes the scanner
+        sc.close();
         return books;
     }
 
-    public static void test() throws IOException {
-       /* ArrayList<model.Book> books = returnBooksFromFile();
-        for(model.Book book: books){
-            book.description();
-            System.out.println();
-        }*/
-    }
 }

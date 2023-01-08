@@ -1,14 +1,12 @@
 package model;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * model.Reminder is a class that enables to operate on reminders that remind about returning books.
+ * Reminder is a class that enables to operate on reminders that remind about returning books.
  * Thanks to it is possible to set, postpone and cancel reminders. It informs its listeners that reminders time is up
  * and book should be returned.
  */
@@ -20,16 +18,21 @@ public class Reminder implements Serializable{
      */
     transient Timer timer;
     /**
-     * Task - sends info that time for returning book is up.
+     * Task that sends info that time for returning book is up.
      */
     transient TimerTask task;
     /**
-     * controller.Controller is a reminder listener that gets info that time for returning book is up.
+     * Controller is a reminder listener that gets info that time for returning book is up.
      */
     transient private ReminderListener controller;
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'o' HH:mm");
 
-    public Reminder( Book borrowedBook, ReminderListener controller){
+    /**
+     * Constructor of reminder.
+     * @param borrowedBook book of which returning reminder reminds.
+     * @param controller listener that gets info that time for returning book is up.
+     */
+    public Reminder(Book borrowedBook, ReminderListener controller){
         this.borrowedBook = borrowedBook;
         this.controller = controller;
         returningDate = borrowedBook.getReturningDate();
@@ -43,37 +46,42 @@ public class Reminder implements Serializable{
         this.controller = controller;
     }
 
+    /**
+     * Informs listener that time of returning book is up.
+     */
     public void sendReminder(){
         controller.reminderSendAction(this);
     }
 
-
+    /**
+     * Creates new timer and timertask which count time till returning book date and when it's up informs listener.
+     */
     public void setReminder(){
         timer = new Timer();
         task = new TimerTask() {
 
             @Override
             public void run() {
-                //sendReminderMessageConsole();
                 sendReminder();
                 timer.cancel();
             }
         };
         timer.schedule(task,returningDate.getTime());
     }
-    public void displayReminder(){
-        System.out.println("Data zwrotu: " + dateFormat.format(returningDate.getTime()));
-        System.out.println("Kto pożyczył: " + borrowedBook.getBorrowerName());
-        System.out.println("Książka: ");
-        borrowedBook.description();
-        System.out.println();
-    }
 
+    /**
+     * Checks whether current date is after the date of returning book.
+     * @return true when current date is  after the date of returning book, false otherwise.
+     */
     public boolean isTimeUp(){
         Calendar currentDate = Calendar.getInstance();
         return currentDate.compareTo(returningDate) >= 0;
     }
 
+    /**
+     * Checks whether current date is after the date of returning book and if so sends info to listener otherwise
+     * it sets reminder.
+     */
 
     public void sendOrSet(){
         if(isTimeUp())
@@ -83,74 +91,40 @@ public class Reminder implements Serializable{
 
     }
 
-
+    /**
+     * Cancels reminder timer, changes returning date and sets reminder again.
+     */
     public void postponeReminder(){
         cancelReminderTimer();
         returningDate = borrowedBook.getReturningDate();
         setReminder();
     }
 
-   /* public void addTimeToReturningDate(String time){
-        switch(time){
-            case "tydzień" -> returningDate.add(Calendar.DAY_OF_YEAR, 7);
-            case "2 tygodnie" -> returningDate.add(Calendar.DAY_OF_YEAR, 14);
-            case "miesiąc" -> returningDate.add(Calendar.MONTH, 1);
-            case "2 miesiące" -> returningDate.add(Calendar.MONTH, 2);
-        }
-
-    }*/
-
+    /**
+     * Cancels reminder timer if it was assigned previously.
+     */
     public void cancelReminderTimer(){
         if(timer!= null)
             timer.cancel();
     }
+
+    /**
+     * Returns info about reminder's book.
+     * @return description of borrowed book.
+     */
     @Override
     public String toString(){
         return borrowedBook.getDescription();
     }
+
+    /**
+     * Returns detail of reminder.
+     * @return message about time of returning book, borrower name and short description of the book .
+     */
     public String returnReminderMessage(){
         String message = dateFormat.format(returningDate.getTime()) + " książka " + borrowedBook.toString() + " powinna zostać zwrócona przez " +
                 borrowedBook.getBorrowerName();
         return message;
     }
 
-    public static void main(String []arg) throws FileNotFoundException {
-        //test();
-
-    }
-
-    public static void test() throws IOException {
-        //ArrayList<model.Book> books = model.FileLoader.returnBooksFromFile();
-        //model.Library library = new model.Library(books);
-        /*model.Administrator admin = new model.Administrator("ania", "haslo");
-        //admin.borrowBook(library);
-        //admin.borrowBook(library);
-        admin.displayReminders();
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToBeRead(library.getBooks());
-        admin.chooseAndAddToRead(library.getBooks());
-        admin.chooseAndAddToRead(library.getBooks());
-        admin.chooseAndAddToRead(library.getBooks());
-
-
-        model.SaveRestoreData.save(admin);*/
-        //Scanner scanner = new Scanner(System.in);
-        //scanner.next();
-
-
-        Administrator admin = SaveRestoreData.restore();
-        admin.displayReminders();
-        admin.setReminders();
-        admin.displayReminders();
-        admin.cancelReminders();
-        admin.displayBooksToRead();
-        admin.displayReadBooks();
-        //ArrayList<model.Reminder> reminders = admin.getReminders();
-        //admin.postponeReminder(reminders.get(0), 1);
-        //admin.bookReturned(library);
-
-
-    }
 }

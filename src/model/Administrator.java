@@ -1,14 +1,27 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
+
+/**
+ * Administrator is a class that extends User functions. Thanks to it is possible to add new books to library, borrow
+ * and return them and manage reminders.
+ */
 public class Administrator extends User{
-
-
     private ArrayList<Reminder> reminders = new ArrayList<>();
     private ArrayList<Reminder> remindersToDelete = new ArrayList<>();
 
+    /**
+     * Adds new book to library.
+     * @param library library to which book will be added.
+     * @param title title of the added book.
+     * @param author author of the added book.
+     * @param pages pages of the added book.
+     * @param publishYear year of publish of the added book.
+     * @param genre genre of the added book.
+     * @param series series of the added book.
+     * @param seriesVolume volume of series of the added book.
+     * @throws SimilarBookException is thrown when there is a book with the same characteristics already in the library.
+     */
     public void addBook(Library library, String title, String author, int pages, int publishYear, String genre, String series, int seriesVolume) throws SimilarBookException {
 
         String description = "";
@@ -32,6 +45,11 @@ public class Administrator extends User{
         return remindersToDelete;
     }
 
+    /**
+     * Creates new reminder and adds it to the list of them.
+     * @param borrowedBook book of which returning reminder will remind.
+     * @param controller listener of reminder.
+     */
     public void addReminder(Book borrowedBook, ReminderListener controller){
 
         Reminder reminder = new Reminder(borrowedBook, controller);
@@ -39,57 +57,45 @@ public class Administrator extends User{
         reminders.add(reminder);
     }
 
-    public void displayReminders(){
-        for(Reminder reminder: reminders){
-            reminder.displayReminder();
-        }
-    }
-    public void setReminders(){
-        for(Reminder reminder: reminders){
-            reminder.setReminder();
-        }
-    }
+    /**
+     * Sends or sets all reminders and deletes reminders.
+     */
     public void setOrSendReminders(){
         for(Reminder reminder: reminders){
             reminder.sendOrSet();
         }
+       deleteReminders();
+    }
+
+    /**
+     * Deletes all reminders from lists of reminders to delete.
+     */
+    public void deleteReminders(){
         for(Reminder reminderToDelete: remindersToDelete){
             reminders.remove(reminderToDelete);
+            reminderToDelete.cancelReminderTimer();
+
         }
         remindersToDelete.clear();
     }
 
-    /*public void setOrSendReminders(){
-        for(Iterator<model.Reminder> it = reminders.iterator(); it.hasNext();){
-            model.Reminder next = it.next();
-            next.sendOrSet();
-        }
-    }*/
-
-
+    /**
+     * Cancels timers of all reminders.
+     */
     public void cancelReminders(){
         for(Reminder reminder: reminders){
             reminder.cancelReminderTimer();
         }
     }
 
-    public void borrowBookConsole(Library library){
-        ArrayList<Book> books = library.getBooks();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Teraz będziesz wybierać poźyczaną książkę");
-        Book borrowedBook = selectBook(books);
-        if(borrowedBook.isBorrowed()){
-            System.out.println("Ta książka jest już pożyczona");
-            return;
-        }
-        System.out.println("Jak się nazywa pożyczająca osoba?");
-        String borrowerName = scanner.next();
-        System.out.println("Wybierz na jak długo chccesz pożyczać książkę 1-tydzień, 2- dwa tygodnie, 3 - miesiąc, 4 - dwa miesiące");
-        String chosenTime = scanner.next();
-        //addReminder(borrowedBook, controller);
-       // library.addBorrowedBook(borrowedBook);
-    }
-
+    /**
+     * Adds book to list of borrowed books and adds reminder if it was specified.
+     * @param book book that is borrowed.
+     * @param borrowerName name of borrower.
+     * @param time how long from current date book should be returned.
+     * @param willReminderBeSet flag whether reminder should be set or not.
+     * @param controller listener of reminder.
+     */
     public void borrowBook(Book book, String borrowerName, String time, Boolean willReminderBeSet, ReminderListener controller){
         book.borrowBook(borrowerName, time);
         if(willReminderBeSet){
@@ -98,6 +104,11 @@ public class Administrator extends User{
         addToBorrowed(book);
     }
 
+    /**
+     * Checks whether at list of reminders is reminder with specific borrowed boo and if so it returns this reminder.
+     * @param book specific borrowed book.
+     * @return reminder with specific book or null if it wasn't found.
+     */
     public Reminder returnBooksReminder(Book book){
         for(Reminder reminder: getReminders()){
             if(reminder.getBorrowedBook() == book)
@@ -106,39 +117,25 @@ public class Administrator extends User{
         return null;
     }
 
-    public User returnBooksBorrower(String name, ArrayList<User> users){
+    /**
+     * Checks whether at list is user with specific name and if so it returns this user.
+     * @param name name of searched user.
+     * @param users list of users that it is being searched.
+     * @return user with specific name or null if it wasn't found.
+     */
+    public User returnUserOfThisName(String name, ArrayList<User> users){
         for(User user: users){
-            if(user.getName() == name)
+            if(user.getName().equals(name))
                 return user;
         }
         return null;
     }
 
-
-    public void bookReturnedConsole(Library library){
-        Book returnedBook = selectBook(library.getBooks());
-        library.removeBorrowedBook(returnedBook);
-        Reminder reminderToDelete = null;
-        for(Reminder reminder: reminders){
-            if(returnedBook == reminder.getBorrowedBook()){
-                reminderToDelete = reminder;
-                break;
-            }
-        }
-        deleteReminder(reminderToDelete);
-    }
-
-    public void deleteReminder(Reminder reminder){
-        reminder.cancelReminderTimer();
-        for(Iterator<Reminder> it = reminders.iterator(); it.hasNext();){
-            Reminder next = it.next();
-            if(reminder == next){
-                it.remove();
-            }
-        }
-        //reminders.remove(reminder);
-    }
-
+    /**
+     * Deletes book from administrator list of borrowed books and from borrower list. If reminder was set it is canceled.
+     * @param returnedBook book that was deleted from lists.
+     * @param users list of users from which borrower is found.
+     */
     public void bookReturned(Book returnedBook, ArrayList<User> users){
         getBorrowedBooks().remove(returnedBook);
         String borrowerName = returnedBook.getBorrowerName();
@@ -146,20 +143,20 @@ public class Administrator extends User{
 
         Reminder reminderToDelete = returnBooksReminder(returnedBook);
         if(reminderToDelete!=null){
-            //deleteReminder(reminderToDelete);
             remindersToDelete.add(reminderToDelete);
+            reminderToDelete.cancelReminderTimer();
         }
-        User borrower = returnBooksBorrower(borrowerName, users);
+        User borrower = returnUserOfThisName(borrowerName, users);
         if(borrower!= null)
             borrower.getBorrowedBooks().remove(returnedBook);
 
     }
 
-
-    public void postponeReminder(Reminder reminder, String time){
-        //reminder.getBorrowedBook().addTimeToReturningDate(time);
-        reminder.postponeReminder();
-    }
+    /**
+     * Changes returning date of the book and postpone its reminder.
+     * @param time time that will be added to returning date.
+     * @param book book which return will be postponed.
+     */
     public void postponeReturningBook(String time, Book book){
         book.addTimeToReturningDate(time);
         Reminder reminder = returnBooksReminder(book);
@@ -167,15 +164,21 @@ public class Administrator extends User{
             reminder.postponeReminder();
     }
 
-
+    /**
+     * Deletes user of ArrayList of users.
+     * @param user user that will be deleted.
+     * @param users ArrayList of users from which user will be deleted.
+     */
     public void deleteUser(User user, ArrayList<User> users){
         users.remove(user);
     }
 
-    public String remindPasswordForUser(User user){
-        return user.getPassword();
-    }
-
+    /**
+     * Constructor that create administrator object using its base class constructor and sets is ad a library object.
+     * @param name name of administrator.
+     * @param password password of administrator.
+     * @param library library which they manage.
+     */
     public Administrator(String name, char[] password, Library library) {
 
         super(name, password, library);

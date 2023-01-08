@@ -183,7 +183,7 @@ public class UserView extends View {
     public void displayLabelOnNorthOfMainPanel(String description){
         JLabel myLabel = new JLabel(description);
         prepareFLowLayout();
-        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 150));
+        myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 200));
         flowPanel.add(myLabel);
     }
 
