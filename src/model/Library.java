@@ -150,21 +150,31 @@ public class Library implements Serializable {
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(pages2 != 0 || pages !=0){
+            if(booksAfterFiltration.size() == 0){
+                booksAfterFiltration = new ArrayList<>(getBooks());
+            }
             for(Book bookAfter : booksToFilter){
-                if(bookAfter.getPages()>pages2) {
-                    booksAfterFiltration.remove(bookAfter);
+                if(pages2!=0) {
+                    if (bookAfter.getPages() > pages2) {
+                        booksAfterFiltration.remove(bookAfter);
+                    }
                 }
                 if(bookAfter.getPages()<pages){
-                     booksAfterFiltration.remove(bookAfter);
+                    booksAfterFiltration.remove(bookAfter);
                 }
             }
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
 
         if(publishYear != 0 || publishYear2 !=0){
+            if(booksAfterFiltration.size() == 0){
+                booksAfterFiltration = new ArrayList<>(getBooks());
+            }
             for(Book bookAfter: booksToFilter){
-                if(bookAfter.getPublishYear()>publishYear2) {
-                    booksAfterFiltration.remove(bookAfter);
+                if(publishYear2!=0) {
+                    if (bookAfter.getPublishYear() > publishYear2) {
+                        booksAfterFiltration.remove(bookAfter);
+                    }
                 }
                 if(bookAfter.getPublishYear()<publishYear){
                     booksAfterFiltration.remove(bookAfter);
@@ -190,8 +200,10 @@ public class Library implements Serializable {
             }
             for(Book bookAfter: booksToFilter){
                 if(bookAfter.getSeries() != null) {
-                    if (bookAfter.getSeriesVolume() > volumes2)
-                        namesOfUnFittingSeries.add(bookAfter.getSeries());
+                    if(volumes2!=0) {
+                        if (bookAfter.getSeriesVolume() > volumes2)
+                            namesOfUnFittingSeries.add(bookAfter.getSeries());
+                    }
                     if(!namesOfUnFittingSeries.contains(bookAfter.getSeries())) {
                         if (bookAfter.getSeriesVolume() > volumes)
                             namesOfFittingSeries.add(bookAfter.getSeries());
@@ -207,9 +219,14 @@ public class Library implements Serializable {
             reassignBooksToFilter(booksToFilter,booksAfterFiltration);
         }
         if(rating != 0 || rating2 != 0){
+            if(booksAfterFiltration.size() == 0){
+                booksAfterFiltration = new ArrayList<>(getBooks());
+            }
             for(Book bookAfter: booksToFilter){
-                if(bookAfter.getRating()>rating2) {
-                    booksAfterFiltration.remove(bookAfter);
+                if(rating2!=0){
+                    if (bookAfter.getRating() > rating2) {
+                        booksAfterFiltration.remove(bookAfter);
+                    }
                 }
                 if(bookAfter.getRating()<rating){
                     booksAfterFiltration.remove(bookAfter);

@@ -180,8 +180,6 @@ public class UserView extends View {
 
     /**
      * Changes text seen on the main panel after clicking related button.
-     *
-     * @param labelText
      */
 
     public void userButtonView(){
@@ -201,6 +199,7 @@ public class UserView extends View {
      * @param description
      */
     public void displayLabelOnNorthOfMainPanel(String description){
+        prepareFLowLayout();
         JLabel myLabel = new JLabel(description);
         myLabel.setPreferredSize(new Dimension(getMainPanel().getWidth(), 200));
         flowPanel.add(myLabel);
