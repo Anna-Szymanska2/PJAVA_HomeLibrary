@@ -14,14 +14,13 @@ public class User implements Serializable {
     private ArrayList<Book> booksRated = new ArrayList<>();
     private ArrayList<Book> borrowedBooks = new ArrayList<>();
 
-
-    public User(String name, String password, Library library){
-        this.name = name;
-        this.password = password;
-        library.getNamesAndPasswords().put(name,password.toCharArray());
-        library.getUsers().add(this);
-    }
-
+    /**
+     * Constructor that not only creates new object, but it also adds it to the list of users of library and its names
+     * and passwords collection.
+     * @param name
+     * @param password
+     * @param library
+     */
     public User(String name, char[] password, Library library){
         this.name = name;
         this.password = password.toString();
@@ -119,7 +118,7 @@ public class User implements Serializable {
      * Books written by authors which books user has read are also added to the recommendation list.
      *
      * @param library
-     * @return
+     * @return list of books recommended for user.
      */
     public List<Book> recommendBooks(Library library){
         Set<Book> recommendedBooks = new HashSet<>();

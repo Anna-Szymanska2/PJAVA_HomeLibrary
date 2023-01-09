@@ -179,7 +179,7 @@ public class Administrator extends User{
     }
 
     /**
-     * Constructor that create administrator object using its base class constructor and sets is ad a library object.
+     * Constructor that create administrator object using its base class constructor and sets it as a library admin.
      * @param name name of administrator.
      * @param password password of administrator.
      * @param library library which they manage.

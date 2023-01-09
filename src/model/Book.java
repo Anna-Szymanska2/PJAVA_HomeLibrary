@@ -32,6 +32,17 @@ public class Book implements Serializable{
     private Calendar returningDate = null;
 
 
+    /**
+     * Constructor.
+     * @param description
+     * @param title
+     * @param author
+     * @param pages
+     * @param publishYear
+     * @param genre
+     * @param series
+     * @param seriesVolume
+     */
     public Book(String description, String title, String author,  int pages, int publishYear, String genre, String series, int seriesVolume){
         this.description = description;
         this.title = title;
