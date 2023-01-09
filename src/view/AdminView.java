@@ -103,7 +103,7 @@ public class AdminView extends UserView{
     }
 
     /**
-     * Initializes the view.
+     * Initialises admin main page view by setting its size and adding all fields, buttons and main panel.
      */
     @Override
     public void initView(){

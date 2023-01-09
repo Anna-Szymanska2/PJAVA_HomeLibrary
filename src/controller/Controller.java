@@ -18,9 +18,26 @@ public class Controller implements ReminderListener{
     private UserView userView;
     private AdminView adminView;
     private RegisterView registerView;
+    /**
+     * the view which is shown just once after admin registers.
+     */
     private AddBooksView addBooksView;
+    /**
+     * The action that was lastly chosen when reminders dialog appeared.
+     */
     private int lastChosenAction = 1;
 
+    /**
+     * Constructor that except of setting all views and the library initializes all views, binds all buttons in views to
+     * their actions, sets the current view as a loginView and sets itself as a reminder listener to all reminders that
+     * admin of the library has.
+     * @param library
+     * @param userView
+     * @param adminView
+     * @param loginView
+     * @param registerView
+     * @param addBooksView
+     */
     public Controller(Library library, UserView userView, AdminView adminView, LoginView loginView, RegisterView registerView, AddBooksView addBooksView) {
         this.library = library;
         this.userView = userView;
@@ -36,7 +53,7 @@ public class Controller implements ReminderListener{
     }
 
     /**
-     * Sets itself as a reminder listener to all reminders that admin of library has.
+     * Sets itself as a reminder listener to all reminders that admin of the library has.
      */
     public void setRemindersListener(){
         if(library.getAdmin() == null)
@@ -113,6 +130,9 @@ public class Controller implements ReminderListener{
         addBooksView.initView();
     }
 
+    /**
+     * Adds ActionListeners to all buttons from all views.
+     */
     public void bindAllButtons(){
         bindUserButtons();
         bindAdminButtons();
@@ -121,6 +141,10 @@ public class Controller implements ReminderListener{
         bindAddBooksButtons();
     }
 
+    /**
+     * Adds ActionListeners to all buttons from adminView and userView that they have in common.
+     * @param view view whose buttons are bound.
+     */
     public void bindButtons(UserView view) {
         view.getUserButton().addActionListener((e) -> userButtonAction());
         view.getToReadBooksButton().addActionListener((e) -> toReadBooksButtonAction());
@@ -135,7 +159,9 @@ public class Controller implements ReminderListener{
         view.getDeleteRateButton().addActionListener((e) -> deleteRateButtonAction());
     }
 
-
+    /**
+     * Adds ActionListeners to all buttons from userView that are specific just for it.
+     */
     public void bindUserButtons(){
         bindButtons(userView);
         userView.getFindBookButton().addActionListener((e) -> findBookButtonUserAction());
@@ -143,7 +169,9 @@ public class Controller implements ReminderListener{
         userView.getFilterButton().addActionListener((e) -> filterButtonUserAction());
         userView.getRecommendBookButton().addActionListener((e) -> recommendButtonUserAction());
     }
-
+    /**
+     * Adds ActionListeners to all buttons from adminView that are specific just for it.
+     */
     public void bindAdminButtons(){
         bindButtons(adminView);
         adminView.getDeleteAccountButton().addActionListener((e) -> deleteAccountButtonAction());
@@ -176,7 +204,9 @@ public class Controller implements ReminderListener{
     public void bindRegisterButtons(){
         registerView.getRegisterButton().addActionListener((e) -> registerButtonRegisterAction());
     }
-
+    /**
+     * Adds ActionListeners for buttons in add books view.
+     */
     public void bindAddBooksButtons(){
         addBooksView.getSelectBooksButton().addActionListener((e) -> selectBooksButtonAction());
     }
@@ -501,8 +531,9 @@ public class Controller implements ReminderListener{
     }
 
     /**
-     * Borrows the last selected by admin book to the user or to the person that doesn't have an account. User/person
-     * and time for which the book borrowed is taken from combobox. Also it sets reminder if checkbox was selected.
+     * Borrows the last selected by admin book to the user or to the person that doesn't have an account.
+     * User/person and time for which the book borrowed is taken from combobox. Also, it sets reminder if checkbox
+     * was selected.
      */
     public void confirmBorrowingBookButtonAction(){
         AdminView view = (AdminView) currentView;
@@ -697,7 +728,9 @@ public class Controller implements ReminderListener{
         JButton[] buttons = {button1, button2};
         view.selectReadBookView(books,booksRated,name, buttons);
     }
-
+    /**
+     * Changes the view to a view which displays list of books that user rated.
+     */
     public void ratedBooksButtonAction(){
         UserView view = (UserView) currentView;
         ArrayList<Book> books = library.getCurrentlyLoggedUser().getBooksRated();

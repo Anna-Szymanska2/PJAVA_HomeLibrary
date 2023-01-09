@@ -452,7 +452,7 @@ public class UserView extends View {
      *
      * @param books
      * @param scrollHeight
-     * @return
+     * @return JList with a scroll containing list of chosen books.
      */
 
     private JList<Book> getBookJList(ArrayList<Book> books,int scrollHeight) {
@@ -471,10 +471,5 @@ public class UserView extends View {
         return list;
     }
 
-    public static void main (String []arg){
-
-        UserView view = new UserView();
-        view.initView();
-    }
 
 }
