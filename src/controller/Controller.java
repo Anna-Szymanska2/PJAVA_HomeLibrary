@@ -65,8 +65,7 @@ public class Controller implements ReminderListener{
     }
 
     /**
-     * Initializes all views, adds saving library when views are being closed (except addBooksView) and adds setting or
-     * sending reminders when adminView is opening.
+     * Initializes all views, adds saving library when views are being closed (except addBooksView).
      */
     public void initViews() {
         userView.initView();
@@ -93,17 +92,6 @@ public class Controller implements ReminderListener{
             }
 
         });
-
-        adminView.addWindowListener(new WindowAdapter() {
-
-
-           @Override
-            public void windowOpened(WindowEvent e) {
-                super.windowOpened(e);
-               library.getAdmin().setOrSendReminders();
-            }
-
-       });
 
         loginView.initView();
         loginView.addWindowListener(new WindowAdapter() {
@@ -157,6 +145,7 @@ public class Controller implements ReminderListener{
         view.getDeleteReadButton().addActionListener((e) -> deleteReadButtonAction());
         view.getAddRateButton().addActionListener((e) -> addRateButtonAction());
         view.getDeleteRateButton().addActionListener((e) -> deleteRateButtonAction());
+        view.getRecommendBookButton().addActionListener((e) -> recommendButtonUserAction());
     }
 
     /**
@@ -167,7 +156,6 @@ public class Controller implements ReminderListener{
         userView.getFindBookButton().addActionListener((e) -> findBookButtonUserAction());
         userView.getBorrowedBooksButton().addActionListener((e) -> borrowedBookButtonUserAction());
         userView.getFilterButton().addActionListener((e) -> filterButtonUserAction());
-        userView.getRecommendBookButton().addActionListener((e) -> recommendButtonUserAction());
     }
     /**
      * Adds ActionListeners to all buttons from adminView that are specific just for it.
@@ -335,7 +323,7 @@ public class Controller implements ReminderListener{
     public void addRateButtonAction(){
         UserView view = (UserView) currentView;
         library.getCurrentlyLoggedUser().addRating(view.getRatingSlider().getValue(),view.getLastSelectedBook());
-        view.showPlainMessage("Ocena ksiązki została dodana", "");
+        view.showPlainMessage("Ocena książki została dodana", "");
         view.getRatingSlider().setValue(5);
         view.resetMainPanel();
 
@@ -415,6 +403,7 @@ public class Controller implements ReminderListener{
         view.resetMainPanel();
         view.showPlainMessage("Czas na oddanie książki został zwiększony", "");
         lastChosenAction = 1;
+        library.getAdmin().deleteReminders();
         library.getAdmin().setOrSendReminders();
         ;
     }
@@ -612,14 +601,17 @@ public class Controller implements ReminderListener{
                         if(library.getCurrentlyLoggedUser().getClass() == Administrator.class){
                             adminView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
                             currentView = adminView;
-                            //library.getAdmin().setOrSendReminders();
+                            currentView.setVisible(true);
+                            library.getAdmin().deleteReminders();
+                            library.getAdmin().setOrSendReminders();
                         }else{
                             userView.getUserButton().setText("Witaj " + library.getCurrentlyLoggedUser().getName() + "!");
                             currentView = userView;
+                            currentView.setVisible(true);
                         }
                         loginView.getUsernameField().setText(null);
                         loginView.getPasswordField().setText(null);
-                        currentView.setVisible(true);
+
                     }
                     i++;
                 }
@@ -651,7 +643,7 @@ public class Controller implements ReminderListener{
         char[] confirmPassword = registerView.getConfirmPasswordField().getPassword();
 
         if(name.length()<= 3 || password.length <= 3 || name.length()>= 20 || password.length >= 20){
-            currentView.showErrorMessage("<html> Nazwa użytkownika oraz hasło musi składać się <br/> z przynajmniej 3  i maksymalnie 20 znaków </html>");
+            currentView.showErrorMessage("<html> Nazwa użytkownika oraz hasło musi składać się <br/> z przynajmniej 4  i maksymalnie 20 znaków </html>");
         }
         else {
             if (library.getNamesAndPasswords().containsKey(name)) {
@@ -759,6 +751,7 @@ public class Controller implements ReminderListener{
             return;
         }
         if(view.showConfirmingDeletingAccountDialog() == 0){
+            library.getNamesAndPasswords().remove(user.getName());
             library.getAdmin().deleteUser(user, library.getUsers());
             view.showPlainMessage("Konto zostało usunięte","");
         }

@@ -211,7 +211,6 @@ public class Library implements Serializable {
                 }
             }
             namesOfFittingSeries.removeIf(next -> namesOfUnFittingSeries.contains(next));
-            System.out.println(namesOfFittingSeries);
             booksAfterFiltration = (ArrayList<Book>) booksToFilter.stream()
                     .filter(book -> namesOfFittingSeries.contains(book.getSeries()))
                     .collect(Collectors.toList());

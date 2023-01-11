@@ -198,7 +198,7 @@ public class Book implements Serializable{
         longDescription = longDescription + "Ocena - " + rating +"<br/>";
 
         if(returningDate != null){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
             longDescription = longDescription + "Książka jest chwilowo pożyczona przez " + getBorrowerName()+"<br/>";
             longDescription = longDescription + "Data zwrotu: " + dateFormat.format(returningDate.getTime())+"</html>";
         }
