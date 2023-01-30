@@ -94,6 +94,7 @@ public class User implements Serializable {
             }else {
                 book.getRatings().put(this.name, rating);
                 booksRated.add(book);
+                book.calculateRating();
             }
 
     }
@@ -108,6 +109,7 @@ public class User implements Serializable {
         if(booksRated.contains(book)){
         book.getRatings().remove(this.name);
         booksRated.remove(book);
+        book.calculateRating();
         }
     }
 
