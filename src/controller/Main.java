@@ -1,4 +1,5 @@
 package controller;
+import com.formdev.flatlaf.FlatDarculaLaf;
 import model.Library;
 import model.SaveRestoreData;
 import view.*;
@@ -6,6 +7,8 @@ import java.io.File;
 
 public class Main {
     public static void main (String []arg){
+        FlatDarculaLaf.setup();
+
         UserView view = new UserView();
         AdminView view1 = new AdminView();
         LoginView view2 = new LoginView();
